@@ -237,5 +237,122 @@ def buscar_lancamentos(
     return [dict(r) for r in rows]
 
 
+# ── 9. Recomendar ações com base no histórico ────────────────────────────────
+@mcp.tool()
+def recomendar_acoes(fazenda_id: int) -> list[dict]:
+    """
+    Analisa o histórico financeiro da fazenda e gera recomendações práticas
+    baseadas em padrões de custo, margens e sazonalidade das safras anteriores.
+    """
+    with _con() as con:
+        faz = con.execute("SELECT nome FROM fazendas WHERE id=?", (fazenda_id,)).fetchone()
+
+        # Tendência de gasto por categoria/safra
+        tendencia = con.execute("""
+            SELECT safra, cultura, categoria, SUM(valor) AS total
+            FROM lancamentos WHERE fazenda_id=?
+            GROUP BY safra, cultura, categoria
+            ORDER BY safra, cultura, categoria
+        """, (fazenda_id,)).fetchall()
+
+        # Margens por safra/cultura
+        margens = con.execute("""
+            SELECT p.safra, p.cultura,
+                   COALESCE((SELECT SUM(valor) FROM receitas r
+                              WHERE r.fazenda_id=p.fazenda_id AND r.safra=p.safra AND r.cultura=p.cultura), 0) AS receita,
+                   COALESCE((SELECT SUM(valor) FROM lancamentos l
+                              WHERE l.fazenda_id=p.fazenda_id AND l.safra=p.safra AND l.cultura=p.cultura), 0) AS despesa,
+                   p.produtividade_sc_ha
+            FROM plantios p
+            WHERE p.fazenda_id=?
+            ORDER BY p.safra, p.cultura
+        """, (fazenda_id,)).fetchall()
+
+        # Sazonalidade: mês de maior gasto por categoria
+        sazonalidade = con.execute("""
+            SELECT categoria, strftime('%m', data) AS mes, AVG(valor) AS media
+            FROM lancamentos WHERE fazenda_id=?
+            GROUP BY categoria, mes
+            ORDER BY categoria, media DESC
+        """, (fazenda_id,)).fetchall()
+
+    recomendacoes = []
+    meses = {"01":"janeiro","02":"fevereiro","03":"março","04":"abril","05":"maio",
+              "06":"junho","07":"julho","08":"agosto","09":"setembro",
+              "10":"outubro","11":"novembro","12":"dezembro"}
+
+    # Agrupa tendência por (cultura, categoria) → lista de (safra, total)
+    from collections import defaultdict
+    historico = defaultdict(list)
+    for safra, cultura, cat, total in tendencia:
+        historico[(cultura, cat)].append((safra, total))
+
+    for (cultura, cat), series in historico.items():
+        if len(series) < 2:
+            continue
+        series.sort()
+        media = sum(t for _, t in series) / len(series)
+        ultimo = series[-1][1]
+        if media > 0 and ultimo > media * 1.15:
+            pct = round((ultimo / media - 1) * 100)
+            recomendacoes.append({
+                "tipo": "alerta_custo",
+                "cultura": cultura,
+                "categoria": cat,
+                "mensagem": (
+                    f"Gastos com {cat} ({cultura}) na última safra estão {pct}% acima da média histórica "
+                    f"(R$ {round(ultimo):,} vs média R$ {round(media):,}). "
+                    f"Avalie renegociar com fornecedores ou comparar preços antes do próximo plantio."
+                ),
+                "prioridade": "alta" if pct >= 25 else "media",
+            })
+
+    # Melhor/pior safra
+    margens_calc = [
+        (r[0], r[1], round(r[2] - r[3], 2), r[4])
+        for r in margens if r[2] > 0
+    ]
+    if margens_calc:
+        melhor = max(margens_calc, key=lambda x: x[2])
+        pior   = min(margens_calc, key=lambda x: x[2])
+        recomendacoes.append({
+            "tipo": "benchmark_interno",
+            "mensagem": (
+                f"Sua melhor margem foi na safra {melhor[0]} com {melhor[1]}: "
+                f"R$ {melhor[2]:,}. Analise o que foi diferente (clima, preço de venda, controle de custo) "
+                f"para tentar replicar nas próximas safras."
+            ),
+            "prioridade": "media",
+        })
+        if pior[2] < melhor[2] * 0.6 and pior[0] != melhor[0]:
+            recomendacoes.append({
+                "tipo": "alerta_margem",
+                "mensagem": (
+                    f"A safra {pior[0]} ({pior[1]}) teve margem de R$ {pior[2]:,}, "
+                    f"muito abaixo da melhor safra. Verifique se houve problema climático, "
+                    f"queda de produtividade ou aumento atípico de custos nesse período."
+                ),
+                "prioridade": "alta",
+            })
+
+    # Sazonalidade: top mês por categoria
+    picos_vistos = set()
+    for cat, mes, _ in sazonalidade:
+        if cat not in picos_vistos:
+            recomendacoes.append({
+                "tipo": "sazonalidade",
+                "categoria": cat,
+                "mensagem": (
+                    f"Historicamente seus gastos com {cat} são maiores em {meses.get(mes, mes)}. "
+                    f"Planeje o fluxo de caixa com antecedência para esse período."
+                ),
+                "prioridade": "baixa",
+            })
+            picos_vistos.add(cat)
+
+    ordem = {"alta": 0, "media": 1, "baixa": 2}
+    return sorted(recomendacoes, key=lambda x: ordem[x["prioridade"]])
+
+
 if __name__ == "__main__":
     mcp.run()

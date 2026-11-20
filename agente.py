@@ -32,6 +32,7 @@ from servidor_mcp import (
     historico_cotacoes,
     detectar_anomalias,
     buscar_lancamentos,
+    recomendar_acoes,
 )
 
 TOOLS = [
@@ -160,6 +161,20 @@ TOOLS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "recomendar_acoes",
+            "description": "Analisa o histórico financeiro da fazenda e gera recomendações práticas baseadas em padrões de custo, margens e sazonalidade das safras anteriores.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "fazenda_id": {"type": "integer", "description": "ID da fazenda"},
+                },
+                "required": ["fazenda_id"],
+            },
+        },
+    },
 ]
 
 TOOL_FN = {
@@ -172,6 +187,7 @@ TOOL_FN = {
     "detectar_anomalias": lambda args: detectar_anomalias(**args),
     "buscar_lancamentos": lambda args: buscar_lancamentos(**args),
     "buscar_documentos": lambda args: buscar_documentos(**args),
+    "recomendar_acoes": lambda args: recomendar_acoes(**args),
 }
 
 SYSTEM = textwrap.dedent("""
