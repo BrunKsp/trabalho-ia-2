@@ -1,0 +1,638 @@
+id,fazenda_id,safra,cultura,data,categoria,fornecedor,valor,mensagem_whatsapp
+1,1,2022/23,soja,2022-10-09,Sementes,Coop. Agricola Regional,97160.18,lanca ai 97.160 sementes da Fazenda Boa Vista
+2,1,2022/23,soja,2022-09-24,Fertilizantes,Agro Insumos RS,108246.77,paguei 108.247 de fertilizantes pra Agro Insumos RS
+3,1,2022/23,soja,2022-10-19,Fertilizantes,Fertisul Revenda,103739.08,paguei 103.739 de fertilizantes pra Fertisul Revenda
+4,1,2022/23,soja,2022-11-07,Defensivos,Defesa Agricola Ltda,40083.97,saiu 40.084 de defensivos lá na Fazenda Boa Vista
+5,1,2022/23,soja,2022-12-23,Defensivos,Defesa Agricola Ltda,49790.96,registra gasto de 49.791 com defensivos
+6,1,2022/23,soja,2023-01-08,Defensivos,Coop. Agricola Regional,64529.11,botei 64.529 em defensivos hoje
+7,1,2022/23,soja,2023-02-09,Defensivos,Agro Insumos RS,39916.33,lanca ai 39.916 defensivos da Fazenda Boa Vista
+8,1,2022/23,soja,2022-10-11,Diesel e operacoes,Posto Trevo,27314.94,paguei 27.315 de diesel e operacoes pra Posto Trevo
+9,1,2022/23,soja,2022-11-13,Diesel e operacoes,Posto Trevo,20564.4,"diesel e operacoes 20.564 reais, Posto Trevo"
+10,1,2022/23,soja,2023-03-28,Diesel e operacoes,Posto BR do Campo,17079.24,botei 17.079 em diesel e operacoes hoje
+11,1,2022/23,soja,2023-04-09,Diesel e operacoes,Posto Trevo,32201.61,saiu 32.202 de diesel e operacoes lá na Fazenda Boa Vista
+12,1,2022/23,soja,2022-10-10,Mao de obra,Folha funcionario fixo,11648.56,botei 11.649 em mao de obra hoje
+13,1,2022/23,soja,2022-12-07,Mao de obra,Diaristas safra,8425.88,paguei 8.426 de mao de obra pra Diaristas safra
+14,1,2022/23,soja,2023-02-22,Mao de obra,Diaristas safra,16106.7,"mao de obra 16.107 reais, Diaristas safra"
+15,1,2022/23,soja,2023-04-03,Mao de obra,Diaristas safra,7982.58,paguei 7.983 de mao de obra pra Diaristas safra
+16,1,2022/23,soja,2023-05-15,Arrendamento,Arrendamento - proprietario da terra,105992.92,lanca ai 105.993 arrendamento da Fazenda Boa Vista
+17,1,2022/23,soja,2022-11-09,Assistencia tecnica,Eng. Agronomo consultor,9515.15,botei 9.515 em assistencia tecnica hoje
+18,1,2022/23,soja,2023-02-21,Assistencia tecnica,Eng. Agronomo consultor,8150.34,botei 8.150 em assistencia tecnica hoje
+19,1,2022/23,soja,2022-10-13,Seguro e juros,Seguradora rural,27303.21,saiu 27.303 de seguro e juros lá na Fazenda Boa Vista
+20,1,2022/23,soja,2023-05-23,Seguro e juros,Banco - custeio agricola,16860.5,saiu 16.860 de seguro e juros lá na Fazenda Boa Vista
+21,1,2022/23,soja,2023-04-02,Frete e armazenagem,Transportes Pampa,29279.88,paguei 29.280 de frete e armazenagem pra Transportes Pampa
+22,1,2022/23,soja,2023-05-26,Frete e armazenagem,Armazem da Cooperativa,41382.07,registra gasto de 41.382 com frete e armazenagem
+23,1,2022/23,trigo,2023-06-15,Sementes,Coop. Agricola Regional,76461.49,"sementes 76.461 reais, Coop. Agricola Regional"
+24,1,2022/23,trigo,2023-05-18,Fertilizantes,Fertisul Revenda,66559.51,saiu 66.560 de fertilizantes lá na Fazenda Boa Vista
+25,1,2022/23,trigo,2023-06-19,Fertilizantes,Fertisul Revenda,111850.65,botei 111.851 em fertilizantes hoje
+26,1,2022/23,trigo,2023-07-17,Defensivos,Coop. Agricola Regional,37885.41,paguei 37.885 de defensivos pra Coop. Agricola Regional
+27,1,2022/23,trigo,2023-08-25,Defensivos,Agro Insumos RS,31949.8,paguei 31.950 de defensivos pra Agro Insumos RS
+28,1,2022/23,trigo,2023-09-05,Defensivos,Defesa Agricola Ltda,57600.62,lanca ai 57.601 defensivos da Fazenda Boa Vista
+29,1,2022/23,trigo,2023-06-13,Diesel e operacoes,Oficina do Ze (manutencao),33423.32,registra gasto de 33.423 com diesel e operacoes
+30,1,2022/23,trigo,2023-10-17,Diesel e operacoes,Posto BR do Campo,25405.62,botei 25.406 em diesel e operacoes hoje
+31,1,2022/23,trigo,2023-11-28,Diesel e operacoes,Posto Trevo,17632.55,saiu 17.633 de diesel e operacoes lá na Fazenda Boa Vista
+32,1,2022/23,trigo,2023-06-18,Mao de obra,Folha funcionario fixo,16143.59,saiu 16.144 de mao de obra lá na Fazenda Boa Vista
+33,1,2022/23,trigo,2023-11-11,Mao de obra,Diaristas safra,15715.37,"mao de obra 15.715 reais, Diaristas safra"
+34,1,2022/23,trigo,2023-11-15,Arrendamento,Arrendamento - proprietario da terra,50974.33,saiu 50.974 de arrendamento lá na Fazenda Boa Vista
+35,1,2022/23,trigo,2023-07-09,Assistencia tecnica,Eng. Agronomo consultor,12743.58,botei 12.744 em assistencia tecnica hoje
+36,1,2022/23,trigo,2023-06-10,Seguro e juros,Banco - custeio agricola,19360.55,lanca ai 19.361 seguro e juros da Fazenda Boa Vista
+37,1,2022/23,trigo,2023-11-12,Seguro e juros,Banco - custeio agricola,18870.2,botei 18.870 em seguro e juros hoje
+38,1,2022/23,trigo,2023-11-01,Frete e armazenagem,Armazem da Cooperativa,22506.49,registra gasto de 22.506 com frete e armazenagem
+39,1,2022/23,trigo,2023-12-01,Frete e armazenagem,Transportes Pampa,22096.05,"frete e armazenagem 22.096 reais, Transportes Pampa"
+40,1,2023/24,soja,2023-10-03,Sementes,Agropecuaria do Vale,82527.53,lanca ai 82.528 sementes da Fazenda Boa Vista
+41,1,2023/24,soja,2023-09-18,Fertilizantes,Coop. Agricola Regional,75184.29,"fertilizantes 75.184 reais, Coop. Agricola Regional"
+42,1,2023/24,soja,2023-10-17,Fertilizantes,Agro Insumos RS,104875.78,registra gasto de 104.876 com fertilizantes
+43,1,2023/24,soja,2023-11-23,Defensivos,Coop. Agricola Regional,44642.79,registra gasto de 44.643 com defensivos
+44,1,2023/24,soja,2023-12-22,Defensivos,Defesa Agricola Ltda,43719.67,"defensivos 43.720 reais, Defesa Agricola Ltda"
+45,1,2023/24,soja,2024-01-15,Defensivos,Defesa Agricola Ltda,39197.79,registra gasto de 39.198 com defensivos
+46,1,2023/24,soja,2024-02-04,Defensivos,Agro Insumos RS,37494.81,lanca ai 37.495 defensivos da Fazenda Boa Vista
+47,1,2023/24,soja,2023-10-01,Diesel e operacoes,Posto Trevo,15891.38,saiu 15.891 de diesel e operacoes lá na Fazenda Boa Vista
+48,1,2023/24,soja,2023-11-21,Diesel e operacoes,Posto Trevo,15052.09,lanca ai 15.052 diesel e operacoes da Fazenda Boa Vista
+49,1,2023/24,soja,2024-03-03,Diesel e operacoes,Posto Trevo,25455.1,"diesel e operacoes 25.455 reais, Posto Trevo"
+50,1,2023/24,soja,2024-04-03,Diesel e operacoes,Oficina do Ze (manutencao),26128.97,lanca ai 26.129 diesel e operacoes da Fazenda Boa Vista
+51,1,2023/24,soja,2023-10-19,Mao de obra,Folha funcionario fixo,7675.51,lanca ai 7.676 mao de obra da Fazenda Boa Vista
+52,1,2023/24,soja,2023-12-26,Mao de obra,Folha funcionario fixo,9219.88,registra gasto de 9.220 com mao de obra
+53,1,2023/24,soja,2024-02-07,Mao de obra,Diaristas safra,9621.53,paguei 9.622 de mao de obra pra Diaristas safra
+54,1,2023/24,soja,2024-04-22,Mao de obra,Folha funcionario fixo,10995.6,"mao de obra 10.996 reais, Folha funcionario fixo"
+55,1,2023/24,soja,2024-05-15,Arrendamento,Arrendamento - proprietario da terra,90030.03,saiu 90.030 de arrendamento lá na Fazenda Boa Vista
+56,1,2023/24,soja,2023-11-02,Assistencia tecnica,Eng. Agronomo consultor,7522.0,saiu 7.522 de assistencia tecnica lá na Fazenda Boa Vista
+57,1,2023/24,soja,2024-02-11,Assistencia tecnica,Eng. Agronomo consultor,7483.01,lanca ai 7.483 assistencia tecnica da Fazenda Boa Vista
+58,1,2023/24,soja,2023-10-05,Seguro e juros,Seguradora rural,15854.3,lanca ai 15.854 seguro e juros da Fazenda Boa Vista
+59,1,2023/24,soja,2024-05-09,Seguro e juros,Seguradora rural,21658.21,lanca ai 21.658 seguro e juros da Fazenda Boa Vista
+60,1,2023/24,soja,2024-04-26,Frete e armazenagem,Transportes Pampa,39798.7,paguei 39.799 de frete e armazenagem pra Transportes Pampa
+61,1,2023/24,soja,2024-05-21,Frete e armazenagem,Transportes Pampa,20221.32,paguei 20.221 de frete e armazenagem pra Transportes Pampa
+62,1,2023/24,trigo,2024-06-01,Sementes,Sementes Sul,76973.34,"sementes 76.973 reais, Sementes Sul"
+63,1,2023/24,trigo,2024-05-10,Fertilizantes,Fertisul Revenda,93755.66,saiu 93.756 de fertilizantes lá na Fazenda Boa Vista
+64,1,2023/24,trigo,2024-06-24,Fertilizantes,Agro Insumos RS,85848.8,saiu 85.849 de fertilizantes lá na Fazenda Boa Vista
+65,1,2023/24,trigo,2024-07-02,Defensivos,Defesa Agricola Ltda,55083.42,saiu 55.083 de defensivos lá na Fazenda Boa Vista
+66,1,2023/24,trigo,2024-08-18,Defensivos,Agro Insumos RS,33941.04,saiu 33.941 de defensivos lá na Fazenda Boa Vista
+67,1,2023/24,trigo,2024-09-11,Defensivos,Agro Insumos RS,39264.45,paguei 39.264 de defensivos pra Agro Insumos RS
+68,1,2023/24,trigo,2024-06-06,Diesel e operacoes,Posto Trevo,24511.29,botei 24.511 em diesel e operacoes hoje
+69,1,2023/24,trigo,2024-10-03,Diesel e operacoes,Posto Trevo,23017.16,paguei 23.017 de diesel e operacoes pra Posto Trevo
+70,1,2023/24,trigo,2024-11-20,Diesel e operacoes,Posto Trevo,29444.9,saiu 29.445 de diesel e operacoes lá na Fazenda Boa Vista
+71,1,2023/24,trigo,2024-06-19,Mao de obra,Diaristas safra,18692.05,botei 18.692 em mao de obra hoje
+72,1,2023/24,trigo,2024-11-20,Mao de obra,Diaristas safra,13380.18,botei 13.380 em mao de obra hoje
+73,1,2023/24,trigo,2024-11-22,Arrendamento,Arrendamento - proprietario da terra,51315.56,"arrendamento 51.316 reais, Arrendamento - proprietario da terra"
+74,1,2023/24,trigo,2024-07-23,Assistencia tecnica,Eng. Agronomo consultor,12828.89,lanca ai 12.829 assistencia tecnica da Fazenda Boa Vista
+75,1,2023/24,trigo,2024-06-21,Seguro e juros,Seguradora rural,20610.48,registra gasto de 20.610 com seguro e juros
+76,1,2023/24,trigo,2024-11-11,Seguro e juros,Banco - custeio agricola,17876.19,paguei 17.876 de seguro e juros pra Banco - custeio agricola
+77,1,2023/24,trigo,2024-11-04,Frete e armazenagem,Transportes Pampa,18349.05,botei 18.349 em frete e armazenagem hoje
+78,1,2023/24,trigo,2024-12-07,Frete e armazenagem,Armazem da Cooperativa,26552.07,lanca ai 26.552 frete e armazenagem da Fazenda Boa Vista
+79,1,2024/25,soja,2024-10-26,Sementes,Agropecuaria do Vale,95191.06,botei 95.191 em sementes hoje
+80,1,2024/25,soja,2024-09-10,Fertilizantes,Agro Insumos RS,67697.59,paguei 67.698 de fertilizantes pra Agro Insumos RS
+81,1,2024/25,soja,2024-10-05,Fertilizantes,Fertisul Revenda,139991.99,paguei 139.992 de fertilizantes pra Fertisul Revenda
+82,1,2024/25,soja,2024-11-07,Defensivos,Defesa Agricola Ltda,61580.47,"defensivos 61.580 reais, Defesa Agricola Ltda"
+83,1,2024/25,soja,2024-12-07,Defensivos,Defesa Agricola Ltda,56048.68,saiu 56.049 de defensivos lá na Fazenda Boa Vista
+84,1,2024/25,soja,2025-01-28,Defensivos,Coop. Agricola Regional,34004.68,botei 34.005 em defensivos hoje
+85,1,2024/25,soja,2025-02-16,Defensivos,Coop. Agricola Regional,38748.28,paguei 38.748 de defensivos pra Coop. Agricola Regional
+86,1,2024/25,soja,2024-10-25,Diesel e operacoes,Posto Trevo,21121.49,saiu 21.121 de diesel e operacoes lá na Fazenda Boa Vista
+87,1,2024/25,soja,2024-11-09,Diesel e operacoes,Posto Trevo,29428.6,saiu 29.429 de diesel e operacoes lá na Fazenda Boa Vista
+88,1,2024/25,soja,2025-03-15,Diesel e operacoes,Oficina do Ze (manutencao),25745.05,saiu 25.745 de diesel e operacoes lá na Fazenda Boa Vista
+89,1,2024/25,soja,2025-04-14,Diesel e operacoes,Oficina do Ze (manutencao),18895.92,paguei 18.896 de diesel e operacoes pra Oficina do Ze (manutencao)
+90,1,2024/25,soja,2024-10-02,Mao de obra,Folha funcionario fixo,7615.3,botei 7.615 em mao de obra hoje
+91,1,2024/25,soja,2024-12-18,Mao de obra,Diaristas safra,14977.05,registra gasto de 14.977 com mao de obra
+92,1,2024/25,soja,2025-02-05,Mao de obra,Diaristas safra,12732.49,"mao de obra 12.732 reais, Diaristas safra"
+93,1,2024/25,soja,2025-04-12,Mao de obra,Diaristas safra,7943.82,"mao de obra 7.944 reais, Diaristas safra"
+94,1,2024/25,soja,2025-05-08,Arrendamento,Arrendamento - proprietario da terra,103844.79,"arrendamento 103.845 reais, Arrendamento - proprietario da terra"
+95,1,2024/25,soja,2024-11-14,Assistencia tecnica,Eng. Agronomo consultor,8369.26,lanca ai 8.369 assistencia tecnica da Fazenda Boa Vista
+96,1,2024/25,soja,2025-02-28,Assistencia tecnica,Eng. Agronomo consultor,8938.21,lanca ai 8.938 assistencia tecnica da Fazenda Boa Vista
+97,1,2024/25,soja,2024-10-24,Seguro e juros,Seguradora rural,29336.35,registra gasto de 29.336 com seguro e juros
+98,1,2024/25,soja,2025-05-26,Seguro e juros,Banco - custeio agricola,13932.31,"seguro e juros 13.932 reais, Banco - custeio agricola"
+99,1,2024/25,soja,2025-04-13,Frete e armazenagem,Transportes Pampa,26665.65,registra gasto de 26.666 com frete e armazenagem
+100,1,2024/25,soja,2025-05-08,Frete e armazenagem,Transportes Pampa,42564.2,registra gasto de 42.564 com frete e armazenagem
+101,1,2024/25,trigo,2025-06-03,Sementes,Sementes Sul,74201.85,"sementes 74.202 reais, Sementes Sul"
+102,1,2024/25,trigo,2025-05-27,Fertilizantes,Agro Insumos RS,94806.26,"fertilizantes 94.806 reais, Agro Insumos RS"
+103,1,2024/25,trigo,2025-06-01,Fertilizantes,Coop. Agricola Regional,78331.4,"fertilizantes 78.331 reais, Coop. Agricola Regional"
+104,1,2024/25,trigo,2025-07-04,Defensivos,Defesa Agricola Ltda,31405.33,registra gasto de 31.405 com defensivos
+105,1,2024/25,trigo,2025-08-12,Defensivos,Defesa Agricola Ltda,57920.07,"defensivos 57.920 reais, Defesa Agricola Ltda"
+106,1,2024/25,trigo,2025-09-14,Defensivos,Defesa Agricola Ltda,34344.35,botei 34.344 em defensivos hoje
+107,1,2024/25,trigo,2025-06-02,Diesel e operacoes,Oficina do Ze (manutencao),18589.94,registra gasto de 18.590 com diesel e operacoes
+108,1,2024/25,trigo,2025-10-01,Diesel e operacoes,Oficina do Ze (manutencao),35423.5,botei 35.424 em diesel e operacoes hoje
+109,1,2024/25,trigo,2025-11-22,Diesel e operacoes,Oficina do Ze (manutencao),20188.41,saiu 20.188 de diesel e operacoes lá na Fazenda Boa Vista
+110,1,2024/25,trigo,2025-06-14,Mao de obra,Diaristas safra,18888.26,saiu 18.888 de mao de obra lá na Fazenda Boa Vista
+111,1,2024/25,trigo,2025-11-11,Mao de obra,Folha funcionario fixo,12029.18,saiu 12.029 de mao de obra lá na Fazenda Boa Vista
+112,1,2024/25,trigo,2025-11-24,Arrendamento,Arrendamento - proprietario da terra,49467.9,botei 49.468 em arrendamento hoje
+113,1,2024/25,trigo,2025-07-14,Assistencia tecnica,Eng. Agronomo consultor,12366.98,registra gasto de 12.367 com assistencia tecnica
+114,1,2024/25,trigo,2025-06-07,Seguro e juros,Seguradora rural,19513.14,saiu 19.513 de seguro e juros lá na Fazenda Boa Vista
+115,1,2024/25,trigo,2025-11-13,Seguro e juros,Banco - custeio agricola,17587.78,botei 17.588 em seguro e juros hoje
+116,1,2024/25,trigo,2025-11-27,Frete e armazenagem,Transportes Pampa,23067.69,"frete e armazenagem 23.068 reais, Transportes Pampa"
+117,1,2024/25,trigo,2025-12-10,Frete e armazenagem,Transportes Pampa,20216.72,registra gasto de 20.217 com frete e armazenagem
+118,1,2025/26,soja,2025-10-26,Sementes,Agropecuaria do Vale,99018.31,lanca ai 99.018 sementes da Fazenda Boa Vista
+119,1,2025/26,soja,2025-09-22,Fertilizantes,Agro Insumos RS,159496.1,botei 159.496 em fertilizantes hoje
+120,1,2025/26,soja,2025-10-11,Fertilizantes,Coop. Agricola Regional,117035.04,lanca ai 117.035 fertilizantes da Fazenda Boa Vista
+121,1,2025/26,soja,2025-11-08,Defensivos,Coop. Agricola Regional,68373.26,botei 68.373 em defensivos hoje
+122,1,2025/26,soja,2025-12-28,Defensivos,Agro Insumos RS,46836.92,registra gasto de 46.837 com defensivos
+123,1,2025/26,soja,2026-01-14,Defensivos,Defesa Agricola Ltda,45610.99,botei 45.611 em defensivos hoje
+124,1,2025/26,soja,2026-02-07,Defensivos,Defesa Agricola Ltda,37215.46,saiu 37.215 de defensivos lá na Fazenda Boa Vista
+125,1,2025/26,soja,2025-10-25,Diesel e operacoes,Posto Trevo,24310.22,registra gasto de 24.310 com diesel e operacoes
+126,1,2025/26,soja,2025-11-08,Diesel e operacoes,Posto Trevo,24646.24,saiu 24.646 de diesel e operacoes lá na Fazenda Boa Vista
+127,1,2025/26,soja,2026-03-17,Diesel e operacoes,Posto BR do Campo,19242.12,paguei 19.242 de diesel e operacoes pra Posto BR do Campo
+128,1,2025/26,soja,2026-04-18,Diesel e operacoes,Posto Trevo,30819.73,paguei 30.820 de diesel e operacoes pra Posto Trevo
+129,1,2025/26,soja,2025-10-20,Mao de obra,Folha funcionario fixo,9182.75,registra gasto de 9.183 com mao de obra
+130,1,2025/26,soja,2025-12-20,Mao de obra,Folha funcionario fixo,11808.31,botei 11.808 em mao de obra hoje
+131,1,2025/26,soja,2026-02-15,Mao de obra,Diaristas safra,10789.62,saiu 10.790 de mao de obra lá na Fazenda Boa Vista
+132,1,2025/26,soja,2026-04-28,Mao de obra,Folha funcionario fixo,13227.64,registra gasto de 13.228 com mao de obra
+133,1,2025/26,soja,2026-05-08,Arrendamento,Arrendamento - proprietario da terra,108019.98,botei 108.020 em arrendamento hoje
+134,1,2025/26,soja,2025-11-15,Assistencia tecnica,Eng. Agronomo consultor,9994.8,saiu 9.995 de assistencia tecnica lá na Fazenda Boa Vista
+135,1,2025/26,soja,2026-02-10,Assistencia tecnica,Eng. Agronomo consultor,8008.53,"assistencia tecnica 8.009 reais, Eng. Agronomo consultor"
+136,1,2025/26,soja,2025-10-03,Seguro e juros,Banco - custeio agricola,17909.28,lanca ai 17.909 seguro e juros da Fazenda Boa Vista
+137,1,2025/26,soja,2026-05-08,Seguro e juros,Seguradora rural,27099.04,saiu 27.099 de seguro e juros lá na Fazenda Boa Vista
+138,1,2025/26,soja,2026-04-14,Frete e armazenagem,Armazem da Cooperativa,34827.22,"frete e armazenagem 34.827 reais, Armazem da Cooperativa"
+139,1,2025/26,soja,2026-05-18,Frete e armazenagem,Armazem da Cooperativa,37186.09,registra gasto de 37.186 com frete e armazenagem
+140,1,2025/26,trigo,2026-06-12,Sementes,Sementes Sul,79322.62,registra gasto de 79.323 com sementes
+141,1,2025/26,trigo,2026-05-14,Fertilizantes,Agro Insumos RS,89745.05,saiu 89.745 de fertilizantes lá na Fazenda Boa Vista
+142,1,2025/26,trigo,2026-06-24,Fertilizantes,Agro Insumos RS,95341.06,botei 95.341 em fertilizantes hoje
+143,1,2025/26,trigo,2026-07-16,Defensivos,Agro Insumos RS,55730.16,registra gasto de 55.730 com defensivos
+144,1,2025/26,trigo,2026-08-11,Defensivos,Defesa Agricola Ltda,41877.81,saiu 41.878 de defensivos lá na Fazenda Boa Vista
+145,1,2025/26,trigo,2026-09-26,Defensivos,Coop. Agricola Regional,34596.4,saiu 34.596 de defensivos lá na Fazenda Boa Vista
+146,1,2025/26,trigo,2026-06-20,Diesel e operacoes,Oficina do Ze (manutencao),24113.7,paguei 24.114 de diesel e operacoes pra Oficina do Ze (manutencao)
+147,1,2025/26,trigo,2026-10-13,Diesel e operacoes,Oficina do Ze (manutencao),32081.25,botei 32.081 em diesel e operacoes hoje
+148,1,2025/26,trigo,2026-11-22,Diesel e operacoes,Posto Trevo,23127.67,paguei 23.128 de diesel e operacoes pra Posto Trevo
+149,1,2025/26,trigo,2026-06-15,Mao de obra,Diaristas safra,20203.17,paguei 20.203 de mao de obra pra Diaristas safra
+150,1,2025/26,trigo,2026-11-09,Mao de obra,Folha funcionario fixo,12847.92,"mao de obra 12.848 reais, Folha funcionario fixo"
+151,1,2025/26,trigo,2026-11-11,Arrendamento,Arrendamento - proprietario da terra,52881.75,registra gasto de 52.882 com arrendamento
+152,1,2025/26,trigo,2026-07-27,Assistencia tecnica,Eng. Agronomo consultor,13220.44,"assistencia tecnica 13.220 reais, Eng. Agronomo consultor"
+153,1,2025/26,trigo,2026-06-24,Seguro e juros,Banco - custeio agricola,22408.12,"seguro e juros 22.408 reais, Banco - custeio agricola"
+154,1,2025/26,trigo,2026-11-08,Seguro e juros,Banco - custeio agricola,17253.19,saiu 17.253 de seguro e juros lá na Fazenda Boa Vista
+155,1,2025/26,trigo,2026-11-08,Frete e armazenagem,Transportes Pampa,23271.64,paguei 23.272 de frete e armazenagem pra Transportes Pampa
+156,1,2025/26,trigo,2026-12-20,Frete e armazenagem,Transportes Pampa,22999.89,lanca ai 23.000 frete e armazenagem da Fazenda Boa Vista
+157,2,2022/23,soja,2022-10-24,Sementes,Agropecuaria do Vale,32495.76,paguei 32.496 de sementes pra Agropecuaria do Vale
+158,2,2022/23,soja,2022-09-10,Fertilizantes,Coop. Agricola Regional,44365.21,botei 44.365 em fertilizantes hoje
+159,2,2022/23,soja,2022-10-01,Fertilizantes,Fertisul Revenda,26534.64,botei 26.535 em fertilizantes hoje
+160,2,2022/23,soja,2022-11-03,Defensivos,Defesa Agricola Ltda,16141.02,saiu 16.141 de defensivos lá na Sitio Santo Antonio
+161,2,2022/23,soja,2022-12-27,Defensivos,Defesa Agricola Ltda,19316.71,lanca ai 19.317 defensivos da Sitio Santo Antonio
+162,2,2022/23,soja,2023-01-04,Defensivos,Defesa Agricola Ltda,12966.83,"defensivos 12.967 reais, Defesa Agricola Ltda"
+163,2,2022/23,soja,2023-02-28,Defensivos,Defesa Agricola Ltda,16566.98,botei 16.567 em defensivos hoje
+164,2,2022/23,soja,2022-10-18,Diesel e operacoes,Posto BR do Campo,9704.44,saiu 9.704 de diesel e operacoes lá na Sitio Santo Antonio
+165,2,2022/23,soja,2022-11-12,Diesel e operacoes,Posto Trevo,9646.42,botei 9.646 em diesel e operacoes hoje
+166,2,2022/23,soja,2023-03-21,Diesel e operacoes,Posto BR do Campo,8209.68,paguei 8.210 de diesel e operacoes pra Posto BR do Campo
+167,2,2022/23,soja,2023-04-28,Diesel e operacoes,Posto BR do Campo,4935.23,registra gasto de 4.935 com diesel e operacoes
+168,2,2022/23,soja,2022-10-23,Mao de obra,Diaristas safra,2284.92,registra gasto de 2.285 com mao de obra
+169,2,2022/23,soja,2022-12-06,Mao de obra,Folha funcionario fixo,4569.06,botei 4.569 em mao de obra hoje
+170,2,2022/23,soja,2023-02-26,Mao de obra,Folha funcionario fixo,3700.53,registra gasto de 3.701 com mao de obra
+171,2,2022/23,soja,2023-04-14,Mao de obra,Folha funcionario fixo,4216.3,"mao de obra 4.216 reais, Folha funcionario fixo"
+172,2,2022/23,soja,2022-11-03,Assistencia tecnica,Eng. Agronomo consultor,2973.64,registra gasto de 2.974 com assistencia tecnica
+173,2,2022/23,soja,2023-02-08,Assistencia tecnica,Eng. Agronomo consultor,2934.68,botei 2.935 em assistencia tecnica hoje
+174,2,2022/23,soja,2022-10-01,Seguro e juros,Seguradora rural,8071.76,"seguro e juros 8.072 reais, Seguradora rural"
+175,2,2022/23,soja,2023-05-06,Seguro e juros,Seguradora rural,6699.05,lanca ai 6.699 seguro e juros da Sitio Santo Antonio
+176,2,2022/23,soja,2023-04-09,Frete e armazenagem,Armazem da Cooperativa,12356.1,botei 12.356 em frete e armazenagem hoje
+177,2,2022/23,soja,2023-05-01,Frete e armazenagem,Transportes Pampa,11277.18,paguei 11.277 de frete e armazenagem pra Transportes Pampa
+178,2,2023/24,soja,2023-10-03,Sementes,Sementes Sul,31870.73,lanca ai 31.871 sementes da Sitio Santo Antonio
+179,2,2023/24,soja,2023-09-22,Fertilizantes,Agro Insumos RS,37375.96,"fertilizantes 37.376 reais, Agro Insumos RS"
+180,2,2023/24,soja,2023-10-16,Fertilizantes,Agro Insumos RS,32160.17,botei 32.160 em fertilizantes hoje
+181,2,2023/24,soja,2023-11-15,Defensivos,Coop. Agricola Regional,13298.33,"defensivos 13.298 reais, Coop. Agricola Regional"
+182,2,2023/24,soja,2023-12-09,Defensivos,Agro Insumos RS,21236.23,paguei 21.236 de defensivos pra Agro Insumos RS
+183,2,2023/24,soja,2024-01-24,Defensivos,Agro Insumos RS,15810.64,"defensivos 15.811 reais, Agro Insumos RS"
+184,2,2023/24,soja,2024-02-04,Defensivos,Defesa Agricola Ltda,13396.25,botei 13.396 em defensivos hoje
+185,2,2023/24,soja,2023-10-09,Diesel e operacoes,Oficina do Ze (manutencao),9730.1,botei 9.730 em diesel e operacoes hoje
+186,2,2023/24,soja,2023-11-25,Diesel e operacoes,Oficina do Ze (manutencao),8238.65,botei 8.239 em diesel e operacoes hoje
+187,2,2023/24,soja,2024-03-10,Diesel e operacoes,Posto Trevo,5386.21,lanca ai 5.386 diesel e operacoes da Sitio Santo Antonio
+188,2,2023/24,soja,2024-04-10,Diesel e operacoes,Posto Trevo,8515.76,"diesel e operacoes 8.516 reais, Posto Trevo"
+189,2,2023/24,soja,2023-10-02,Mao de obra,Folha funcionario fixo,3364.42,saiu 3.364 de mao de obra lá na Sitio Santo Antonio
+190,2,2023/24,soja,2023-12-05,Mao de obra,Folha funcionario fixo,2766.09,paguei 2.766 de mao de obra pra Folha funcionario fixo
+191,2,2023/24,soja,2024-02-28,Mao de obra,Diaristas safra,4648.35,botei 4.648 em mao de obra hoje
+192,2,2023/24,soja,2024-04-10,Mao de obra,Folha funcionario fixo,3707.83,registra gasto de 3.708 com mao de obra
+193,2,2023/24,soja,2023-11-02,Assistencia tecnica,Eng. Agronomo consultor,3246.55,registra gasto de 3.247 com assistencia tecnica
+194,2,2023/24,soja,2024-02-04,Assistencia tecnica,Eng. Agronomo consultor,2548.12,registra gasto de 2.548 com assistencia tecnica
+195,2,2023/24,soja,2023-10-22,Seguro e juros,Banco - custeio agricola,7002.89,lanca ai 7.003 seguro e juros da Sitio Santo Antonio
+196,2,2023/24,soja,2024-05-05,Seguro e juros,Seguradora rural,7483.8,paguei 7.484 de seguro e juros pra Seguradora rural
+197,2,2023/24,soja,2024-04-25,Frete e armazenagem,Armazem da Cooperativa,15473.22,botei 15.473 em frete e armazenagem hoje
+198,2,2023/24,soja,2024-05-20,Frete e armazenagem,Transportes Pampa,7705.49,botei 7.705 em frete e armazenagem hoje
+199,2,2024/25,soja,2024-10-24,Sementes,Coop. Agricola Regional,33935.05,lanca ai 33.935 sementes da Sitio Santo Antonio
+200,2,2024/25,soja,2024-09-03,Fertilizantes,Coop. Agricola Regional,42609.38,lanca ai 42.609 fertilizantes da Sitio Santo Antonio
+201,2,2024/25,soja,2024-10-06,Fertilizantes,Agro Insumos RS,31430.73,paguei 31.431 de fertilizantes pra Agro Insumos RS
+202,2,2024/25,soja,2024-11-02,Defensivos,Agro Insumos RS,13023.31,"defensivos 13.023 reais, Agro Insumos RS"
+203,2,2024/25,soja,2024-12-23,Defensivos,Coop. Agricola Regional,16643.34,saiu 16.643 de defensivos lá na Sitio Santo Antonio
+204,2,2024/25,soja,2025-01-28,Defensivos,Coop. Agricola Regional,20678.1,paguei 20.678 de defensivos pra Coop. Agricola Regional
+205,2,2024/25,soja,2025-02-22,Defensivos,Agro Insumos RS,17525.34,"defensivos 17.525 reais, Agro Insumos RS"
+206,2,2024/25,soja,2024-10-14,Diesel e operacoes,Posto Trevo,8686.51,botei 8.687 em diesel e operacoes hoje
+207,2,2024/25,soja,2024-11-08,Diesel e operacoes,Oficina do Ze (manutencao),7767.09,lanca ai 7.767 diesel e operacoes da Sitio Santo Antonio
+208,2,2024/25,soja,2025-03-09,Diesel e operacoes,Posto Trevo,7971.15,paguei 7.971 de diesel e operacoes pra Posto Trevo
+209,2,2024/25,soja,2025-04-02,Diesel e operacoes,Posto Trevo,9510.3,"diesel e operacoes 9.510 reais, Posto Trevo"
+210,2,2024/25,soja,2024-10-15,Mao de obra,Folha funcionario fixo,3589.73,saiu 3.590 de mao de obra lá na Sitio Santo Antonio
+211,2,2024/25,soja,2024-12-13,Mao de obra,Folha funcionario fixo,4201.43,botei 4.201 em mao de obra hoje
+212,2,2024/25,soja,2025-02-18,Mao de obra,Folha funcionario fixo,4460.18,registra gasto de 4.460 com mao de obra
+213,2,2024/25,soja,2025-04-03,Mao de obra,Diaristas safra,3173.68,registra gasto de 3.174 com mao de obra
+214,2,2024/25,soja,2024-11-01,Assistencia tecnica,Eng. Agronomo consultor,3227.2,lanca ai 3.227 assistencia tecnica da Sitio Santo Antonio
+215,2,2024/25,soja,2025-02-22,Assistencia tecnica,Eng. Agronomo consultor,2942.81,saiu 2.943 de assistencia tecnica lá na Sitio Santo Antonio
+216,2,2024/25,soja,2024-10-25,Seguro e juros,Banco - custeio agricola,8365.07,registra gasto de 8.365 com seguro e juros
+217,2,2024/25,soja,2025-05-17,Seguro e juros,Seguradora rural,7059.95,"seguro e juros 7.060 reais, Seguradora rural"
+218,2,2024/25,soja,2025-04-21,Frete e armazenagem,Armazem da Cooperativa,10141.61,paguei 10.142 de frete e armazenagem pra Armazem da Cooperativa
+219,2,2024/25,soja,2025-05-16,Frete e armazenagem,Armazem da Cooperativa,14538.43,registra gasto de 14.538 com frete e armazenagem
+220,2,2025/26,soja,2025-10-27,Sementes,Agropecuaria do Vale,34483.34,paguei 34.483 de sementes pra Agropecuaria do Vale
+221,2,2025/26,soja,2025-09-11,Fertilizantes,Coop. Agricola Regional,39944.05,registra gasto de 39.944 com fertilizantes
+222,2,2025/26,soja,2025-10-28,Fertilizantes,Agro Insumos RS,35292.34,paguei 35.292 de fertilizantes pra Agro Insumos RS
+223,2,2025/26,soja,2025-11-12,Defensivos,Defesa Agricola Ltda,20220.78,registra gasto de 20.221 com defensivos
+224,2,2025/26,soja,2025-12-21,Defensivos,Coop. Agricola Regional,18567.87,paguei 18.568 de defensivos pra Coop. Agricola Regional
+225,2,2025/26,soja,2026-01-07,Defensivos,Coop. Agricola Regional,16709.84,botei 16.710 em defensivos hoje
+226,2,2025/26,soja,2026-02-05,Defensivos,Coop. Agricola Regional,13468.2,registra gasto de 13.468 com defensivos
+227,2,2025/26,soja,2025-10-26,Diesel e operacoes,Posto Trevo,11192.68,saiu 11.193 de diesel e operacoes lá na Sitio Santo Antonio
+228,2,2025/26,soja,2025-11-06,Diesel e operacoes,Posto BR do Campo,8473.96,botei 8.474 em diesel e operacoes hoje
+229,2,2025/26,soja,2026-03-01,Diesel e operacoes,Oficina do Ze (manutencao),5345.47,registra gasto de 5.345 com diesel e operacoes
+230,2,2025/26,soja,2026-04-03,Diesel e operacoes,Posto Trevo,9471.24,paguei 9.471 de diesel e operacoes pra Posto Trevo
+231,2,2025/26,soja,2025-10-23,Mao de obra,Folha funcionario fixo,3867.77,botei 3.868 em mao de obra hoje
+232,2,2025/26,soja,2025-12-23,Mao de obra,Folha funcionario fixo,2769.54,registra gasto de 2.770 com mao de obra
+233,2,2025/26,soja,2026-02-27,Mao de obra,Folha funcionario fixo,5051.28,registra gasto de 5.051 com mao de obra
+234,2,2025/26,soja,2026-04-08,Mao de obra,Folha funcionario fixo,3985.66,botei 3.986 em mao de obra hoje
+235,2,2025/26,soja,2025-11-20,Assistencia tecnica,Eng. Agronomo consultor,3056.33,paguei 3.056 de assistencia tecnica pra Eng. Agronomo consultor
+236,2,2025/26,soja,2026-02-09,Assistencia tecnica,Eng. Agronomo consultor,3213.37,"assistencia tecnica 3.213 reais, Eng. Agronomo consultor"
+237,2,2025/26,soja,2025-10-27,Seguro e juros,Banco - custeio agricola,8973.3,"seguro e juros 8.973 reais, Banco - custeio agricola"
+238,2,2025/26,soja,2026-05-24,Seguro e juros,Seguradora rural,6700.95,botei 6.701 em seguro e juros hoje
+239,2,2025/26,soja,2026-04-28,Frete e armazenagem,Transportes Pampa,12173.19,registra gasto de 12.173 com frete e armazenagem
+240,2,2025/26,soja,2026-05-18,Frete e armazenagem,Armazem da Cooperativa,12905.61,"frete e armazenagem 12.906 reais, Armazem da Cooperativa"
+241,3,2022/23,soja,2022-10-13,Sementes,Coop. Agricola Regional,155232.12,registra gasto de 155.232 com sementes
+242,3,2022/23,soja,2022-09-23,Fertilizantes,Fertisul Revenda,117464.0,registra gasto de 117.464 com fertilizantes
+243,3,2022/23,soja,2022-10-22,Fertilizantes,Agro Insumos RS,221224.27,lanca ai 221.224 fertilizantes da Granja Tres Irmaos
+244,3,2022/23,soja,2022-11-28,Defensivos,Agro Insumos RS,83598.94,registra gasto de 83.599 com defensivos
+245,3,2022/23,soja,2022-12-04,Defensivos,Defesa Agricola Ltda,52832.64,registra gasto de 52.833 com defensivos
+246,3,2022/23,soja,2023-01-01,Defensivos,Defesa Agricola Ltda,84066.33,lanca ai 84.066 defensivos da Granja Tres Irmaos
+247,3,2022/23,soja,2023-02-14,Defensivos,Defesa Agricola Ltda,89966.34,lanca ai 89.966 defensivos da Granja Tres Irmaos
+248,3,2022/23,soja,2022-10-13,Diesel e operacoes,Oficina do Ze (manutencao),26986.23,paguei 26.986 de diesel e operacoes pra Oficina do Ze (manutencao)
+249,3,2022/23,soja,2022-11-28,Diesel e operacoes,Posto BR do Campo,50107.52,saiu 50.108 de diesel e operacoes lá na Granja Tres Irmaos
+250,3,2022/23,soja,2023-03-28,Diesel e operacoes,Oficina do Ze (manutencao),33208.9,registra gasto de 33.209 com diesel e operacoes
+251,3,2022/23,soja,2023-04-11,Diesel e operacoes,Oficina do Ze (manutencao),44929.47,saiu 44.929 de diesel e operacoes lá na Granja Tres Irmaos
+252,3,2022/23,soja,2022-10-08,Mao de obra,Folha funcionario fixo,20878.33,lanca ai 20.878 mao de obra da Granja Tres Irmaos
+253,3,2022/23,soja,2022-12-24,Mao de obra,Diaristas safra,15784.57,registra gasto de 15.785 com mao de obra
+254,3,2022/23,soja,2023-02-04,Mao de obra,Diaristas safra,16461.23,registra gasto de 16.461 com mao de obra
+255,3,2022/23,soja,2023-04-06,Mao de obra,Folha funcionario fixo,17435.93,paguei 17.436 de mao de obra pra Folha funcionario fixo
+256,3,2022/23,soja,2023-05-26,Arrendamento,Arrendamento - proprietario da terra,169344.14,"arrendamento 169.344 reais, Arrendamento - proprietario da terra"
+257,3,2022/23,soja,2022-11-08,Assistencia tecnica,Eng. Agronomo consultor,13666.77,botei 13.667 em assistencia tecnica hoje
+258,3,2022/23,soja,2023-02-22,Assistencia tecnica,Eng. Agronomo consultor,14557.25,lanca ai 14.557 assistencia tecnica da Granja Tres Irmaos
+259,3,2022/23,soja,2022-10-13,Seguro e juros,Banco - custeio agricola,28571.33,registra gasto de 28.571 com seguro e juros
+260,3,2022/23,soja,2023-05-19,Seguro e juros,Banco - custeio agricola,41988.73,lanca ai 41.989 seguro e juros da Granja Tres Irmaos
+261,3,2022/23,soja,2023-04-09,Frete e armazenagem,Transportes Pampa,61727.42,registra gasto de 61.727 com frete e armazenagem
+262,3,2022/23,soja,2023-05-10,Frete e armazenagem,Transportes Pampa,51168.67,paguei 51.169 de frete e armazenagem pra Transportes Pampa
+263,3,2022/23,milho,2022-08-07,Sementes,Sementes Sul,139993.33,registra gasto de 139.993 com sementes
+264,3,2022/23,milho,2022-08-12,Fertilizantes,Agro Insumos RS,113108.04,"fertilizantes 113.108 reais, Agro Insumos RS"
+265,3,2022/23,milho,2022-09-23,Fertilizantes,Fertisul Revenda,149379.46,paguei 149.379 de fertilizantes pra Fertisul Revenda
+266,3,2022/23,milho,2022-10-19,Defensivos,Defesa Agricola Ltda,50872.55,saiu 50.873 de defensivos lá na Granja Tres Irmaos
+267,3,2022/23,milho,2022-11-02,Defensivos,Defesa Agricola Ltda,41459.81,saiu 41.460 de defensivos lá na Granja Tres Irmaos
+268,3,2022/23,milho,2022-12-16,Defensivos,Coop. Agricola Regional,30161.81,lanca ai 30.162 defensivos da Granja Tres Irmaos
+269,3,2022/23,milho,2022-08-22,Diesel e operacoes,Oficina do Ze (manutencao),25036.21,saiu 25.036 de diesel e operacoes lá na Granja Tres Irmaos
+270,3,2022/23,milho,2022-09-22,Diesel e operacoes,Posto Trevo,20336.49,saiu 20.336 de diesel e operacoes lá na Granja Tres Irmaos
+271,3,2022/23,milho,2023-02-04,Diesel e operacoes,Oficina do Ze (manutencao),25581.43,saiu 25.581 de diesel e operacoes lá na Granja Tres Irmaos
+272,3,2022/23,milho,2023-03-02,Diesel e operacoes,Posto BR do Campo,25291.29,registra gasto de 25.291 com diesel e operacoes
+273,3,2022/23,milho,2022-09-10,Mao de obra,Folha funcionario fixo,9863.32,saiu 9.863 de mao de obra lá na Granja Tres Irmaos
+274,3,2022/23,milho,2022-12-14,Mao de obra,Diaristas safra,14037.18,lanca ai 14.037 mao de obra da Granja Tres Irmaos
+275,3,2022/23,milho,2023-03-05,Mao de obra,Folha funcionario fixo,11097.83,botei 11.098 em mao de obra hoje
+276,3,2022/23,milho,2023-04-09,Arrendamento,Arrendamento - proprietario da terra,87495.83,"arrendamento 87.496 reais, Arrendamento - proprietario da terra"
+277,3,2022/23,milho,2022-10-26,Assistencia tecnica,Eng. Agronomo consultor,8671.06,saiu 8.671 de assistencia tecnica lá na Granja Tres Irmaos
+278,3,2022/23,milho,2023-01-28,Assistencia tecnica,Eng. Agronomo consultor,8828.11,paguei 8.828 de assistencia tecnica pra Eng. Agronomo consultor
+279,3,2022/23,milho,2022-08-25,Seguro e juros,Banco - custeio agricola,26080.77,saiu 26.081 de seguro e juros lá na Granja Tres Irmaos
+280,3,2022/23,milho,2023-04-24,Seguro e juros,Seguradora rural,17667.15,botei 17.667 em seguro e juros hoje
+281,3,2022/23,milho,2023-03-01,Frete e armazenagem,Armazem da Cooperativa,29400.26,botei 29.400 em frete e armazenagem hoje
+282,3,2022/23,milho,2023-04-04,Frete e armazenagem,Armazem da Cooperativa,40596.4,"frete e armazenagem 40.596 reais, Armazem da Cooperativa"
+283,3,2022/23,trigo,2023-06-20,Sementes,Agropecuaria do Vale,121235.12,"sementes 121.235 reais, Agropecuaria do Vale"
+284,3,2022/23,trigo,2023-05-03,Fertilizantes,Agro Insumos RS,178664.46,registra gasto de 178.664 com fertilizantes
+285,3,2022/23,trigo,2023-06-23,Fertilizantes,Fertisul Revenda,104217.49,saiu 104.217 de fertilizantes lá na Granja Tres Irmaos
+286,3,2022/23,trigo,2023-07-10,Defensivos,Coop. Agricola Regional,62506.05,paguei 62.506 de defensivos pra Coop. Agricola Regional
+287,3,2022/23,trigo,2023-08-04,Defensivos,Agro Insumos RS,48015.76,botei 48.016 em defensivos hoje
+288,3,2022/23,trigo,2023-09-05,Defensivos,Coop. Agricola Regional,91536.73,registra gasto de 91.537 com defensivos
+289,3,2022/23,trigo,2023-06-18,Diesel e operacoes,Posto BR do Campo,31851.4,botei 31.851 em diesel e operacoes hoje
+290,3,2022/23,trigo,2023-10-24,Diesel e operacoes,Oficina do Ze (manutencao),48284.65,lanca ai 48.285 diesel e operacoes da Granja Tres Irmaos
+291,3,2022/23,trigo,2023-11-14,Diesel e operacoes,Oficina do Ze (manutencao),41099.07,paguei 41.099 de diesel e operacoes pra Oficina do Ze (manutencao)
+292,3,2022/23,trigo,2023-06-09,Mao de obra,Diaristas safra,27124.55,saiu 27.125 de mao de obra lá na Granja Tres Irmaos
+293,3,2022/23,trigo,2023-11-12,Mao de obra,Diaristas safra,23390.08,registra gasto de 23.390 com mao de obra
+294,3,2022/23,trigo,2023-11-08,Arrendamento,Arrendamento - proprietario da terra,80823.42,paguei 80.823 de arrendamento pra Arrendamento - proprietario da terra
+295,3,2022/23,trigo,2023-07-12,Assistencia tecnica,Eng. Agronomo consultor,20205.85,paguei 20.206 de assistencia tecnica pra Eng. Agronomo consultor
+296,3,2022/23,trigo,2023-06-04,Seguro e juros,Seguradora rural,33332.93,paguei 33.333 de seguro e juros pra Seguradora rural
+297,3,2022/23,trigo,2023-11-22,Seguro e juros,Banco - custeio agricola,27284.63,saiu 27.285 de seguro e juros lá na Granja Tres Irmaos
+298,3,2022/23,trigo,2023-11-02,Frete e armazenagem,Armazem da Cooperativa,31590.71,lanca ai 31.591 frete e armazenagem da Granja Tres Irmaos
+299,3,2022/23,trigo,2023-12-05,Frete e armazenagem,Transportes Pampa,39129.78,paguei 39.130 de frete e armazenagem pra Transportes Pampa
+300,3,2023/24,soja,2023-10-20,Sementes,Coop. Agricola Regional,139938.75,"sementes 139.939 reais, Coop. Agricola Regional"
+301,3,2023/24,soja,2023-09-05,Fertilizantes,Agro Insumos RS,196189.2,"fertilizantes 196.189 reais, Agro Insumos RS"
+302,3,2023/24,soja,2023-10-26,Fertilizantes,Coop. Agricola Regional,109131.71,paguei 109.132 de fertilizantes pra Coop. Agricola Regional
+303,3,2023/24,soja,2023-11-08,Defensivos,Defesa Agricola Ltda,87923.24,"defensivos 87.923 reais, Defesa Agricola Ltda"
+304,3,2023/24,soja,2023-12-01,Defensivos,Agro Insumos RS,48338.99,"defensivos 48.339 reais, Agro Insumos RS"
+305,3,2023/24,soja,2024-01-02,Defensivos,Agro Insumos RS,47658.57,saiu 47.659 de defensivos lá na Granja Tres Irmaos
+306,3,2023/24,soja,2024-02-14,Defensivos,Defesa Agricola Ltda,95956.7,paguei 95.957 de defensivos pra Defesa Agricola Ltda
+307,3,2023/24,soja,2023-10-04,Diesel e operacoes,Posto BR do Campo,37963.94,botei 37.964 em diesel e operacoes hoje
+308,3,2023/24,soja,2023-11-08,Diesel e operacoes,Oficina do Ze (manutencao),31125.37,paguei 31.125 de diesel e operacoes pra Oficina do Ze (manutencao)
+309,3,2023/24,soja,2024-03-24,Diesel e operacoes,Oficina do Ze (manutencao),38785.12,botei 38.785 em diesel e operacoes hoje
+310,3,2023/24,soja,2024-04-10,Diesel e operacoes,Posto BR do Campo,32064.32,saiu 32.064 de diesel e operacoes lá na Granja Tres Irmaos
+311,3,2023/24,soja,2023-10-22,Mao de obra,Diaristas safra,22225.62,registra gasto de 22.226 com mao de obra
+312,3,2023/24,soja,2023-12-23,Mao de obra,Folha funcionario fixo,10513.9,paguei 10.514 de mao de obra pra Folha funcionario fixo
+313,3,2023/24,soja,2024-02-03,Mao de obra,Folha funcionario fixo,15936.09,botei 15.936 em mao de obra hoje
+314,3,2023/24,soja,2024-04-05,Mao de obra,Diaristas safra,14932.91,lanca ai 14.933 mao de obra da Granja Tres Irmaos
+315,3,2023/24,soja,2024-05-21,Arrendamento,Arrendamento - proprietario da terra,152660.45,registra gasto de 152.660 com arrendamento
+316,3,2023/24,soja,2023-11-15,Assistencia tecnica,Eng. Agronomo consultor,14673.25,paguei 14.673 de assistencia tecnica pra Eng. Agronomo consultor
+317,3,2023/24,soja,2024-02-26,Assistencia tecnica,Eng. Agronomo consultor,10770.16,saiu 10.770 de assistencia tecnica lá na Granja Tres Irmaos
+318,3,2023/24,soja,2023-10-24,Seguro e juros,Banco - custeio agricola,30518.47,registra gasto de 30.518 com seguro e juros
+319,3,2023/24,soja,2024-05-15,Seguro e juros,Banco - custeio agricola,33090.06,registra gasto de 33.090 com seguro e juros
+320,3,2023/24,soja,2024-04-14,Frete e armazenagem,Transportes Pampa,48343.68,"frete e armazenagem 48.344 reais, Transportes Pampa"
+321,3,2023/24,soja,2024-05-14,Frete e armazenagem,Armazem da Cooperativa,53429.95,saiu 53.430 de frete e armazenagem lá na Granja Tres Irmaos
+322,3,2023/24,milho,2023-08-24,Sementes,Sementes Sul,126789.98,lanca ai 126.790 sementes da Granja Tres Irmaos
+323,3,2023/24,milho,2023-08-18,Fertilizantes,Agro Insumos RS,117512.06,"fertilizantes 117.512 reais, Agro Insumos RS"
+324,3,2023/24,milho,2023-09-22,Fertilizantes,Coop. Agricola Regional,120219.14,registra gasto de 120.219 com fertilizantes
+325,3,2023/24,milho,2023-10-28,Defensivos,Defesa Agricola Ltda,30462.24,paguei 30.462 de defensivos pra Defesa Agricola Ltda
+326,3,2023/24,milho,2023-11-10,Defensivos,Defesa Agricola Ltda,39067.16,"defensivos 39.067 reais, Defesa Agricola Ltda"
+327,3,2023/24,milho,2023-12-12,Defensivos,Agro Insumos RS,41411.83,botei 41.412 em defensivos hoje
+328,3,2023/24,milho,2023-08-12,Diesel e operacoes,Oficina do Ze (manutencao),21958.11,"diesel e operacoes 21.958 reais, Oficina do Ze (manutencao)"
+329,3,2023/24,milho,2023-09-04,Diesel e operacoes,Posto BR do Campo,15799.24,botei 15.799 em diesel e operacoes hoje
+330,3,2023/24,milho,2024-02-08,Diesel e operacoes,Posto BR do Campo,21517.64,botei 21.518 em diesel e operacoes hoje
+331,3,2023/24,milho,2024-03-25,Diesel e operacoes,Oficina do Ze (manutencao),27893.11,botei 27.893 em diesel e operacoes hoje
+332,3,2023/24,milho,2023-09-22,Mao de obra,Folha funcionario fixo,11041.65,paguei 11.042 de mao de obra pra Folha funcionario fixo
+333,3,2023/24,milho,2023-12-06,Mao de obra,Folha funcionario fixo,10125.47,saiu 10.125 de mao de obra lá na Granja Tres Irmaos
+334,3,2023/24,milho,2024-03-25,Mao de obra,Folha funcionario fixo,10530.38,"mao de obra 10.530 reais, Folha funcionario fixo"
+335,3,2023/24,milho,2024-04-06,Arrendamento,Arrendamento - proprietario da terra,79243.74,botei 79.244 em arrendamento hoje
+336,3,2023/24,milho,2023-10-24,Assistencia tecnica,Eng. Agronomo consultor,10015.87,paguei 10.016 de assistencia tecnica pra Eng. Agronomo consultor
+337,3,2023/24,milho,2024-01-24,Assistencia tecnica,Eng. Agronomo consultor,5832.87,registra gasto de 5.833 com assistencia tecnica
+338,3,2023/24,milho,2023-08-12,Seguro e juros,Seguradora rural,20502.66,saiu 20.503 de seguro e juros lá na Granja Tres Irmaos
+339,3,2023/24,milho,2024-04-11,Seguro e juros,Banco - custeio agricola,19119.21,paguei 19.119 de seguro e juros pra Banco - custeio agricola
+340,3,2023/24,milho,2024-03-02,Frete e armazenagem,Transportes Pampa,23821.1,"frete e armazenagem 23.821 reais, Transportes Pampa"
+341,3,2023/24,milho,2024-04-15,Frete e armazenagem,Armazem da Cooperativa,39573.89,registra gasto de 39.574 com frete e armazenagem
+342,3,2023/24,trigo,2024-06-16,Sementes,Agropecuaria do Vale,105876.7,saiu 105.877 de sementes lá na Granja Tres Irmaos
+343,3,2023/24,trigo,2024-05-20,Fertilizantes,Coop. Agricola Regional,128874.27,paguei 128.874 de fertilizantes pra Coop. Agricola Regional
+344,3,2023/24,trigo,2024-06-07,Fertilizantes,Fertisul Revenda,118171.36,lanca ai 118.171 fertilizantes da Granja Tres Irmaos
+345,3,2023/24,trigo,2024-07-04,Defensivos,Agro Insumos RS,65771.57,registra gasto de 65.772 com defensivos
+346,3,2023/24,trigo,2024-08-24,Defensivos,Coop. Agricola Regional,65633.35,lanca ai 65.633 defensivos da Granja Tres Irmaos
+347,3,2023/24,trigo,2024-09-05,Defensivos,Coop. Agricola Regional,45056.24,botei 45.056 em defensivos hoje
+348,3,2023/24,trigo,2024-06-26,Diesel e operacoes,Posto BR do Campo,35899.13,paguei 35.899 de diesel e operacoes pra Posto BR do Campo
+349,3,2023/24,trigo,2024-10-13,Diesel e operacoes,Oficina do Ze (manutencao),30875.85,paguei 30.876 de diesel e operacoes pra Oficina do Ze (manutencao)
+350,3,2023/24,trigo,2024-11-14,Diesel e operacoes,Posto Trevo,39101.72,registra gasto de 39.102 com diesel e operacoes
+351,3,2023/24,trigo,2024-06-19,Mao de obra,Folha funcionario fixo,22454.37,botei 22.454 em mao de obra hoje
+352,3,2023/24,trigo,2024-11-13,Mao de obra,Folha funcionario fixo,21660.92,"mao de obra 21.661 reais, Folha funcionario fixo"
+353,3,2023/24,trigo,2024-11-01,Arrendamento,Arrendamento - proprietario da terra,70584.47,lanca ai 70.584 arrendamento da Granja Tres Irmaos
+354,3,2023/24,trigo,2024-07-20,Assistencia tecnica,Eng. Agronomo consultor,17646.12,saiu 17.646 de assistencia tecnica lá na Granja Tres Irmaos
+355,3,2023/24,trigo,2024-06-28,Seguro e juros,Banco - custeio agricola,35246.57,lanca ai 35.247 seguro e juros da Granja Tres Irmaos
+356,3,2023/24,trigo,2024-11-14,Seguro e juros,Seguradora rural,17691.78,botei 17.692 em seguro e juros hoje
+357,3,2023/24,trigo,2024-11-24,Frete e armazenagem,Armazem da Cooperativa,20896.21,lanca ai 20.896 frete e armazenagem da Granja Tres Irmaos
+358,3,2023/24,trigo,2024-12-11,Frete e armazenagem,Transportes Pampa,40865.19,paguei 40.865 de frete e armazenagem pra Transportes Pampa
+359,3,2024/25,soja,2024-10-27,Sementes,Coop. Agricola Regional,144906.41,lanca ai 144.906 sementes da Granja Tres Irmaos
+360,3,2024/25,soja,2024-09-06,Fertilizantes,Agro Insumos RS,145053.88,lanca ai 145.054 fertilizantes da Granja Tres Irmaos
+361,3,2024/25,soja,2024-10-25,Fertilizantes,Agro Insumos RS,171105.56,paguei 171.106 de fertilizantes pra Agro Insumos RS
+362,3,2024/25,soja,2024-11-25,Defensivos,Defesa Agricola Ltda,51687.2,registra gasto de 51.687 com defensivos
+363,3,2024/25,soja,2024-12-22,Defensivos,Defesa Agricola Ltda,84896.81,saiu 84.897 de defensivos lá na Granja Tres Irmaos
+364,3,2024/25,soja,2025-01-21,Defensivos,Defesa Agricola Ltda,69357.91,"defensivos 69.358 reais, Defesa Agricola Ltda"
+365,3,2024/25,soja,2025-02-28,Defensivos,Defesa Agricola Ltda,83870.91,"defensivos 83.871 reais, Defesa Agricola Ltda"
+366,3,2024/25,soja,2024-10-09,Diesel e operacoes,Oficina do Ze (manutencao),32932.78,paguei 32.933 de diesel e operacoes pra Oficina do Ze (manutencao)
+367,3,2024/25,soja,2024-11-12,Diesel e operacoes,Oficina do Ze (manutencao),29910.89,paguei 29.911 de diesel e operacoes pra Oficina do Ze (manutencao)
+368,3,2024/25,soja,2025-03-10,Diesel e operacoes,Posto BR do Campo,43578.89,registra gasto de 43.579 com diesel e operacoes
+369,3,2024/25,soja,2025-04-02,Diesel e operacoes,Posto Trevo,38483.84,"diesel e operacoes 38.484 reais, Posto Trevo"
+370,3,2024/25,soja,2024-10-20,Mao de obra,Folha funcionario fixo,18511.27,registra gasto de 18.511 com mao de obra
+371,3,2024/25,soja,2024-12-19,Mao de obra,Diaristas safra,9675.59,registra gasto de 9.676 com mao de obra
+372,3,2024/25,soja,2025-02-26,Mao de obra,Diaristas safra,18892.26,"mao de obra 18.892 reais, Diaristas safra"
+373,3,2024/25,soja,2025-04-20,Mao de obra,Folha funcionario fixo,18787.43,botei 18.787 em mao de obra hoje
+374,3,2024/25,soja,2025-05-02,Arrendamento,Arrendamento - proprietario da terra,158079.72,paguei 158.080 de arrendamento pra Arrendamento - proprietario da terra
+375,3,2024/25,soja,2024-11-23,Assistencia tecnica,Eng. Agronomo consultor,13062.8,botei 13.063 em assistencia tecnica hoje
+376,3,2024/25,soja,2025-02-21,Assistencia tecnica,Eng. Agronomo consultor,13283.82,paguei 13.284 de assistencia tecnica pra Eng. Agronomo consultor
+377,3,2024/25,soja,2024-10-15,Seguro e juros,Banco - custeio agricola,30069.95,"seguro e juros 30.070 reais, Banco - custeio agricola"
+378,3,2024/25,soja,2025-05-12,Seguro e juros,Seguradora rural,35796.6,registra gasto de 35.797 com seguro e juros
+379,3,2024/25,soja,2025-04-20,Frete e armazenagem,Transportes Pampa,54344.11,saiu 54.344 de frete e armazenagem lá na Granja Tres Irmaos
+380,3,2024/25,soja,2025-05-21,Frete e armazenagem,Armazem da Cooperativa,51042.37,paguei 51.042 de frete e armazenagem pra Armazem da Cooperativa
+381,3,2024/25,milho,2024-08-05,Sementes,Sementes Sul,151959.75,paguei 151.960 de sementes pra Sementes Sul
+382,3,2024/25,milho,2024-08-12,Fertilizantes,Fertisul Revenda,170729.1,saiu 170.729 de fertilizantes lá na Granja Tres Irmaos
+383,3,2024/25,milho,2024-09-23,Fertilizantes,Agro Insumos RS,114195.44,registra gasto de 114.195 com fertilizantes
+384,3,2024/25,milho,2024-10-18,Defensivos,Coop. Agricola Regional,49731.68,saiu 49.732 de defensivos lá na Granja Tres Irmaos
+385,3,2024/25,milho,2024-11-26,Defensivos,Coop. Agricola Regional,82541.81,lanca ai 82.542 defensivos da Granja Tres Irmaos
+386,3,2024/25,milho,2024-12-22,Defensivos,Defesa Agricola Ltda,47228.97,saiu 47.229 de defensivos lá na Granja Tres Irmaos
+387,3,2024/25,milho,2024-08-17,Diesel e operacoes,Posto BR do Campo,32172.31,paguei 32.172 de diesel e operacoes pra Posto BR do Campo
+388,3,2024/25,milho,2024-09-12,Diesel e operacoes,Posto BR do Campo,30612.35,lanca ai 30.612 diesel e operacoes da Granja Tres Irmaos
+389,3,2024/25,milho,2025-02-07,Diesel e operacoes,Posto BR do Campo,15531.36,registra gasto de 15.531 com diesel e operacoes
+390,3,2024/25,milho,2025-03-07,Diesel e operacoes,Posto Trevo,26156.31,lanca ai 26.156 diesel e operacoes da Granja Tres Irmaos
+391,3,2024/25,milho,2024-09-17,Mao de obra,Diaristas safra,9853.89,saiu 9.854 de mao de obra lá na Granja Tres Irmaos
+392,3,2024/25,milho,2024-12-11,Mao de obra,Diaristas safra,11387.56,botei 11.388 em mao de obra hoje
+393,3,2024/25,milho,2025-03-13,Mao de obra,Diaristas safra,16748.49,lanca ai 16.748 mao de obra da Granja Tres Irmaos
+394,3,2024/25,milho,2025-04-23,Arrendamento,Arrendamento - proprietario da terra,94974.85,saiu 94.975 de arrendamento lá na Granja Tres Irmaos
+395,3,2024/25,milho,2024-10-22,Assistencia tecnica,Eng. Agronomo consultor,9605.92,registra gasto de 9.606 com assistencia tecnica
+396,3,2024/25,milho,2025-01-20,Assistencia tecnica,Eng. Agronomo consultor,9389.05,saiu 9.389 de assistencia tecnica lá na Granja Tres Irmaos
+397,3,2024/25,milho,2024-08-08,Seguro e juros,Seguradora rural,28928.48,registra gasto de 28.928 com seguro e juros
+398,3,2024/25,milho,2025-04-27,Seguro e juros,Banco - custeio agricola,18558.94,"seguro e juros 18.559 reais, Banco - custeio agricola"
+399,3,2024/25,milho,2025-03-15,Frete e armazenagem,Armazem da Cooperativa,39481.04,"frete e armazenagem 39.481 reais, Armazem da Cooperativa"
+400,3,2024/25,milho,2025-04-25,Frete e armazenagem,Armazem da Cooperativa,36498.83,botei 36.499 em frete e armazenagem hoje
+401,3,2024/25,trigo,2025-06-12,Sementes,Agropecuaria do Vale,106201.17,paguei 106.201 de sementes pra Agropecuaria do Vale
+402,3,2024/25,trigo,2025-05-04,Fertilizantes,Fertisul Revenda,132782.52,paguei 132.783 de fertilizantes pra Fertisul Revenda
+403,3,2024/25,trigo,2025-06-25,Fertilizantes,Coop. Agricola Regional,115020.2,"fertilizantes 115.020 reais, Coop. Agricola Regional"
+404,3,2024/25,trigo,2025-07-03,Defensivos,Agro Insumos RS,52496.69,registra gasto de 52.497 com defensivos
+405,3,2024/25,trigo,2025-08-12,Defensivos,Agro Insumos RS,55299.57,registra gasto de 55.300 com defensivos
+406,3,2024/25,trigo,2025-09-02,Defensivos,Coop. Agricola Regional,69205.69,botei 69.206 em defensivos hoje
+407,3,2024/25,trigo,2025-06-08,Diesel e operacoes,Posto Trevo,38608.13,"diesel e operacoes 38.608 reais, Posto Trevo"
+408,3,2024/25,trigo,2025-10-04,Diesel e operacoes,Oficina do Ze (manutencao),39027.36,saiu 39.027 de diesel e operacoes lá na Granja Tres Irmaos
+409,3,2024/25,trigo,2025-11-11,Diesel e operacoes,Posto Trevo,28565.68,lanca ai 28.566 diesel e operacoes da Granja Tres Irmaos
+410,3,2024/25,trigo,2025-06-16,Mao de obra,Diaristas safra,14204.83,saiu 14.205 de mao de obra lá na Granja Tres Irmaos
+411,3,2024/25,trigo,2025-11-16,Mao de obra,Folha funcionario fixo,30045.65,botei 30.046 em mao de obra hoje
+412,3,2024/25,trigo,2025-11-03,Arrendamento,Arrendamento - proprietario da terra,70800.78,"arrendamento 70.801 reais, Arrendamento - proprietario da terra"
+413,3,2024/25,trigo,2025-07-05,Assistencia tecnica,Eng. Agronomo consultor,17700.19,paguei 17.700 de assistencia tecnica pra Eng. Agronomo consultor
+414,3,2024/25,trigo,2025-06-04,Seguro e juros,Banco - custeio agricola,32238.14,lanca ai 32.238 seguro e juros da Granja Tres Irmaos
+415,3,2024/25,trigo,2025-11-14,Seguro e juros,Seguradora rural,20862.44,paguei 20.862 de seguro e juros pra Seguradora rural
+416,3,2024/25,trigo,2025-11-20,Frete e armazenagem,Transportes Pampa,21196.59,saiu 21.197 de frete e armazenagem lá na Granja Tres Irmaos
+417,3,2024/25,trigo,2025-12-17,Frete e armazenagem,Transportes Pampa,40754.09,saiu 40.754 de frete e armazenagem lá na Granja Tres Irmaos
+418,3,2025/26,soja,2025-10-12,Sementes,Coop. Agricola Regional,153852.3,botei 153.852 em sementes hoje
+419,3,2025/26,soja,2025-09-17,Fertilizantes,Agro Insumos RS,153469.49,paguei 153.469 de fertilizantes pra Agro Insumos RS
+420,3,2025/26,soja,2025-10-13,Fertilizantes,Fertisul Revenda,182208.25,paguei 182.208 de fertilizantes pra Fertisul Revenda
+421,3,2025/26,soja,2025-11-26,Defensivos,Agro Insumos RS,87254.34,"defensivos 87.254 reais, Agro Insumos RS"
+422,3,2025/26,soja,2025-12-08,Defensivos,Defesa Agricola Ltda,109001.86,saiu 109.002 de defensivos lá na Granja Tres Irmaos
+423,3,2025/26,soja,2026-01-21,Defensivos,Agro Insumos RS,63198.88,botei 63.199 em defensivos hoje
+424,3,2025/26,soja,2026-02-24,Defensivos,Coop. Agricola Regional,48249.52,lanca ai 48.250 defensivos da Granja Tres Irmaos
+425,3,2025/26,soja,2025-10-25,Diesel e operacoes,Oficina do Ze (manutencao),26689.62,registra gasto de 26.690 com diesel e operacoes
+426,3,2025/26,soja,2025-11-23,Diesel e operacoes,Posto BR do Campo,43545.97,saiu 43.546 de diesel e operacoes lá na Granja Tres Irmaos
+427,3,2025/26,soja,2026-03-06,Diesel e operacoes,Posto Trevo,52533.78,paguei 52.534 de diesel e operacoes pra Posto Trevo
+428,3,2025/26,soja,2026-04-23,Diesel e operacoes,Posto BR do Campo,31082.93,paguei 31.083 de diesel e operacoes pra Posto BR do Campo
+429,3,2025/26,soja,2025-10-10,Mao de obra,Folha funcionario fixo,20390.77,botei 20.391 em mao de obra hoje
+430,3,2025/26,soja,2025-12-16,Mao de obra,Folha funcionario fixo,15512.42,paguei 15.512 de mao de obra pra Folha funcionario fixo
+431,3,2025/26,soja,2026-02-25,Mao de obra,Diaristas safra,18554.38,"mao de obra 18.554 reais, Diaristas safra"
+432,3,2025/26,soja,2026-04-12,Mao de obra,Diaristas safra,15475.29,saiu 15.475 de mao de obra lá na Granja Tres Irmaos
+433,3,2025/26,soja,2026-05-04,Arrendamento,Arrendamento - proprietario da terra,167838.87,registra gasto de 167.839 com arrendamento
+434,3,2025/26,soja,2025-11-13,Assistencia tecnica,Eng. Agronomo consultor,14639.2,lanca ai 14.639 assistencia tecnica da Granja Tres Irmaos
+435,3,2025/26,soja,2026-02-16,Assistencia tecnica,Eng. Agronomo consultor,13333.95,"assistencia tecnica 13.334 reais, Eng. Agronomo consultor"
+436,3,2025/26,soja,2025-10-26,Seguro e juros,Banco - custeio agricola,39777.78,saiu 39.778 de seguro e juros lá na Granja Tres Irmaos
+437,3,2025/26,soja,2026-05-14,Seguro e juros,Banco - custeio agricola,30155.08,registra gasto de 30.155 com seguro e juros
+438,3,2025/26,soja,2026-04-18,Frete e armazenagem,Armazem da Cooperativa,51740.21,"frete e armazenagem 51.740 reais, Armazem da Cooperativa"
+439,3,2025/26,soja,2026-05-04,Frete e armazenagem,Transportes Pampa,60152.37,"frete e armazenagem 60.152 reais, Transportes Pampa"
+440,3,2025/26,milho,2025-08-28,Sementes,Sementes Sul,148054.73,botei 148.055 em sementes hoje
+441,3,2025/26,milho,2025-08-26,Fertilizantes,Coop. Agricola Regional,175024.4,paguei 175.024 de fertilizantes pra Coop. Agricola Regional
+442,3,2025/26,milho,2025-09-22,Fertilizantes,Agro Insumos RS,102578.22,registra gasto de 102.578 com fertilizantes
+443,3,2025/26,milho,2025-10-01,Defensivos,Agro Insumos RS,35230.47,botei 35.230 em defensivos hoje
+444,3,2025/26,milho,2025-11-22,Defensivos,Coop. Agricola Regional,49084.06,paguei 49.084 de defensivos pra Coop. Agricola Regional
+445,3,2025/26,milho,2025-12-05,Defensivos,Agro Insumos RS,45233.36,lanca ai 45.233 defensivos da Granja Tres Irmaos
+446,3,2025/26,milho,2025-08-20,Diesel e operacoes,Posto Trevo,30536.94,saiu 30.537 de diesel e operacoes lá na Granja Tres Irmaos
+447,3,2025/26,milho,2025-09-15,Diesel e operacoes,Posto BR do Campo,22302.2,"diesel e operacoes 22.302 reais, Posto BR do Campo"
+448,3,2025/26,milho,2026-02-15,Diesel e operacoes,Posto Trevo,22632.36,botei 22.632 em diesel e operacoes hoje
+449,3,2025/26,milho,2026-03-05,Diesel e operacoes,Oficina do Ze (manutencao),26316.14,"diesel e operacoes 26.316 reais, Oficina do Ze (manutencao)"
+450,3,2025/26,milho,2025-09-04,Mao de obra,Diaristas safra,11979.28,saiu 11.979 de mao de obra lá na Granja Tres Irmaos
+451,3,2025/26,milho,2025-12-06,Mao de obra,Folha funcionario fixo,14603.86,botei 14.604 em mao de obra hoje
+452,3,2025/26,milho,2026-03-13,Mao de obra,Diaristas safra,10430.55,"mao de obra 10.431 reais, Diaristas safra"
+453,3,2025/26,milho,2026-04-23,Arrendamento,Arrendamento - proprietario da terra,92534.21,lanca ai 92.534 arrendamento da Granja Tres Irmaos
+454,3,2025/26,milho,2025-10-16,Assistencia tecnica,Eng. Agronomo consultor,11617.68,paguei 11.618 de assistencia tecnica pra Eng. Agronomo consultor
+455,3,2025/26,milho,2026-01-05,Assistencia tecnica,Eng. Agronomo consultor,6889.16,registra gasto de 6.889 com assistencia tecnica
+456,3,2025/26,milho,2025-08-03,Seguro e juros,Seguradora rural,17891.1,saiu 17.891 de seguro e juros lá na Granja Tres Irmaos
+457,3,2025/26,milho,2026-04-12,Seguro e juros,Banco - custeio agricola,28376.0,botei 28.376 em seguro e juros hoje
+458,3,2025/26,milho,2026-03-28,Frete e armazenagem,Transportes Pampa,32608.13,saiu 32.608 de frete e armazenagem lá na Granja Tres Irmaos
+459,3,2025/26,milho,2026-04-23,Frete e armazenagem,Transportes Pampa,41419.24,"frete e armazenagem 41.419 reais, Transportes Pampa"
+460,3,2025/26,trigo,2026-06-15,Sementes,Agropecuaria do Vale,119923.6,lanca ai 119.924 sementes da Granja Tres Irmaos
+461,3,2025/26,trigo,2026-05-10,Fertilizantes,Fertisul Revenda,173373.22,saiu 173.373 de fertilizantes lá na Granja Tres Irmaos
+462,3,2025/26,trigo,2026-06-24,Fertilizantes,Fertisul Revenda,106448.51,botei 106.449 em fertilizantes hoje
+463,3,2025/26,trigo,2026-07-05,Defensivos,Coop. Agricola Regional,63649.65,saiu 63.650 de defensivos lá na Granja Tres Irmaos
+464,3,2025/26,trigo,2026-08-03,Defensivos,Coop. Agricola Regional,63574.99,registra gasto de 63.575 com defensivos
+465,3,2025/26,trigo,2026-09-22,Defensivos,Defesa Agricola Ltda,72648.01,"defensivos 72.648 reais, Defesa Agricola Ltda"
+466,3,2025/26,trigo,2026-06-19,Diesel e operacoes,Posto Trevo,28023.86,lanca ai 28.024 diesel e operacoes da Granja Tres Irmaos
+467,3,2025/26,trigo,2026-10-14,Diesel e operacoes,Oficina do Ze (manutencao),50380.77,paguei 50.381 de diesel e operacoes pra Oficina do Ze (manutencao)
+468,3,2025/26,trigo,2026-11-27,Diesel e operacoes,Posto Trevo,41518.96,botei 41.519 em diesel e operacoes hoje
+469,3,2025/26,trigo,2026-06-11,Mao de obra,Diaristas safra,24824.07,"mao de obra 24.824 reais, Diaristas safra"
+470,3,2025/26,trigo,2026-11-17,Mao de obra,Folha funcionario fixo,25144.1,paguei 25.144 de mao de obra pra Folha funcionario fixo
+471,3,2025/26,trigo,2026-11-21,Arrendamento,Arrendamento - proprietario da terra,79949.06,lanca ai 79.949 arrendamento da Granja Tres Irmaos
+472,3,2025/26,trigo,2026-07-20,Assistencia tecnica,Eng. Agronomo consultor,19987.27,botei 19.987 em assistencia tecnica hoje
+473,3,2025/26,trigo,2026-06-19,Seguro e juros,Banco - custeio agricola,30520.43,lanca ai 30.520 seguro e juros da Granja Tres Irmaos
+474,3,2025/26,trigo,2026-11-22,Seguro e juros,Seguradora rural,29441.37,botei 29.441 em seguro e juros hoje
+475,3,2025/26,trigo,2026-11-03,Frete e armazenagem,Transportes Pampa,23014.1,saiu 23.014 de frete e armazenagem lá na Granja Tres Irmaos
+476,3,2025/26,trigo,2026-12-25,Frete e armazenagem,Armazem da Cooperativa,46941.33,saiu 46.941 de frete e armazenagem lá na Granja Tres Irmaos
+477,4,2022/23,milho,2022-08-16,Sementes,Coop. Agricola Regional,40261.9,saiu 40.262 de sementes lá na Estancia do Pai
+478,4,2022/23,milho,2022-08-23,Fertilizantes,Coop. Agricola Regional,36986.48,lanca ai 36.986 fertilizantes da Estancia do Pai
+479,4,2022/23,milho,2022-09-15,Fertilizantes,Fertisul Revenda,38504.58,registra gasto de 38.505 com fertilizantes
+480,4,2022/23,milho,2022-10-28,Defensivos,Defesa Agricola Ltda,13377.02,"defensivos 13.377 reais, Defesa Agricola Ltda"
+481,4,2022/23,milho,2022-11-24,Defensivos,Coop. Agricola Regional,12008.42,registra gasto de 12.008 com defensivos
+482,4,2022/23,milho,2022-12-05,Defensivos,Coop. Agricola Regional,9843.72,botei 9.844 em defensivos hoje
+483,4,2022/23,milho,2022-08-08,Diesel e operacoes,Posto Trevo,7867.57,paguei 7.868 de diesel e operacoes pra Posto Trevo
+484,4,2022/23,milho,2022-09-02,Diesel e operacoes,Posto BR do Campo,6412.79,registra gasto de 6.413 com diesel e operacoes
+485,4,2022/23,milho,2023-02-28,Diesel e operacoes,Oficina do Ze (manutencao),7296.67,registra gasto de 7.297 com diesel e operacoes
+486,4,2022/23,milho,2023-03-08,Diesel e operacoes,Posto Trevo,6103.02,"diesel e operacoes 6.103 reais, Posto Trevo"
+487,4,2022/23,milho,2022-09-06,Mao de obra,Folha funcionario fixo,4138.94,botei 4.139 em mao de obra hoje
+488,4,2022/23,milho,2022-12-15,Mao de obra,Folha funcionario fixo,3616.27,"mao de obra 3.616 reais, Folha funcionario fixo"
+489,4,2022/23,milho,2023-03-16,Mao de obra,Diaristas safra,2310.27,paguei 2.310 de mao de obra pra Diaristas safra
+490,4,2022/23,milho,2022-10-08,Assistencia tecnica,Eng. Agronomo consultor,2891.42,botei 2.891 em assistencia tecnica hoje
+491,4,2022/23,milho,2023-01-12,Assistencia tecnica,Eng. Agronomo consultor,2141.31,paguei 2.141 de assistencia tecnica pra Eng. Agronomo consultor
+492,4,2022/23,milho,2022-08-27,Seguro e juros,Seguradora rural,5454.83,"seguro e juros 5.455 reais, Seguradora rural"
+493,4,2022/23,milho,2023-04-18,Seguro e juros,Banco - custeio agricola,7127.01,paguei 7.127 de seguro e juros pra Banco - custeio agricola
+494,4,2022/23,milho,2023-03-24,Frete e armazenagem,Armazem da Cooperativa,8450.04,registra gasto de 8.450 com frete e armazenagem
+495,4,2022/23,milho,2023-04-12,Frete e armazenagem,Transportes Pampa,11680.91,registra gasto de 11.681 com frete e armazenagem
+496,4,2022/23,soja,2022-10-27,Sementes,Agropecuaria do Vale,40856.86,saiu 40.857 de sementes lá na Estancia do Pai
+497,4,2022/23,soja,2022-09-04,Fertilizantes,Fertisul Revenda,54170.69,"fertilizantes 54.171 reais, Fertisul Revenda"
+498,4,2022/23,soja,2022-10-26,Fertilizantes,Fertisul Revenda,34971.56,botei 34.972 em fertilizantes hoje
+499,4,2022/23,soja,2022-11-17,Defensivos,Agro Insumos RS,25547.55,paguei 25.548 de defensivos pra Agro Insumos RS
+500,4,2022/23,soja,2022-12-02,Defensivos,Agro Insumos RS,22764.56,saiu 22.765 de defensivos lá na Estancia do Pai
+501,4,2022/23,soja,2023-01-11,Defensivos,Coop. Agricola Regional,14355.74,botei 14.356 em defensivos hoje
+502,4,2022/23,soja,2023-02-15,Defensivos,Agro Insumos RS,19045.87,botei 19.046 em defensivos hoje
+503,4,2022/23,soja,2022-10-13,Diesel e operacoes,Oficina do Ze (manutencao),12707.86,saiu 12.708 de diesel e operacoes lá na Estancia do Pai
+504,4,2022/23,soja,2022-11-27,Diesel e operacoes,Posto BR do Campo,6881.5,botei 6.882 em diesel e operacoes hoje
+505,4,2022/23,soja,2023-03-11,Diesel e operacoes,Oficina do Ze (manutencao),13003.58,botei 13.004 em diesel e operacoes hoje
+506,4,2022/23,soja,2023-04-18,Diesel e operacoes,Posto BR do Campo,8263.93,saiu 8.264 de diesel e operacoes lá na Estancia do Pai
+507,4,2022/23,soja,2022-10-04,Mao de obra,Folha funcionario fixo,5559.6,botei 5.560 em mao de obra hoje
+508,4,2022/23,soja,2022-12-10,Mao de obra,Diaristas safra,5186.83,botei 5.187 em mao de obra hoje
+509,4,2022/23,soja,2023-02-16,Mao de obra,Folha funcionario fixo,3246.34,saiu 3.246 de mao de obra lá na Estancia do Pai
+510,4,2022/23,soja,2023-04-26,Mao de obra,Diaristas safra,4578.53,saiu 4.579 de mao de obra lá na Estancia do Pai
+511,4,2022/23,soja,2022-11-17,Assistencia tecnica,Eng. Agronomo consultor,2929.85,lanca ai 2.930 assistencia tecnica da Estancia do Pai
+512,4,2022/23,soja,2023-02-27,Assistencia tecnica,Eng. Agronomo consultor,4498.67,paguei 4.499 de assistencia tecnica pra Eng. Agronomo consultor
+513,4,2022/23,soja,2022-10-07,Seguro e juros,Banco - custeio agricola,8857.21,registra gasto de 8.857 com seguro e juros
+514,4,2022/23,soja,2023-05-11,Seguro e juros,Seguradora rural,9714.09,lanca ai 9.714 seguro e juros da Estancia do Pai
+515,4,2022/23,soja,2023-04-17,Frete e armazenagem,Armazem da Cooperativa,16324.38,saiu 16.324 de frete e armazenagem lá na Estancia do Pai
+516,4,2022/23,soja,2023-05-24,Frete e armazenagem,Transportes Pampa,13389.7,saiu 13.390 de frete e armazenagem lá na Estancia do Pai
+517,4,2023/24,milho,2023-08-18,Sementes,Sementes Sul,41578.79,botei 41.579 em sementes hoje
+518,4,2023/24,milho,2023-08-24,Fertilizantes,Agro Insumos RS,32780.42,saiu 32.780 de fertilizantes lá na Estancia do Pai
+519,4,2023/24,milho,2023-09-26,Fertilizantes,Agro Insumos RS,45179.8,"fertilizantes 45.180 reais, Agro Insumos RS"
+520,4,2023/24,milho,2023-10-18,Defensivos,Coop. Agricola Regional,14999.59,lanca ai 15.000 defensivos da Estancia do Pai
+521,4,2023/24,milho,2023-11-10,Defensivos,Coop. Agricola Regional,10391.75,saiu 10.392 de defensivos lá na Estancia do Pai
+522,4,2023/24,milho,2023-12-07,Defensivos,Defesa Agricola Ltda,10990.1,saiu 10.990 de defensivos lá na Estancia do Pai
+523,4,2023/24,milho,2023-08-24,Diesel e operacoes,Posto BR do Campo,8426.89,"diesel e operacoes 8.427 reais, Posto BR do Campo"
+524,4,2023/24,milho,2023-09-04,Diesel e operacoes,Oficina do Ze (manutencao),8364.32,saiu 8.364 de diesel e operacoes lá na Estancia do Pai
+525,4,2023/24,milho,2024-02-18,Diesel e operacoes,Posto BR do Campo,8913.08,registra gasto de 8.913 com diesel e operacoes
+526,4,2023/24,milho,2024-03-27,Diesel e operacoes,Posto BR do Campo,11456.76,lanca ai 11.457 diesel e operacoes da Estancia do Pai
+527,4,2023/24,milho,2023-09-12,Mao de obra,Folha funcionario fixo,3053.22,saiu 3.053 de mao de obra lá na Estancia do Pai
+528,4,2023/24,milho,2023-12-09,Mao de obra,Folha funcionario fixo,3044.94,lanca ai 3.045 mao de obra da Estancia do Pai
+529,4,2023/24,milho,2024-03-07,Mao de obra,Folha funcionario fixo,4296.54,botei 4.297 em mao de obra hoje
+530,4,2023/24,milho,2023-10-20,Assistencia tecnica,Eng. Agronomo consultor,3221.1,lanca ai 3.221 assistencia tecnica da Estancia do Pai
+531,4,2023/24,milho,2024-01-02,Assistencia tecnica,Eng. Agronomo consultor,1976.25,saiu 1.976 de assistencia tecnica lá na Estancia do Pai
+532,4,2023/24,milho,2023-08-11,Seguro e juros,Seguradora rural,6966.79,paguei 6.967 de seguro e juros pra Seguradora rural
+533,4,2023/24,milho,2024-04-22,Seguro e juros,Banco - custeio agricola,6026.58,paguei 6.027 de seguro e juros pra Banco - custeio agricola
+534,4,2023/24,milho,2024-03-06,Frete e armazenagem,Armazem da Cooperativa,10354.26,saiu 10.354 de frete e armazenagem lá na Estancia do Pai
+535,4,2023/24,milho,2024-04-16,Frete e armazenagem,Armazem da Cooperativa,10435.14,saiu 10.435 de frete e armazenagem lá na Estancia do Pai
+536,4,2023/24,soja,2023-10-24,Sementes,Agropecuaria do Vale,39234.43,paguei 39.234 de sementes pra Agropecuaria do Vale
+537,4,2023/24,soja,2023-09-27,Fertilizantes,Coop. Agricola Regional,55007.83,paguei 55.008 de fertilizantes pra Coop. Agricola Regional
+538,4,2023/24,soja,2023-10-27,Fertilizantes,Fertisul Revenda,30594.57,registra gasto de 30.595 com fertilizantes
+539,4,2023/24,soja,2023-11-02,Defensivos,Agro Insumos RS,14414.41,"defensivos 14.414 reais, Agro Insumos RS"
+540,4,2023/24,soja,2023-12-19,Defensivos,Defesa Agricola Ltda,23076.99,paguei 23.077 de defensivos pra Defesa Agricola Ltda
+541,4,2023/24,soja,2024-01-11,Defensivos,Coop. Agricola Regional,24974.99,registra gasto de 24.975 com defensivos
+542,4,2023/24,soja,2024-02-21,Defensivos,Defesa Agricola Ltda,16002.48,botei 16.002 em defensivos hoje
+543,4,2023/24,soja,2023-10-07,Diesel e operacoes,Posto Trevo,11031.01,"diesel e operacoes 11.031 reais, Posto Trevo"
+544,4,2023/24,soja,2023-11-06,Diesel e operacoes,Oficina do Ze (manutencao),14974.15,registra gasto de 14.974 com diesel e operacoes
+545,4,2023/24,soja,2024-03-21,Diesel e operacoes,Posto BR do Campo,14198.19,saiu 14.198 de diesel e operacoes lá na Estancia do Pai
+546,4,2023/24,soja,2024-04-06,Diesel e operacoes,Posto Trevo,10801.41,saiu 10.801 de diesel e operacoes lá na Estancia do Pai
+547,4,2023/24,soja,2023-10-20,Mao de obra,Folha funcionario fixo,4308.59,registra gasto de 4.309 com mao de obra
+548,4,2023/24,soja,2023-12-17,Mao de obra,Folha funcionario fixo,4141.79,paguei 4.142 de mao de obra pra Folha funcionario fixo
+549,4,2023/24,soja,2024-02-13,Mao de obra,Diaristas safra,5645.39,lanca ai 5.645 mao de obra da Estancia do Pai
+550,4,2023/24,soja,2024-04-05,Mao de obra,Folha funcionario fixo,3738.07,"mao de obra 3.738 reais, Folha funcionario fixo"
+551,4,2023/24,soja,2023-11-13,Assistencia tecnica,Eng. Agronomo consultor,4923.29,registra gasto de 4.923 com assistencia tecnica
+552,4,2023/24,soja,2024-02-25,Assistencia tecnica,Eng. Agronomo consultor,2210.25,"assistencia tecnica 2.210 reais, Eng. Agronomo consultor"
+553,4,2023/24,soja,2023-10-01,Seguro e juros,Seguradora rural,7430.3,saiu 7.430 de seguro e juros lá na Estancia do Pai
+554,4,2023/24,soja,2024-05-12,Seguro e juros,Banco - custeio agricola,10403.54,paguei 10.404 de seguro e juros pra Banco - custeio agricola
+555,4,2023/24,soja,2024-04-06,Frete e armazenagem,Armazem da Cooperativa,15363.66,saiu 15.364 de frete e armazenagem lá na Estancia do Pai
+556,4,2023/24,soja,2024-05-17,Frete e armazenagem,Armazem da Cooperativa,13170.47,saiu 13.170 de frete e armazenagem lá na Estancia do Pai
+557,4,2024/25,milho,2024-08-20,Sementes,Sementes Sul,40273.0,registra gasto de 40.273 com sementes
+558,4,2024/25,milho,2024-08-25,Fertilizantes,Agro Insumos RS,35200.0,saiu 35.200 de fertilizantes lá na Estancia do Pai
+559,4,2024/25,milho,2024-09-27,Fertilizantes,Coop. Agricola Regional,40311.87,lanca ai 40.312 fertilizantes da Estancia do Pai
+560,4,2024/25,milho,2024-10-17,Defensivos,Coop. Agricola Regional,11685.02,botei 11.685 em defensivos hoje
+561,4,2024/25,milho,2024-11-23,Defensivos,Coop. Agricola Regional,10994.48,paguei 10.994 de defensivos pra Coop. Agricola Regional
+562,4,2024/25,milho,2024-12-19,Defensivos,Agro Insumos RS,12559.38,paguei 12.559 de defensivos pra Agro Insumos RS
+563,4,2024/25,milho,2024-08-06,Diesel e operacoes,Posto BR do Campo,7990.63,botei 7.991 em diesel e operacoes hoje
+564,4,2024/25,milho,2024-09-15,Diesel e operacoes,Posto Trevo,8365.75,saiu 8.366 de diesel e operacoes lá na Estancia do Pai
+565,4,2024/25,milho,2025-02-07,Diesel e operacoes,Oficina do Ze (manutencao),4819.14,botei 4.819 em diesel e operacoes hoje
+566,4,2024/25,milho,2025-03-16,Diesel e operacoes,Posto Trevo,6512.16,botei 6.512 em diesel e operacoes hoje
+567,4,2024/25,milho,2024-09-14,Mao de obra,Folha funcionario fixo,4174.87,botei 4.175 em mao de obra hoje
+568,4,2024/25,milho,2024-12-02,Mao de obra,Folha funcionario fixo,2813.45,saiu 2.813 de mao de obra lá na Estancia do Pai
+569,4,2024/25,milho,2025-03-26,Mao de obra,Folha funcionario fixo,3079.93,saiu 3.080 de mao de obra lá na Estancia do Pai
+570,4,2024/25,milho,2024-10-01,Assistencia tecnica,Eng. Agronomo consultor,2187.33,botei 2.187 em assistencia tecnica hoje
+571,4,2024/25,milho,2025-01-03,Assistencia tecnica,Eng. Agronomo consultor,2846.8,registra gasto de 2.847 com assistencia tecnica
+572,4,2024/25,milho,2024-08-02,Seguro e juros,Banco - custeio agricola,7218.5,registra gasto de 7.218 com seguro e juros
+573,4,2024/25,milho,2025-04-02,Seguro e juros,Seguradora rural,5366.81,registra gasto de 5.367 com seguro e juros
+574,4,2024/25,milho,2025-03-21,Frete e armazenagem,Armazem da Cooperativa,10315.34,"frete e armazenagem 10.315 reais, Armazem da Cooperativa"
+575,4,2024/25,milho,2025-04-13,Frete e armazenagem,Armazem da Cooperativa,9821.16,registra gasto de 9.821 com frete e armazenagem
+576,4,2024/25,soja,2024-10-13,Sementes,Agropecuaria do Vale,37510.88,lanca ai 37.511 sementes da Estancia do Pai
+577,4,2024/25,soja,2024-09-01,Fertilizantes,Coop. Agricola Regional,49356.6,"fertilizantes 49.357 reais, Coop. Agricola Regional"
+578,4,2024/25,soja,2024-10-15,Fertilizantes,Agro Insumos RS,32485.31,saiu 32.485 de fertilizantes lá na Estancia do Pai
+579,4,2024/25,soja,2024-11-12,Defensivos,Agro Insumos RS,18866.68,"defensivos 18.867 reais, Agro Insumos RS"
+580,4,2024/25,soja,2024-12-07,Defensivos,Defesa Agricola Ltda,18684.32,paguei 18.684 de defensivos pra Defesa Agricola Ltda
+581,4,2024/25,soja,2025-01-02,Defensivos,Defesa Agricola Ltda,22931.9,registra gasto de 22.932 com defensivos
+582,4,2024/25,soja,2025-02-20,Defensivos,Agro Insumos RS,14538.85,lanca ai 14.539 defensivos da Estancia do Pai
+583,4,2024/25,soja,2024-10-23,Diesel e operacoes,Posto Trevo,9106.24,lanca ai 9.106 diesel e operacoes da Estancia do Pai
+584,4,2024/25,soja,2024-11-24,Diesel e operacoes,Posto Trevo,8104.4,registra gasto de 8.104 com diesel e operacoes
+585,4,2024/25,soja,2025-03-15,Diesel e operacoes,Posto Trevo,7463.2,botei 7.463 em diesel e operacoes hoje
+586,4,2024/25,soja,2025-04-07,Diesel e operacoes,Posto Trevo,12837.03,lanca ai 12.837 diesel e operacoes da Estancia do Pai
+587,4,2024/25,soja,2024-10-11,Mao de obra,Folha funcionario fixo,4003.29,lanca ai 4.003 mao de obra da Estancia do Pai
+588,4,2024/25,soja,2024-12-10,Mao de obra,Diaristas safra,3318.04,saiu 3.318 de mao de obra lá na Estancia do Pai
+589,4,2024/25,soja,2025-02-17,Mao de obra,Diaristas safra,4999.06,registra gasto de 4.999 com mao de obra
+590,4,2024/25,soja,2025-04-10,Mao de obra,Folha funcionario fixo,4730.01,paguei 4.730 de mao de obra pra Folha funcionario fixo
+591,4,2024/25,soja,2024-11-24,Assistencia tecnica,Eng. Agronomo consultor,3365.08,saiu 3.365 de assistencia tecnica lá na Estancia do Pai
+592,4,2024/25,soja,2025-02-22,Assistencia tecnica,Eng. Agronomo consultor,3455.08,botei 3.455 em assistencia tecnica hoje
+593,4,2024/25,soja,2024-10-21,Seguro e juros,Seguradora rural,7155.99,botei 7.156 em seguro e juros hoje
+594,4,2024/25,soja,2025-05-11,Seguro e juros,Seguradora rural,9894.41,registra gasto de 9.894 com seguro e juros
+595,4,2024/25,soja,2025-04-25,Frete e armazenagem,Armazem da Cooperativa,12110.13,lanca ai 12.110 frete e armazenagem da Estancia do Pai
+596,4,2024/25,soja,2025-05-28,Frete e armazenagem,Transportes Pampa,15170.5,"frete e armazenagem 15.170 reais, Transportes Pampa"
+597,4,2025/26,milho,2025-08-09,Sementes,Coop. Agricola Regional,43538.49,"sementes 43.538 reais, Coop. Agricola Regional"
+598,4,2025/26,milho,2025-08-28,Fertilizantes,Fertisul Revenda,37152.87,paguei 37.153 de fertilizantes pra Fertisul Revenda
+599,4,2025/26,milho,2025-09-18,Fertilizantes,Agro Insumos RS,44481.8,lanca ai 44.482 fertilizantes da Estancia do Pai
+600,4,2025/26,milho,2025-10-02,Defensivos,Agro Insumos RS,9299.18,lanca ai 9.299 defensivos da Estancia do Pai
+601,4,2025/26,milho,2025-11-26,Defensivos,Defesa Agricola Ltda,13077.06,saiu 13.077 de defensivos lá na Estancia do Pai
+602,4,2025/26,milho,2025-12-22,Defensivos,Defesa Agricola Ltda,15719.94,lanca ai 15.720 defensivos da Estancia do Pai
+603,4,2025/26,milho,2025-08-01,Diesel e operacoes,Posto Trevo,6525.99,lanca ai 6.526 diesel e operacoes da Estancia do Pai
+604,4,2025/26,milho,2025-09-24,Diesel e operacoes,Posto Trevo,8596.65,saiu 8.597 de diesel e operacoes lá na Estancia do Pai
+605,4,2025/26,milho,2026-02-25,Diesel e operacoes,Posto BR do Campo,5748.7,lanca ai 5.749 diesel e operacoes da Estancia do Pai
+606,4,2025/26,milho,2026-03-23,Diesel e operacoes,Oficina do Ze (manutencao),9061.37,saiu 9.061 de diesel e operacoes lá na Estancia do Pai
+607,4,2025/26,milho,2025-09-25,Mao de obra,Folha funcionario fixo,2649.22,registra gasto de 2.649 com mao de obra
+608,4,2025/26,milho,2025-12-15,Mao de obra,Folha funcionario fixo,4621.51,"mao de obra 4.622 reais, Folha funcionario fixo"
+609,4,2025/26,milho,2026-03-09,Mao de obra,Folha funcionario fixo,3613.89,botei 3.614 em mao de obra hoje
+610,4,2025/26,milho,2025-10-26,Assistencia tecnica,Eng. Agronomo consultor,3119.29,"assistencia tecnica 3.119 reais, Eng. Agronomo consultor"
+611,4,2025/26,milho,2026-01-07,Assistencia tecnica,Eng. Agronomo consultor,2323.03,"assistencia tecnica 2.323 reais, Eng. Agronomo consultor"
+612,4,2025/26,milho,2025-08-08,Seguro e juros,Banco - custeio agricola,6394.7,paguei 6.395 de seguro e juros pra Banco - custeio agricola
+613,4,2025/26,milho,2026-04-09,Seguro e juros,Seguradora rural,7211.08,"seguro e juros 7.211 reais, Seguradora rural"
+614,4,2025/26,milho,2026-03-13,Frete e armazenagem,Transportes Pampa,9910.23,registra gasto de 9.910 com frete e armazenagem
+615,4,2025/26,milho,2026-04-18,Frete e armazenagem,Armazem da Cooperativa,11859.02,"frete e armazenagem 11.859 reais, Armazem da Cooperativa"
+616,4,2025/26,soja,2025-10-05,Sementes,Agropecuaria do Vale,44426.55,botei 44.427 em sementes hoje
+617,4,2025/26,soja,2025-09-18,Fertilizantes,Agro Insumos RS,41315.63,paguei 41.316 de fertilizantes pra Agro Insumos RS
+618,4,2025/26,soja,2025-10-17,Fertilizantes,Coop. Agricola Regional,55615.03,paguei 55.615 de fertilizantes pra Coop. Agricola Regional
+619,4,2025/26,soja,2025-11-27,Defensivos,Defesa Agricola Ltda,26013.68,lanca ai 26.014 defensivos da Estancia do Pai
+620,4,2025/26,soja,2025-12-03,Defensivos,Defesa Agricola Ltda,21763.37,lanca ai 21.763 defensivos da Estancia do Pai
+621,4,2025/26,soja,2026-01-01,Defensivos,Agro Insumos RS,23238.44,botei 23.238 em defensivos hoje
+622,4,2025/26,soja,2026-02-15,Defensivos,Coop. Agricola Regional,17837.61,paguei 17.838 de defensivos pra Coop. Agricola Regional
+623,4,2025/26,soja,2025-10-16,Diesel e operacoes,Posto Trevo,11286.16,paguei 11.286 de diesel e operacoes pra Posto Trevo
+624,4,2025/26,soja,2025-11-18,Diesel e operacoes,Oficina do Ze (manutencao),11689.8,registra gasto de 11.690 com diesel e operacoes
+625,4,2025/26,soja,2026-03-01,Diesel e operacoes,Posto Trevo,11275.3,botei 11.275 em diesel e operacoes hoje
+626,4,2025/26,soja,2026-04-24,Diesel e operacoes,Posto BR do Campo,10175.3,botei 10.175 em diesel e operacoes hoje
+627,4,2025/26,soja,2025-10-26,Mao de obra,Diaristas safra,6363.68,paguei 6.364 de mao de obra pra Diaristas safra
+628,4,2025/26,soja,2025-12-04,Mao de obra,Diaristas safra,2826.0,lanca ai 2.826 mao de obra da Estancia do Pai
+629,4,2025/26,soja,2026-02-07,Mao de obra,Folha funcionario fixo,5758.36,"mao de obra 5.758 reais, Folha funcionario fixo"
+630,4,2025/26,soja,2026-04-09,Mao de obra,Folha funcionario fixo,5245.85,paguei 5.246 de mao de obra pra Folha funcionario fixo
+631,4,2025/26,soja,2025-11-19,Assistencia tecnica,Eng. Agronomo consultor,3980.34,saiu 3.980 de assistencia tecnica lá na Estancia do Pai
+632,4,2025/26,soja,2026-02-08,Assistencia tecnica,Eng. Agronomo consultor,4097.21,saiu 4.097 de assistencia tecnica lá na Estancia do Pai
+633,4,2025/26,soja,2025-10-28,Seguro e juros,Banco - custeio agricola,13230.16,paguei 13.230 de seguro e juros pra Banco - custeio agricola
+634,4,2025/26,soja,2026-05-13,Seguro e juros,Seguradora rural,6963.73,registra gasto de 6.964 com seguro e juros
+635,4,2025/26,soja,2026-04-01,Frete e armazenagem,Transportes Pampa,19959.33,paguei 19.959 de frete e armazenagem pra Transportes Pampa
+636,4,2025/26,soja,2026-05-16,Frete e armazenagem,Armazem da Cooperativa,12350.89,saiu 12.351 de frete e armazenagem lá na Estancia do Pai
+637,1,2023/24,soja,2023-10-05,Seguro e juros,Seguradora rural,15854.3,lanca ai 15.854 seguro e juros da Fazenda Boa Vista
