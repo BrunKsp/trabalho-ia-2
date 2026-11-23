@@ -189,6 +189,26 @@ O servidor é independente da interface. Exemplo para o Claude Desktop
 
 ---
 
+## Interface
+
+Cada número que o consultor usa aparece num **comprovante**: campos com rótulo (valor, data, categoria, fornecedor e a **origem** do dado), no estilo da nota do produtor. Ícones Material Symbols, fonte Public Sans com algarismos tabulares e o verde do CampoSync na barra lateral.
+
+| Painel da safra | Consultor (início) |
+|---|---|
+| ![Painel](docs/resultados/prints/01-painel.png) | ![Consultor](docs/resultados/prints/02-consultor-inicio.png) |
+| **Aguardando a resposta** (progresso por consulta) | **Erro na língua do produtor** (pergunta guardada + tentar de novo) |
+| ![Aguardando](docs/resultados/prints/03-consultor-aguardando.png) | ![Erro](docs/resultados/prints/04-consultor-erro-tentar-de-novo.png) |
+| **Recomendações** (números em campos) | **Importar dados** |
+| ![Recomendações](docs/resultados/prints/05-recomendacoes.png) | ![Importar](docs/resultados/prints/06-importar-dados.png) |
+
+No celular (uso principal do produtor, no campo):
+
+| Início | Resposta com comprovante | Menu |
+|---|---|---|
+| ![Celular início](docs/resultados/prints/07-celular-consultor.png) | ![Celular resposta](docs/resultados/prints/08-celular-resposta-comprovante.png) | ![Celular menu](docs/resultados/prints/09-celular-menu.png) |
+
+---
+
 ## Testes e avaliação
 
 ### Testes automatizados (sem LLM, sem internet)
