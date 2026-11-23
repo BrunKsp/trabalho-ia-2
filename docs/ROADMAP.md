@@ -35,7 +35,7 @@ Itens exigidos pelo enunciado. Sem eles a nota fica comprometida.
 - [x] **Commits de todos os integrantes.** Cada pessoa do grupo faz ao menos um commit real com a própria identidade; o enunciado zera a nota de quem não tiver evidência de contribuição.
 - [x] **Validar a execução do zero** em uma máquina limpa: clonar, criar venv, `pip install -r requirements.txt`, definir `OPENROUTER_API_KEY`, `streamlit run app.py`. Corrigir o que quebrar. *(Validado em venv limpo; app agora abre mesmo sem chave.)*
 - [x] **Conferir o `requirements.txt`**: o código usa `openai` (cliente do OpenRouter); confirmar que nada sobrou do `anthropic`.
-- [x] **Exemplos de resultados** em `docs/resultados/`: avaliação do agente com as respostas completas, log de exemplo e 9 prints da interface (painel, consultor, recomendações, importar, celular). *(Os prints que dependem de resposta do LLM — aguardando, erro e comprovante no celular — são da rodada anterior; refazer se houver cota de modelo.)*
+- [x] **Exemplos de resultados** em `docs/resultados/`: avaliação do agente com as respostas completas, log de exemplo e 9 prints da interface (painel, consultor, recomendações, importar, celular). *(Só o print 08, resposta com comprovante no celular, é da rodada anterior: em 23/11 a cota diária de modelos gratuitos do OpenRouter estava esgotada; o 04 é o erro real dessa situação.)*
 - [x] **Seção "Problema e valor" no README**: quem é o usuário, qual a dor, o que muda com a solução (o professor avalia problema real e valor gerado, não só tecnologia).
 - [x] **Deixar claro que os dados são sintéticos**, com estrutura de custos baseada nas planilhas da Conab.
 
@@ -51,7 +51,7 @@ Itens que a revisão de design deixou abertos e que foram fechados, e o que aind
 - [x] Cores soltas viraram tokens em `ui/tema.py` (`VERDE_FIO`, `OK_FIO`, `ERRO_FIO`, `GRADE`).
 - [x] Prints do repositório refeitos com a interface atual.
 - [ ] Ícones de 16/18/20px e fonte 13px nos gráficos ficam fora da escala de 4 tamanhos (desvio pequeno, anotado no `DESIGN.md`).
-- [ ] Refazer os prints que dependem de resposta do LLM (precisa de cota de modelo).
+- [ ] Refazer o print 08 (resposta no celular) com cota de modelo disponível.
 
 ---
 
