@@ -1,0 +1,121 @@
+"""Painel: visão geral da safra com métricas, gráficos e alertas."""
+import plotly.graph_objects as go
+import streamlit as st
+
+from ui import dados, estado, tema
+
+
+def _variacao(atual, anterior, mais_e_melhor=True):
+    """Texto e tom da variação percentual vs safra anterior."""
+    if not anterior:
+        return "", "neutro"
+    pct = (atual - anterior) / abs(anterior) * 100
+    seta = "▲" if pct >= 0 else "▼"
+    bom = (pct >= 0) == mais_e_melhor
+    return f"{seta} {abs(pct):.1f}% vs safra anterior", ("bom" if bom else "ruim")
+
+
+def render(fazenda: dict):
+    fid = fazenda["id"]
+    tema.cabecalho(fazenda["nome"], f'{fazenda["municipio"]} · {fazenda["area_ha"]} ha · {fazenda["culturas"].replace(",", ", ")}')
+
+    lista_safras = dados.safras(fid)
+    lista_culturas = dados.culturas(fid)
+
+    f1, f2, _ = st.columns([1, 1, 2])
+    safra = f1.selectbox("Safra", lista_safras[::-1], key=f"safra_{fid}")
+    cult_sel = f2.selectbox("Cultura", ["Todas"] + [c.capitalize() for c in lista_culturas], key=f"cult_{fid}")
+    cultura = None if cult_sel == "Todas" else cult_sel.lower()
+
+    res = dados.resultado(fid, safra, cultura)
+    idx = lista_safras.index(safra)
+    ant = dados.resultado(fid, lista_safras[idx - 1], cultura) if idx > 0 else None
+
+    # ── Métricas ────────────────────────────────────────────────────────────
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        v, t = _variacao(res["receita_bruta"], ant and ant["receita_bruta"])
+        tema.kpi("Receita bruta", tema.brl(res["receita_bruta"]), v, t)
+    with c2:
+        v, t = _variacao(res["despesa_total"], ant and ant["despesa_total"], mais_e_melhor=False)
+        tema.kpi("Despesa total", tema.brl(res["despesa_total"]), v, t)
+    with c3:
+        pct = res["margem_pct"]
+        tema.kpi("Margem bruta", tema.brl(res["margem_bruta"]),
+                 f"{pct:.1f}% da receita" if pct is not None else "sem receita registrada", destaque=True)
+    with c4:
+        prod = res["produtividade_sc_ha"]
+        v, t = _variacao(prod or 0, ant and ant["produtividade_sc_ha"])
+        tema.kpi("Produtividade média", f"{prod:.1f} sc/ha" if prod else "—", v, t)
+
+    # ── Gráficos ────────────────────────────────────────────────────────────
+    g1, g2 = st.columns(2)
+    with g1:
+        tema.secao("Para onde foi o dinheiro", f"Custos por categoria · safra {safra}")
+        df = dados.custos_por_categoria(fid, safra, cultura)
+        if df.empty:
+            st.info("Sem lançamentos para esta seleção.")
+        else:
+            df = df.sort_values("total")
+            fig = go.Figure(go.Bar(
+                x=df["total"], y=df["categoria"], orientation="h",
+                marker_color=tema.VERDE, text=[tema.brl(v) for v in df["total"]],
+                textposition="outside", cliponaxis=False,
+                hovertemplate="%{y}: %{text}<extra></extra>",
+            ))
+            fig.update_xaxes(visible=False, range=[0, df["total"].max() * 1.35])
+            st.plotly_chart(tema.layout_grafico(fig, 360), use_container_width=True, config={"displayModeBar": False})
+
+    with g2:
+        tema.secao("Resultado por safra", "Receita, despesa e margem ao longo do tempo")
+        ev = dados.evolucao(fid, cultura)
+        fig = go.Figure()
+        fig.add_bar(x=ev["safra"], y=ev["receita"], name="Receita", marker_color=tema.VERDE,
+                    hovertemplate="Receita: R$ %{y:,.0f}<extra></extra>")
+        fig.add_bar(x=ev["safra"], y=ev["despesa"], name="Despesa", marker_color=tema.OURO,
+                    hovertemplate="Despesa: R$ %{y:,.0f}<extra></extra>")
+        fig.add_scatter(x=ev["safra"], y=ev["margem"], name="Margem", mode="lines+markers",
+                        line=dict(color=tema.TERRA, width=3),
+                        hovertemplate="Margem: R$ %{y:,.0f}<extra></extra>")
+        fig.update_layout(barmode="group")
+        st.plotly_chart(tema.layout_grafico(fig, 360), use_container_width=True, config={"displayModeBar": False})
+
+    # ── Cotação ─────────────────────────────────────────────────────────────
+    tema.secao("Mercado", "Preço da saca (série sintética de demonstração)")
+    padrao = cultura or lista_culturas[0]
+    produtos = ["soja", "milho", "trigo"]
+    produto = st.radio("Produto", produtos, index=produtos.index(padrao) if padrao in produtos else 0,
+                       horizontal=True, label_visibility="collapsed", key=f"prod_{fid}")
+    cot = dados.cotacoes(produto)
+    atual, anterior = cot["preco_saca"].iloc[-1], cot["preco_saca"].iloc[-5]
+    fig = go.Figure(go.Scatter(
+        x=cot["data"], y=cot["preco_saca"], mode="lines", line=dict(color=tema.VERDE, width=2.5),
+        fill="tozeroy", fillcolor="rgba(31,107,67,.08)",
+        hovertemplate="%{x|%d/%m/%Y}<br>R$ %{y:.2f}/saca<extra></extra>",
+    ))
+    fig.update_yaxes(range=[cot["preco_saca"].min() * 0.9, cot["preco_saca"].max() * 1.05])
+    st.plotly_chart(tema.layout_grafico(fig, 280), use_container_width=True, config={"displayModeBar": False})
+    v, _ = _variacao(atual, anterior)
+    st.caption(f"Cotação mais recente ({cot['data'].iloc[-1]:%d/%m/%Y}): **R$ {atual:.2f}/saca** · {v.replace('vs safra anterior', 'em 4 semanas')}")
+
+    # ── Alertas ─────────────────────────────────────────────────────────────
+    tema.secao("Gastos fora do normal", "Categorias que fugiram mais de 20% da média histórica da fazenda")
+    alertas = dados.anomalias(fid)[:4]
+    if not alertas:
+        st.success("Nenhum gasto fora do padrão encontrado. 👏")
+    for i, a in enumerate(alertas):
+        col_txt, col_btn = st.columns([5, 1.4])
+        sinal = "+" if a["desvio_pct"] > 0 else ""
+        cat = dados.nome_categoria(a["categoria"])
+        with col_txt:
+            st.markdown(
+                f'<div class="alerta {"alta" if abs(a["desvio_pct"]) >= 25 else "media"}">'
+                f'<div class="tit">{tema.esc(cat)} · {tema.esc(a["cultura"])} · safra {tema.esc(a["safra"])} '
+                f'<span class="selo {"alta" if a["desvio_pct"] > 0 else ""}">{sinal}{a["desvio_pct"]:.0f}%</span></div>'
+                f'<div class="txt">{tema.brl(a["total"])} gastos, contra média de {tema.brl(a["media_historica"])}.</div></div>',
+                unsafe_allow_html=True,
+            )
+        with col_btn:
+            pergunta = f"Por que os gastos com {cat.lower()} em {a['cultura']} na safra {a['safra']} ficaram {abs(a['desvio_pct']):.0f}% {'acima' if a['desvio_pct'] > 0 else 'abaixo'} da média?"
+            st.button("🔎 Investigar", key=f"inv_{fid}_{i}", use_container_width=True,
+                      on_click=estado.perguntar_ao_consultor, args=(pergunta,))

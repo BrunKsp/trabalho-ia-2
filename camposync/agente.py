@@ -233,21 +233,37 @@ def executar_ferramenta(nome: str, args: dict) -> str:
         return json.dumps({"erro": str(e)})
 
 
-def perguntar(mensagens: list) -> str:
-    """Envia mensagens para o agente e processa chamadas de ferramentas."""
+def perguntar_detalhado(mensagens: list, ao_chamar_ferramenta=None) -> dict:
+    """
+    Envia mensagens ao agente, executa as ferramentas pedidas e devolve:
+      resposta   -> texto final
+      ferramentas-> [{"nome", "args", "resultado", "segundos"}] na ordem de execução
+      fontes     -> trechos do RAG consultados [{"fonte", "pagina", "texto"}]
+      modelo     -> modelo que respondeu
+    `ao_chamar_ferramenta(nome, args)` (opcional) é chamado antes de cada ferramenta,
+    útil para a interface mostrar o progresso.
+    """
     messages = [{"role": "system", "content": SYSTEM}]
     for msg in mensagens:
         content = msg["content"]
         if isinstance(content, str):
             messages.append({"role": msg["role"], "content": content})
 
+    ferramentas, fontes, modelo = [], [], None
+
     while True:
         response = _create_with_fallback(messages)
+        modelo = getattr(response, "model", None) or modelo
 
         msg = response.choices[0].message
 
         if not msg.tool_calls:
-            return msg.content or "(sem resposta)"
+            return {
+                "resposta": msg.content or "(sem resposta)",
+                "ferramentas": ferramentas,
+                "fontes": fontes,
+                "modelo": modelo,
+            }
 
         # Adiciona a resposta do modelo com as tool_calls ao histórico
         messages.append(msg)
@@ -256,12 +272,33 @@ def perguntar(mensagens: list) -> str:
         for tc in msg.tool_calls:
             args = json.loads(tc.function.arguments)
             print(f"  [ferramenta] {tc.function.name}({args})")
+            if ao_chamar_ferramenta:
+                ao_chamar_ferramenta(tc.function.name, args)
+            inicio = time.time()
             result = executar_ferramenta(tc.function.name, args)
+            ferramentas.append({
+                "nome": tc.function.name,
+                "args": args,
+                "resultado": result,
+                "segundos": round(time.time() - inicio, 2),
+            })
+            if tc.function.name == "buscar_documentos":
+                try:
+                    for trecho in json.loads(result):
+                        if isinstance(trecho, dict) and trecho.get("fonte"):
+                            fontes.append({"fonte": trecho["fonte"], "pagina": trecho.get("pagina", ""), "texto": trecho.get("texto", "")})
+                except (ValueError, TypeError):
+                    pass
             messages.append({
                 "role": "tool",
                 "tool_call_id": tc.id,
                 "content": result,
             })
+
+
+def perguntar(mensagens: list) -> str:
+    """Versão simples: devolve só o texto da resposta."""
+    return perguntar_detalhado(mensagens)["resposta"]
 
 
 def main():
