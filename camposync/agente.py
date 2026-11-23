@@ -76,6 +76,13 @@ SYSTEM = textwrap.dedent("""
     Quando encontrar anomalias ou variações relevantes, explique a causa provável.
     Cite valores em Reais (R$) e percentuais quando relevante.
     Se não souber algo com certeza, diga que não tem dados suficientes.
+    O produtor lê no celular, no campo: comece pela conclusão em uma ou duas frases,
+    use listas curtas em vez de tabelas largas (no máximo 3 colunas, se precisar de tabela)
+    e termine com o próximo passo prático.
+    Escreva datas no formato dd/mm/aaaa. Nunca mostre IDs nem números internos de lançamentos:
+    descreva o lançamento por data, categoria, fornecedor e valor.
+    Quando houver lançamento duplicado, diga que ele pode apagar a cópia repetida pelo botão
+    logo abaixo desta resposta (o original fica); não mande procurar em outro sistema.
 """).strip()
 
 

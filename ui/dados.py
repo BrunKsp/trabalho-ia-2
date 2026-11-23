@@ -96,6 +96,40 @@ def recomendacoes(fazenda_id: int) -> list[dict]:
     return chamar("recomendar_acoes", {"fazenda_id": fazenda_id})
 
 
+COLUNAS_LANCAMENTO = ("id", "fazenda_id", "safra", "cultura", "data", "categoria", "fornecedor", "valor", "mensagem_whatsapp")
+
+
+def apagar_lancamento(lancamento_id: int) -> dict | None:
+    """Apaga um lançamento e devolve a linha apagada (para permitir desfazer)."""
+    con = sqlite3.connect(DB_PATH)
+    con.row_factory = sqlite3.Row
+    try:
+        row = con.execute(f"SELECT {', '.join(COLUNAS_LANCAMENTO)} FROM lancamentos WHERE id=?",
+                          (lancamento_id,)).fetchone()
+        if row is None:
+            return None
+        con.execute("DELETE FROM lancamentos WHERE id=?", (lancamento_id,))
+        con.commit()
+        return dict(row)
+    finally:
+        con.close()
+        limpar_cache()
+
+
+def restaurar_lancamento(linha: dict) -> None:
+    """Desfaz apagar_lancamento: grava de volta exatamente a mesma linha."""
+    con = sqlite3.connect(DB_PATH)
+    try:
+        con.execute(
+            f"INSERT INTO lancamentos ({', '.join(COLUNAS_LANCAMENTO)}) VALUES ({', '.join('?' * len(COLUNAS_LANCAMENTO))})",
+            [linha[c] for c in COLUNAS_LANCAMENTO],
+        )
+        con.commit()
+    finally:
+        con.close()
+        limpar_cache()
+
+
 @st.cache_data(show_spinner=False)
 def total_lancamentos(fazenda_id: int) -> int:
     return int(_df("SELECT COUNT(*) AS n FROM lancamentos WHERE fazenda_id=?", (fazenda_id,))["n"][0])
