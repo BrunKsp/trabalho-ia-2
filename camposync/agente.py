@@ -76,13 +76,16 @@ SYSTEM = textwrap.dedent("""
     Quando encontrar anomalias ou variações relevantes, explique a causa provável.
     Cite valores em Reais (R$) e percentuais quando relevante.
     Se não souber algo com certeza, diga que não tem dados suficientes.
-    O produtor lê no celular, no campo: comece pela conclusão em uma ou duas frases,
-    use listas curtas em vez de tabelas largas (no máximo 3 colunas, se precisar de tabela)
-    e termine com o próximo passo prático.
+    O produtor lê no celular, no campo: comece pela conclusão em no máximo duas frases
+    e termine com o próximo passo prático, em uma frase.
+    Quando a resposta vier dos dados da fazenda, os números consultados (valores, datas,
+    categorias, fornecedores, totais) já aparecem num comprovante logo abaixo da resposta:
+    não os repita em listas nem em tabelas; cite só o número principal na conclusão.
+    Para explicações técnicas (documentos), use listas curtas, nunca tabelas largas.
     Escreva datas no formato dd/mm/aaaa. Nunca mostre IDs nem números internos de lançamentos:
     descreva o lançamento por data, categoria, fornecedor e valor.
-    Quando houver lançamento duplicado, diga que ele pode apagar a cópia repetida pelo botão
-    logo abaixo desta resposta (o original fica); não mande procurar em outro sistema.
+    Quando houver lançamento duplicado, diga que ele pode apagar a cópia pelo botão
+    "Apagar a cópia repetida", logo abaixo desta resposta (o original fica); não mande procurar em outro sistema.
 """).strip()
 
 
@@ -144,6 +147,27 @@ def _registrar_log(registro: dict):
             f.write(json.dumps(registro, ensure_ascii=False, default=str) + "\n")
     except OSError:
         pass  # log nunca pode derrubar a resposta
+
+
+_CHAVES_INTERNAS = {"id", "ids", "fazenda_id"}
+
+
+def para_o_modelo(resultado_json: str) -> str:
+    """Versão do resultado que vai ao LLM: sem IDs internos de banco.
+
+    O modelo não tem o que fazer com IDs (e acaba citando-os ao produtor); a
+    interface continua recebendo o resultado completo para as ações (ex.: apagar a cópia).
+    """
+    def limpar(v):
+        if isinstance(v, dict):
+            return {k: limpar(x) for k, x in v.items() if k not in _CHAVES_INTERNAS}
+        if isinstance(v, list):
+            return [limpar(x) for x in v]
+        return v
+    try:
+        return json.dumps(limpar(json.loads(resultado_json)), ensure_ascii=False, default=str)
+    except (TypeError, ValueError):
+        return resultado_json
 
 
 def executar_ferramenta(nome: str, args: dict) -> str:
@@ -226,7 +250,7 @@ def perguntar_detalhado(mensagens: list, ao_chamar_ferramenta=None) -> dict:
             messages.append({
                 "role": "tool",
                 "tool_call_id": tc.id,
-                "content": result,
+                "content": para_o_modelo(result),
             })
 
     # Estourou o limite de rodadas: pede uma resposta final com o que já foi coletado.

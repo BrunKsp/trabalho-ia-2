@@ -185,3 +185,24 @@ def test_grava_log_da_conversa(monkeypatch):
     assert reg["pergunta"] == PERGUNTA[0]["content"]
     assert reg["ferramentas"][0]["nome"] == "detectar_anomalias"
     assert reg["resposta"] == "Fertilizante 28% acima."
+
+
+def test_modelo_nao_recebe_ids_internos(monkeypatch):
+    """O LLM recebe o resultado sem IDs; a interface recebe o resultado completo."""
+    capturadas = []
+    llm = _usar(monkeypatch, [
+        _resp(tool_calls=[_tool_call("detectar_duplicados", {"fazenda_id": 1})]),
+        _resp("ok"),
+    ])
+    original = llm._create
+
+    def espiao(model, messages, **kw):
+        capturadas.append(list(messages))
+        return original(model, messages, **kw)
+
+    llm.chat.completions.create = espiao
+    r = agente.perguntar_detalhado(PERGUNTA)
+    para_llm = json.loads(capturadas[-1][-1]["content"])
+    assert "ids" not in para_llm["exatos"][0] and "fazenda_id" not in para_llm
+    assert para_llm["exatos"][0]["valor"] == pytest.approx(15854.30)
+    assert json.loads(r["ferramentas"][0]["resultado"])["exatos"][0]["ids"] == [58, 637]
