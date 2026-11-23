@@ -1,0 +1,184 @@
+[
+  {
+    "pergunta": "Qual foi o gasto total na safra 2025/26 com soja?",
+    "fazenda": "Fazenda Boa Vista",
+    "esperado": [
+      [
+        "gastos_por_safra"
+      ],
+      [
+        "resultado_safra"
+      ]
+    ],
+    "chamadas": [
+      "gastos_por_safra"
+    ],
+    "ferramenta_ok": true,
+    "fatos_ok": 2,
+    "fatos_total": 2,
+    "segundos": 22.2,
+    "modelo": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "erro": null,
+    "fontes": [],
+    "resposta": "Na safra **2025/26**, a Fazenda Boa Vista gastou um total de **R$ 960.657,65** com a cultura de **soja**.\n\n**Detalhamento por categoria:**\n\n| Categoria | Valor (R$) |\n|-----------|------------|\n| Fertilizantes | 276.531,14 |\n| Defensivos | 198.036,63 |\n| Arrendamento | 108.019,98 |\n| Sementes | 99.018,31 |\n| Diesel e operações | 99.018,31 |\n| Frete e armazenagem | 72.013,31 |\n| Seguro e juros | 45.008,32 |\n| Mão de obra | 45.008,32 |\n| Assistência técnica | 18.003,33 |\n| **Total** | **960.657,65** |\n\nAs maiores despesas concentram-se em **Fertilizantes** (28,8% do total) e **Defensivos** (20,6%), seguidas por **Arrendamento** (11,2%)."
+  },
+  {
+    "pergunta": "Por que a safra de soja 2025/26 custou mais do que a 2024/25?",
+    "fazenda": "Fazenda Boa Vista",
+    "esperado": [
+      [
+        "comparar_safras"
+      ]
+    ],
+    "chamadas": [
+      "comparar_safras"
+    ],
+    "ferramenta_ok": true,
+    "fatos_ok": 2,
+    "fatos_total": 2,
+    "segundos": 17.9,
+    "modelo": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "erro": null,
+    "fontes": [],
+    "resposta": "A safra de soja **2025/26** custou **R$ 960.657,65**, contra **R$ 865.373,24** na 2024/25 — um aumento de **11,0% (R$ 95.284,41 a mais)**.\n\n### O principal responsável: **Fertilizantes**\n| Categoria | 2024/25 | 2025/26 | Variação | Impacto no total |\n|-----------|---------|---------|----------|------------------|\n| **Fertilizantes** | R$ 207.689,58 | R$ 276.531,14 | **+33,1%** | **+R$ 68.841,56** (72% do aumento total) |\n| Demais categorias (8 itens) | ~R$ 657.683,66 | ~R$ 684.126,51 | **~+4,0% cada** | +R$ 26.442,85 |\n\n### Interpretação\n- **Fertilizantes** subiram **muito acima da inflação** (33% vs. ~4% das outras categorias). Isso sugere:\n  1. **Aumento de dose/área** (mais hectares ou maior taxa de aplicação);\n  2. **Troca de formulação** por produtos mais caros (ex.: maior teor de P/K, uso de micronutrientes);\n  3. **Alta de preços de mercado** (fosfatados e potássicos tiveram picos em 2024/25).\n- As demais categorias (arrendamento, defensivos, diesel, sementes, mão de obra, etc.) acompanharam uma inflação próxima de **4%**, o que é consistente com o IPCA/IGP-M do período.\n\n### Próximos passos recomendados\n1. **Verifique os lançamentos de Fertilizantes** na 2025/26 para confirmar se houve mudança de fornecedor, produto ou quantidade.\n2. Compare o **custo por hectare** (se a área plantou igual, o custo/ha subiu 33% só em fertilizantes).\n3. Avalie se a **produtividade compensou** o gasto extra — a margem da safra dirá se valeu a pena.\n\nQuer que eu puxe os lançamentos detalhados de Fertilizantes das duas safras para ver exatamente o que mudou?"
+  },
+  {
+    "pergunta": "Qual a margem bruta da safra 2024/25?",
+    "fazenda": "Fazenda Boa Vista",
+    "esperado": [
+      [
+        "resultado_safra"
+      ]
+    ],
+    "chamadas": [
+      "resultado_safra"
+    ],
+    "ferramenta_ok": true,
+    "fatos_ok": 2,
+    "fatos_total": 2,
+    "segundos": 11.8,
+    "modelo": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "erro": null,
+    "fontes": [],
+    "resposta": "**Margem bruta da safra 2024/25 – Fazenda Boa Vista (todas as culturas)**\n\n| Indicador | Valor |\n|---|---|\n| **Receita bruta** | R$ 1.333.014,10 |\n| **Despesa total** | R$ 1.483.722,00 |\n| **Margem bruta** | **– R$ 150.707,90** |\n| **Margem %** | **–11,3 %** |\n| Produção total | 13.420 sacas |\n| Produtividade média | 37,3 sc/ha |\n\nA safra fechou com **prejuízo operacional** (margem negativa), ou seja, os custos superaram a receita em cerca de R$ 151 mil. Se quiser entender quais categorias de custo mais pesaram ou comparar com a safra anterior, posso detalhar."
+  },
+  {
+    "pergunta": "Tem algum gasto fora do normal na minha fazenda?",
+    "fazenda": "Granja Tres Irmaos",
+    "esperado": [
+      [
+        "detectar_anomalias"
+      ]
+    ],
+    "chamadas": [
+      "detectar_anomalias"
+    ],
+    "ferramenta_ok": true,
+    "fatos_ok": 3,
+    "fatos_total": 3,
+    "segundos": 9.0,
+    "modelo": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "erro": null,
+    "fontes": [],
+    "resposta": "Sim, detectei **um gasto com desvio significativo** na Granja Três Irmãos:\n\n| Safra | Cultura | Categoria | Gasto Real | Média Histórica | Desvio |\n|-------|---------|-----------|------------|-----------------|--------|\n| 2024/25 | Milho | **Defensivos** | **R$ 179.502,46** | R$ 135.621,44 | **+32,4%** |\n\n**O que isso significa:**  \nO gasto com defensivos na safra 2024/25 de milho ficou **R$ 43.881,02 acima** da média histórica da fazenda (desvio de 32,4%, acima do limite de 20% que uso como alerta).\n\n**Possíveis causas:**\n- Aumento de pressão de pragas/doenças (ex.: cigarrinha, ferrugem, lagartas)\n- Aplicação de produtos mais caros ou em maior número de passadas\n- Variação cambial impactando preços de princípios ativos importados\n- Área plantada maior que a média histórica (verificar se a área de milho expandiu)\n\nQuer que eu:\n1. Detalhe os lançamentos individuais de defensivos nessa safra para ver quais produtos/passadas puxaram o custo?\n2. Compare com a safra anterior (2023/24) para ver a evolução?\n3. Verifique se há algum lançamento duplicado nessa categoria?"
+  },
+  {
+    "pergunta": "Tem algum lançamento duplicado?",
+    "fazenda": "Fazenda Boa Vista",
+    "esperado": [
+      [
+        "detectar_duplicados"
+      ]
+    ],
+    "chamadas": [
+      "detectar_duplicados"
+    ],
+    "ferramenta_ok": true,
+    "fatos_ok": 2,
+    "fatos_total": 2,
+    "segundos": 7.1,
+    "modelo": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "erro": null,
+    "fontes": [],
+    "resposta": "**Sim, foi encontrado 1 lançamento duplicado exato na Fazenda Boa Vista:**\n\n| Safra | Cultura | Data | Categoria | Fornecedor | Valor | Ocorrências | IDs |\n|-------|---------|------|-----------|------------|-------|-------------|-----|\n| 2023/24 | Soja | 2023-10-05 | Seguro e juros | Seguradora rural | **R$ 15.854,30** | 2x | 58, 637 |\n\n**Impacto financeiro:** R$ 15.854,30 em excesso (o valor foi contado duas vezes).\n\n**O que fazer:**\n- Verifique qual dos IDs (58 ou 637) é o correto e exclua o duplicado\n- Isso provavelmente ocorreu por uma importação duplicada de nota fiscal ou lançamento manual repetido\n\nNão foram encontrados lançamentos \"suspeitos\" (mesmo fornecedor/categoria/valor em datas próximas)."
+  },
+  {
+    "pergunta": "Qual a cotação da soja hoje?",
+    "fazenda": "Fazenda Boa Vista",
+    "esperado": [
+      [
+        "cotacao_atual"
+      ]
+    ],
+    "chamadas": [
+      "cotacao_atual"
+    ],
+    "ferramenta_ok": true,
+    "fatos_ok": 1,
+    "fatos_total": 1,
+    "segundos": 5.4,
+    "modelo": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "erro": null,
+    "fontes": [],
+    "resposta": "**Cotação da soja hoje (16/11/2026):**\n\n- **Produto:** Soja\n- **Preço:** **R$ 129,11 por saca (60 kg)**\n- **Praça:** RS (sintético)\n\n*Fonte: cotação mais recente disponível no sistema.*"
+  },
+  {
+    "pergunta": "Segundo a Embrapa, como é composto o custo de produção da soja?",
+    "fazenda": "Fazenda Boa Vista",
+    "esperado": [
+      [
+        "buscar_documentos"
+      ]
+    ],
+    "chamadas": [
+      "buscar_documentos",
+      "buscar_documentos",
+      "buscar_documentos",
+      "buscar_documentos",
+      "buscar_documentos",
+      "buscar_documentos"
+    ],
+    "ferramenta_ok": true,
+    "fatos_ok": 2,
+    "fatos_total": 2,
+    "segundos": 41.9,
+    "modelo": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "erro": null,
+    "fontes": [
+      "Dialnet-GestaoDeCustosNaProducaoDeMilhoESoja-7095226.pdf p.12",
+      "Dialnet-GestaoDeCustosNaProducaoDeMilhoESoja-7095226.pdf p.15",
+      "Dialnet-GestaoDeCustosNaProducaoDeMilhoESoja-7095226.pdf p.16",
+      "Dialnet-GestaoDeCustosNaProducaoDeMilhoESoja-7095226.pdf p.2",
+      "Dialnet-GestaoDeCustosNaProducaoDeMilhoESoja-7095226.pdf p.7",
+      "Dialnet-GestaoDeCustosNaProducaoDeMilhoESoja-7095226.pdf p.8",
+      "artigo_custos_variaveis_soja_noroeste_RS.pdf p.17",
+      "artigo_custos_variaveis_soja_noroeste_RS.pdf p.9",
+      "artigo_precos_custos_soja_RS_2010-2024.pdf p.3",
+      "embrapa_avaliacao_economica_soja_PR_RS.pdf p.4"
+    ],
+    "resposta": "Baseado nos documentos da base de conhecimento (incluindo publicações da Embrapa e estudos sobre custos no RS), a **Embrapa estrutura o custo de produção da soja** seguindo uma metodologia semelhante à da Conab, organizada em **níveis crescentes de abrangência**:\n\n---\n\n### 1. **Custos Variáveis (Custeio da lavoura)**\nSão despesas que variam proporcionalmente à área plantada ou ao volume produzido:\n\n| Grupo | Itens principais |\n|-------|------------------|\n| **Insumos** | Sementes, fertilizantes (N, P, K, micronutrientes), defensivos (herbicidas, fungicidas, inseticidas), inoculantes |\n| **Operações com máquinas** | Preparo do solo, semeadura, pulverizações, colheita, transporte interno — combustível, lubrificantes, manutenção |\n| **Mão de obra variável** | Operadores de máquinas, aplicadores, trabalhadores de colheita + encargos trabalhistas proporcionais |\n| **Despesas administrativas** | Assistência técnica, seguros agrícolas, taxas, certificações |\n| **Pós-colheita** | Secagem, limpeza, armazenagem, transporte externo, frete até o ponto de venda |\n\n---\n\n### 2. **Custos Fixos (Estrutura da propriedade)**\nNão variam com o nível de produção na safra:\n\n| Grupo | Itens principais |\n|-------|------------------|\n| **Depreciação** | Benfeitorias (galpões, silos), instalações, máquinas e implementos, veículos |\n| **Mão de obra fixa** | Salários permanentes (gerente, tratoristas fixos) + encargos (INSS, FGTS, 13º, férias) |\n| **Seguros e impostos** | Seguro do capital fixo, ITR, taxas de manutenção da propriedade |\n| **Outros** | Manutenção de infraestrutura (estradas, cercas, energia) |\n\n---\n\n### 3. **Custo Operacional Efetivo (COE)**\n> **COE = Custos Variáveis + Custos Fixos**  \n> Representa o desembolso real + depreciação necessária para manter a atividade funcionando.\n\n---\n\n### 4. **Custo Operacional Total (COT)**\n> **COT = COE + Remuneração esperada do capital fixo (juros sobre capital próprio investido em máquinas/benfeitorias) + Remuneração da terra (custo de oportunidade: arrendamento ou valor de mercado)**  \n> Inclui a **renda dos fatores de produção próprios**.\n\n---\n\n### 5. **Custo Total (CT)**\n> **CT = COT + Custo de Oportunidade do Capital de Giro** (remuneração do capital circulante investido em insumos, mão de obra, etc., durante o ciclo da cultura).  \n> É o **referencial para decisão de longo prazo** (continuar ou não na atividade).\n\n---\n\n### Participação relativa típica na soja (RS) — base estudos Embrapa/Conab\n| Componente | % do Custo Operacional Total (aproximado) |\n|------------|-------------------------------------------|\n| Fertilizantes e corretivos | 30–35% |\n| Defensivos | 18–22% |\n| Sementes | 12–15% |\n| Operações com máquinas (combustível, manutenção, depreciação) | 15–20% |\n| Mão de obra (fixa + variável + encargos) | 8–12% |\n| Terra (custo de oportunidade/arrendamento) | 10–15% |\n| Outros (seguro, admin, pós-colheita) | 5–8% |\n\n> **Nota:** A participação dos **defensivos** é a mais volátil ano a ano (depende de pressão de pragas/doenças e clima), enquanto **fertilizantes** e **terra** são mais estáveis.\n\n---\n\n### Como a Embrapa usa essa estrutura\n- **Análise de viabilidade**: compara **Receita Bruta (produtividade × preço)** vs. **Custo Total**.\n- **Margem bruta** = Receita Bruta – Custos Variáveis (decisão de curto prazo: plantar ou não).\n- **Margem operacional** = Receita Bruta – COE (cobertura de custos fixos + depreciação).\n- **Lucro econômico** = Receita Bruta – Custo Total (sustentabilidade de longo prazo).\n\n---\n\n### Referências na base\n- **Embrapa** – *Avaliação econômica da soja no PR e RS* (p. 4): detalha o custo de oportunidade (capital + terra).  \n- **Conab/Embrapa** – Metodologia de custos de produção (adaptada em estudos acadêmicos no RS): agrupamento em variáveis, fixos, operacionais e total.  \n- **Estudos RS** (Informe Gepec, Dialnet): confirmam os 5 grandes grupos de custo variável — **máquinas, mão de obra, sementes, fertilizantes, defensivos** — como os de maior peso e correlação com a receita.\n\n---\n\nSe quiser, posso **comparar essa estrutura teórica com os lançamentos reais da Fazenda Boa Vista** (sua fazenda selecionada) e apontar onde seus custos fogem ao padrão — basta me dizer a safra e a cultura (soja)."
+  },
+  {
+    "pergunta": "O que você recomenda para melhorar meus resultados?",
+    "fazenda": "Estancia do Pai",
+    "esperado": [
+      [
+        "recomendar_acoes"
+      ],
+      [
+        "detectar_anomalias"
+      ]
+    ],
+    "chamadas": [
+      "recomendar_acoes"
+    ],
+    "ferramenta_ok": true,
+    "fatos_ok": 1,
+    "fatos_total": 1,
+    "segundos": 17.7,
+    "modelo": "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "erro": null,
+    "fontes": [],
+    "resposta": "Baseado na análise do histórico financeiro da **Estância do Pai**, aqui estão as recomendações prioritárias:\n\n---\n\n### 🔴 **Alta Prioridade – Investigar a safra 2022/23 (Soja)**\n- **Margem:** apenas **R$ 3.801,68** (muito abaixo das demais).\n- **Ação:** Verifique se houve:\n  - Problema climático (seca, geada, excesso de chuva);\n  - Queda de produtividade (sacas/ha);\n  - Aumento atípico de custos (insumos, frete, mão de obra);\n  - Preço de venda desfavorável no momento da comercialização.\n- **Por que importa:** Entender a causa evita repetir o mesmo cenário.\n\n---\n\n### 🟡 **Média Prioridade – Replicar o sucesso da safra 2025/26 (Soja)**\n- **Melhor margem histórica:** **R$ 212.223,46**.\n- **Ação:** Compare essa safra com as outras:\n  - Clima e produtividade;\n  - Estratégia de venda (antecipação, contratos, mercado spot);\n  - Controle de custos por categoria (fertilizantes, defensivos, diesel, etc.);\n  - Manejo e tecnologia adotados.\n- **Objetivo:** Identificar os fatores replicáveis para as próximas safras.\n\n---\n\n### 🟢 **Baixa Prioridade – Planejar o fluxo de caixa sazonal**\nSeus maiores gastos concentram-se nos meses abaixo. **Antecipe reservas ou linhas de crédito** para não apertar o caixa:\n\n| Categoria | Mês de pico | Ação prática |\n|-----------|-------------|--------------|\n| **Fertilizantes** | Setembro | Negocie compra antecipada (jan–ago) ou trave preço com fornecedor. |\n| **Sementes** | Agosto | Defina variedade e feche pedido até junho/julho. |\n| **Diesel e operações** | Outubro | Programe manutenção de máquinas antes da safra; avalie compra de diesel no inverno. |\n| **Mão de obra** | Outubro | Alinhe contratações temporárias com antecedência. |\n| **Assistência técnica** | Novembro | Feche contrato anual com consultor/agronomo para diluir custo. |\n| **Defensivos** | Janeiro | Monitore pragas/doenças cedo; compre no pré-safra se houver desconto. |\n| **Frete e armazenagem** | Maio | Reserve espaço em armazém e negocie frete na entressafra. |\n| **Seguro e juros** | Maio | Renove apólices e revise linhas de crédito antes do vencimento. |\n\n---\n\n### ✅ **Próximos passos sugeridos**\n1. **Puxe o detalhamento da safra 2022/23** (custos por categoria, produtividade, preço médio de venda) para diagnosticar a causa da margem baixa.\n2. **Compare lado a lado 2022/23 vs 2025/26** (mesma cultura) – posso gerar essa comparação se quiser.\n3. **Monte um calendário de compras/pagamentos** baseado na sazonalidade acima e compartilhe com seu contador/gerente do banco.\n\nQuer que eu gere a comparação detalhada entre a safra 2022/23 e a 2025/26 (soja) para ver exatamente onde os custos divergiram?"
+  }
+]
