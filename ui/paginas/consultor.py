@@ -203,17 +203,24 @@ def _campos_da_ferramenta(nome: str, bruto: str) -> list[dict]:
     return []
 
 
-def _comprovante(meta: dict) -> list[dict]:
-    """O comprovante da resposta: os campos da consulta mais importante que trouxe números."""
+def _origem_comprovante(meta: dict) -> str | None:
+    """Nome da consulta cujos campos viram o comprovante (a mais importante que trouxe números)."""
     prioridade = ["detectar_duplicados", "comparar_safras", "resultado_safra", "detectar_anomalias",
                   "gastos_por_safra", "cotacao_atual"]
     por_nome = {f["nome"]: f for f in meta.get("ferramentas", [])}
     for nome in prioridade:
-        if nome in por_nome:
-            itens = _campos_da_ferramenta(nome, por_nome[nome].get("resultado", ""))
-            if itens:
-                return itens
-    return []
+        if nome in por_nome and _campos_da_ferramenta(nome, por_nome[nome].get("resultado", "")):
+            return nome
+    return None
+
+
+def _comprovante(meta: dict) -> list[dict]:
+    """O comprovante da resposta: os campos da consulta mais importante que trouxe números."""
+    nome = _origem_comprovante(meta)
+    if not nome:
+        return []
+    por_nome = {f["nome"]: f for f in meta.get("ferramentas", [])}
+    return _campos_da_ferramenta(nome, por_nome[nome].get("resultado", ""))
 
 
 def _trecho(texto: str, limite: int = 240) -> str:
@@ -355,15 +362,23 @@ def _mostrar_meta(meta: dict):
     n = len(ferr)
     with st.expander(f"Como cheguei nessa resposta · {n} consulta{'s' if n > 1 else ''}", icon=":material/receipt_long:"):
         passos, tecnico = "", []
+        no_comprovante = _origem_comprovante(meta)
         for f in ferr:
             ic, desc = _rotulo(f["nome"])
             ctx = _contexto_args(f["args"])
             res = _resumo_resultado(f["nome"], f.get("resultado", ""))
+            # Cada consulta vira uma linha de campos da nota; a que já virou comprovante só remete a ele.
+            campos = [c for c in _campos_da_ferramenta(f["nome"], f.get("resultado", "")) if c["rotulo"] != "Origem"]
+            if f["nome"] == no_comprovante:
+                corpo = '<div class="nota">Valores no comprovante, logo acima da resposta.</div>'
+            elif campos:
+                corpo = tema.campos([{k: v for k, v in c.items() if k != "estado"} for c in campos])
+            else:
+                corpo = f'<div class="r">{tema.esc(res)}</div>' if res else ""
             passos += (
                 f'<div class="passo-ferr">{tema.ms(ic)}<div>'
                 f'<div class="t">{tema.esc(desc)}{(" · " + tema.esc(ctx)) if ctx else ""}</div>'
-                + (f'<div class="r">{tema.esc(res)}</div>' if res else "")
-                + "</div></div>"
+                + corpo + "</div></div>"
             )
             args = ", ".join(f"{k}={v}" for k, v in f["args"].items() if v not in (None, ""))
             tecnico.append(f"{f['nome']}({args}) · {f['segundos']}s")

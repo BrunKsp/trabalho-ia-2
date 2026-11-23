@@ -1,4 +1,5 @@
 """Importar dados: upload de PDF/CSV/Excel -> revisão editável -> confirmação."""
+import io
 import os
 import tempfile
 from pathlib import Path
@@ -94,10 +95,11 @@ def render(fazenda: dict):
         return
 
     # ── Passo 1: envio ──────────────────────────────────────────────────────
+    st.markdown('<div class="lab" style="margin-bottom:6px">Arquivo</div>', unsafe_allow_html=True)
     arquivo = st.file_uploader(
-        "Arraste o arquivo aqui ou clique para escolher",
+        "Arquivo",
         type=["pdf", "csv", "xlsx", "xls"],
-        help="PDF de nota fiscal ou boleto (lido por IA), ou planilha CSV/Excel com colunas data e valor.",
+        label_visibility="collapsed",
     )
     if arquivo:
         st.markdown(f'<div class="pagina-ctx">{tema.ms("attach_file")}<b>{tema.esc(arquivo.name)}</b>&nbsp;· '
@@ -115,12 +117,19 @@ def render(fazenda: dict):
             else:
                 st.session_state["lancamentos_pendentes"] = lancamentos
                 st.rerun()
+        return
 
-    st.download_button("Baixar planilha modelo (CSV)", MODELO_CSV, file_name="modelo_lancamentos.csv", mime="text/csv",
+    tema.mostrar_campos([
+        {"rotulo": "PDF · nota fiscal ou boleto", "texto": True, "icone": "picture_as_pdf",
+         "valor": "A IA lê o texto e extrai data, fornecedor, categoria e valor."},
+        {"rotulo": "CSV ou Excel · planilha", "texto": True, "icone": "table_chart",
+         "valor": "As colunas são reconhecidas pelo nome: data, valor, categoria, fornecedor, cultura e safra."},
+        {"rotulo": "Antes de gravar", "texto": True, "icone": "fact_check",
+         "valor": "Você revisa e corrige cada linha. Nada entra no histórico sem a sua confirmação."},
+    ])
+
+    tema.secao("Modelo de planilha", "Se for enviar uma planilha, use este formato. As duas primeiras colunas são obrigatórias.")
+    st.dataframe(pd.read_csv(io.StringIO(MODELO_CSV)), hide_index=True, use_container_width=True,
+                 column_config={"valor": st.column_config.NumberColumn("valor (R$)", format="%.2f")})
+    st.download_button("Baixar modelo (CSV)", MODELO_CSV, file_name="modelo_lancamentos.csv", mime="text/csv",
                        icon=":material/download:")
-    with st.expander("Como funciona", icon=":material/help:"):
-        st.markdown(
-            "- **PDF** (nota fiscal, boleto): a IA lê o texto e extrai data, fornecedor, categoria e valor.\n"
-            "- **CSV / Excel**: as colunas são reconhecidas pelo nome (`data`, `valor`, `categoria`, `fornecedor`, `cultura`, `safra`).\n"
-            "- Você sempre revisa e edita antes de qualquer coisa ir para o histórico."
-        )

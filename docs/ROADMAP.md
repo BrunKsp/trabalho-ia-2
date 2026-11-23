@@ -19,10 +19,11 @@ Legenda: ✅ feito · 🔄 em andamento · ⬜ a fazer
 | Recomendações proativas (`recomendar_acoes`) | ✅ |
 | Repositório organizado (`camposync/`, `scripts/`, `data/`, `docs/`) | ✅ |
 | README alinhado ao código, com "Problema e valor" | ✅ |
-| Testes automatizados (49, pytest) | ✅ |
+| Testes automatizados (68, pytest) | ✅ |
 | Avaliação do agente com LLM real (`scripts/avaliar_agente.py`) | ✅ |
 | Commits de todos os integrantes | ✅ |
-| Prints da interface em `docs/resultados/` | ⬜ |
+| Prints da interface em `docs/resultados/prints/` | ✅ |
+| Interface finalizada a partir do handoff de design (trilho, Importar, "Como cheguei" em campos) | ✅ |
 | Roteiro do pitch ensaiado | ⬜ |
 
 ---
@@ -34,9 +35,25 @@ Itens exigidos pelo enunciado. Sem eles a nota fica comprometida.
 - [x] **Commits de todos os integrantes.** Cada pessoa do grupo faz ao menos um commit real com a própria identidade; o enunciado zera a nota de quem não tiver evidência de contribuição.
 - [x] **Validar a execução do zero** em uma máquina limpa: clonar, criar venv, `pip install -r requirements.txt`, definir `OPENROUTER_API_KEY`, `streamlit run app.py`. Corrigir o que quebrar. *(Validado em venv limpo; app agora abre mesmo sem chave.)*
 - [x] **Conferir o `requirements.txt`**: o código usa `openai` (cliente do OpenRouter); confirmar que nada sobrou do `anthropic`.
-- [ ] **Exemplos de resultados** em `docs/resultados/`: a avaliação do agente (com as respostas completas) e o log de exemplo já estão lá; **faltam os prints da interface** (painel, chat com o expander "como cheguei nessa resposta", upload e recomendações).
+- [x] **Exemplos de resultados** em `docs/resultados/`: avaliação do agente com as respostas completas, log de exemplo e 9 prints da interface (painel, consultor, recomendações, importar, celular). *(Os prints que dependem de resposta do LLM — aguardando, erro e comprovante no celular — são da rodada anterior; refazer se houver cota de modelo.)*
 - [x] **Seção "Problema e valor" no README**: quem é o usuário, qual a dor, o que muda com a solução (o professor avalia problema real e valor gerado, não só tecnologia).
 - [x] **Deixar claro que os dados são sintéticos**, com estrutura de custos baseada nas planilhas da Conab.
+
+## Interface — finalização do handoff de design
+
+Itens que a revisão de design deixou abertos e que foram fechados, e o que ainda sobra.
+
+- [x] Trilho com 264px (o Streamlit 1.67 usa `data-collapsed`, não `aria-expanded`; o seletor foi corrigido em `ui/tema.py`).
+- [x] Ficha da fazenda no trilho sem quebra de linha ("180 ha", "Lançamentos").
+- [x] **Importar dados** refeito: área de envio em português (o texto "Upload / 200MB per file" do Streamlit é escondido por CSS), três campos explicando PDF, planilha e revisão, tabela com o modelo de planilha e botão de download.
+- [x] **"Como cheguei nessa resposta"**: cada consulta vira uma linha de campos da nota (a que já virou comprovante só remete a ele).
+- [x] Campo de pergunta com rótulo "Pergunta", como os demais campos.
+- [x] Cores soltas viraram tokens em `ui/tema.py` (`VERDE_FIO`, `OK_FIO`, `ERRO_FIO`, `GRADE`).
+- [x] Prints do repositório refeitos com a interface atual.
+- [ ] Ícones de 16/18/20px e fonte 13px nos gráficos ficam fora da escala de 4 tamanhos (desvio pequeno, anotado no `DESIGN.md`).
+- [ ] Refazer os prints que dependem de resposta do LLM (precisa de cota de modelo).
+
+---
 
 ## Fase 1 — Pitch e demo (véspera e manhã da entrega)
 

@@ -10,3 +10,5 @@ chroma_db/
 data/chroma_db/
 data/logs/
 .claude/
+
+/handoff-design-camposync

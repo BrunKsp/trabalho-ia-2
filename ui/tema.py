@@ -22,6 +22,10 @@ AMBAR_FIO = "#D9A441"
 AMBAR_FUNDO = "#FDF6E9"
 VERMELHO = "#B3261E"
 VERMELHO_FUNDO = "#FCEEEC"
+VERDE_FIO = "#CFE0D5"     # borda da pergunta do produtor
+OK_FIO = "#B9D3C3"        # borda do aviso de sucesso
+ERRO_FIO = "#E9B4AE"      # borda do aviso de erro
+GRADE = "#E9EDEA"         # linhas de grade dos gráficos
 
 # Compatibilidade com nomes antigos usados nos gráficos
 TEXTO, MUDO, BORDA, FUNDO = TINTA, ROTULO, FIO, BRANCO
@@ -62,6 +66,7 @@ input, textarea { caret-color: __VERDE__; }
 /* ── Trilho (sidebar) ─────────────────────────────────────────────────── */
 [data-testid="stSidebar"] { background: __VERDE__; border-right: 0; }
 @media (min-width: 641px) {
+    [data-testid="stSidebar"][data-collapsed="false"],
     [data-testid="stSidebar"][aria-expanded="true"] { width: 264px !important; min-width: 264px !important; max-width: 264px !important; }
 }
 [data-testid="stSidebar"] * { color: #fff; }
@@ -83,12 +88,13 @@ input, textarea { caret-color: __VERDE__; }
 }
 [data-testid="stSidebar"] [data-testid="stSelectbox"] svg { fill: #fff; color: #fff; }
 [data-testid="stSidebar"] [data-testid="stRadioOption"] [data-testid="stIconMaterial"] { font-size: 20px; }
-.ficha { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(255,255,255,.32); border-top: 0;
+.ficha { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); border: 1px solid rgba(255,255,255,.32); border-top: 0;
          border-radius: 0 0 8px 8px; margin-top: -1rem; }
-.ficha > div { padding: 8px 12px; }
+.ficha > div { padding: 8px 10px; }
+.ficha .lab { white-space: nowrap; }
 .ficha .cheia { grid-column: 1 / 3; border-bottom: 1px solid rgba(255,255,255,.32); }
 .ficha .esq { border-right: 1px solid rgba(255,255,255,.32); }
-.ficha .v { font-size: 15px; line-height: 22px; font-weight: 500; color: #fff; }
+.ficha .v { white-space: nowrap; font-size: 15px; line-height: 22px; font-weight: 500; color: #fff; }
 /* Navegação: st.radio como lista; item ativo é a pílula branca */
 [data-testid="stSidebar"] [data-testid="stElementContainer"]:has([data-testid="stRadio"]),
 [data-testid="stSidebar"] [data-testid="stRadio"], [data-testid="stSidebar"] [data-testid="stRadio"] > div,
@@ -164,7 +170,7 @@ input, textarea { caret-color: __VERDE__; }
 /* ── Chat ─────────────────────────────────────────────────────────────── */
 [data-testid="stChatMessage"] { background: transparent; padding: .5rem 0; gap: 16px; }
 [data-testid="stChatMessage"]:has(.msg-usuario) > div:first-child { display: none; }
-.msg-usuario { background: __VERDE_TINTA__; border: 1px solid #CFE0D5; border-radius: 8px; padding: 8px 14px 10px; }
+.msg-usuario { background: __VERDE_TINTA__; border: 1px solid __VERDE_FIO__; border-radius: 8px; padding: 8px 14px 10px; }
 .msg-usuario p { margin: 2px 0 0; font-size: 15px; font-weight: 600; color: __TINTA__; }
 [data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] :is(p, li) { font-size: 15px; line-height: 24px; }
 [data-testid="stChatMessage"] [data-testid^="stChatMessageAvatar"] {
@@ -173,6 +179,8 @@ input, textarea { caret-color: __VERDE__; }
 [data-testid="stChatMessage"] table { display: block; max-width: 100%; overflow-x: auto; }
 .passo-ferr { display: grid; grid-template-columns: 24px 1fr; gap: 10px; padding: 10px 0; border-bottom: 1px solid __FIO__; }
 .passo-ferr:last-child { border-bottom: 0; }
+.passo-ferr .campos { margin: 10px 0 4px; }
+.passo-ferr .nota { color: __ROTULO__; font-size: 12px; line-height: 16px; margin-top: 4px; }
 .passo-ferr .ms { color: __VERDE__; vertical-align: 0; }
 .passo-ferr .t { font-weight: 600; color: __TINTA__; }
 .passo-ferr .r { color: __TINTA__; margin-top: 2px; }
@@ -185,8 +193,8 @@ details.tecnico summary { cursor: pointer; font-weight: 600; letter-spacing: .06
 details.tecnico div { font-family: ui-monospace, Consolas, monospace; margin-top: 4px; overflow-wrap: anywhere; }
 .aviso { display: flex; gap: 8px; align-items: flex-start; border: 1px solid __AMBAR_FIO__; background: __AMBAR_FUNDO__;
          color: __AMBAR__; border-radius: 8px; padding: 10px 12px; margin-top: 8px; }
-.aviso.erro { border-color: #E9B4AE; background: __VERMELHO_FUNDO__; color: __VERMELHO__; }
-.aviso.ok { border-color: #B9D3C3; background: __VERDE_TINTA__; color: __VERDE_ESCURO__; }
+.aviso.erro { border-color: __ERRO_FIO__; background: __VERMELHO_FUNDO__; color: __VERMELHO__; }
+.aviso.ok { border-color: __OK_FIO__; background: __VERDE_TINTA__; color: __VERDE_ESCURO__; }
 .aviso .ms { vertical-align: 0; font-size: 20px; }
 [data-testid="stExpander"] > details { border: 1px solid __FIO__; border-radius: 8px; }
 [data-testid="stExpander"] summary { font-weight: 500; }
@@ -197,6 +205,12 @@ details.tecnico div { font-family: ui-monospace, Consolas, monospace; margin-top
 [data-testid="stChatInput"] > div, [data-testid="stChatInput"] > div > div, [data-testid="stChatInput"] > div > div > div {
     background: #fff !important; border: 0 !important; box-shadow: none !important; }
 [data-testid="stChatInputTextArea"] { background: #fff !important; color: __TINTA__; }
+[data-testid="stChatInput"] { position: relative; }
+[data-testid="stChatInput"]::before {
+    content: "Pergunta"; position: absolute; top: 6px; left: 14px; z-index: 1; pointer-events: none;
+    font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: __ROTULO__;
+}
+[data-testid="stChatInputTextArea"] { padding-top: 26px !important; }
 [data-testid="stChatInput"]:focus-within { border-color: __VERDE__; box-shadow: inset 0 0 0 1px __VERDE__; }
 [data-testid="stChatInputSubmitButton"] { background: __VERDE__; border-radius: 999px; }
 [data-testid="stChatInputSubmitButton"] svg, [data-testid="stChatInputSubmitButton"] [data-testid="stIconMaterial"] { color: #fff; fill: #fff; }
@@ -225,7 +239,17 @@ details.tecnico div { font-family: ui-monospace, Consolas, monospace; margin-top
 .stButton > button:disabled { color: __ROTULO__; background: __SUPERFICIE__; }
 
 /* Uploader */
-[data-testid="stFileUploaderDropzone"] { background: __SUPERFICIE__; border: 1px dashed __VERDE__; border-radius: 8px; padding: 24px; }
+[data-testid="stFileUploaderDropzone"] { background: #fff; border: 1px dashed __VERDE__; border-radius: 8px; padding: 20px 24px;
+    display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 16px; flex-wrap: wrap; }
+[data-testid="stFileUploaderDropzone"]:hover { background: __VERDE_TINTA__; }
+/* Textos do Streamlit vêm em inglês e não são configuráveis: escondemos e escrevemos os nossos */
+[data-testid="stFileUploaderDropzoneInstructions"] { display: none; }
+[data-testid="stFileUploaderDropzone"] button p { font-size: 0; }
+[data-testid="stFileUploaderDropzone"] button p::after { content: "Escolher arquivo"; font-size: 15px; font-weight: 600; }
+[data-testid="stFileUploaderDropzone"]::after { content: "ou arraste para cá · PDF, CSV ou Excel · até 200 MB"; color: __ROTULO__; font-size: 15px; }
+[data-testid="stFileUploaderFile"] { border: 1px solid __FIO__; border-radius: 8px; padding: 4px 8px; }
+.importar-grade { display: grid; grid-template-columns: 1fr; gap: 0; }
+[data-testid="stDataFrame"] { border: 1px solid __FIO__; border-radius: 8px; overflow: hidden; }
 
 /* ── Celular ──────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
@@ -244,8 +268,8 @@ details.tecnico div { font-family: ui-monospace, Consolas, monospace; margin-top
 
 def _css() -> str:
     css = _CSS
-    for nome in ("VERDE_ESCURO", "VERDE_TINTA", "VERDE", "BRANCO", "SUPERFICIE", "TINTA", "ROTULO", "FIO",
-                 "AMBAR_FIO", "AMBAR_FUNDO", "AMBAR", "VERMELHO_FUNDO", "VERMELHO"):
+    for nome in ("VERDE_ESCURO", "VERDE_TINTA", "VERDE_FIO", "VERDE", "BRANCO", "SUPERFICIE", "TINTA", "ROTULO", "FIO",
+                 "AMBAR_FIO", "AMBAR_FUNDO", "AMBAR", "VERMELHO_FUNDO", "VERMELHO", "OK_FIO", "ERRO_FIO", "GRADE"):
         css = css.replace(f"__{nome}__", globals()[nome])
     return css
 
@@ -323,5 +347,5 @@ def layout_grafico(fig, altura=340):
         separators=",.",
     )
     fig.update_xaxes(showgrid=False, linecolor=FIO)
-    fig.update_yaxes(gridcolor="#E9EDEA", zeroline=False)
+    fig.update_yaxes(gridcolor=GRADE, zeroline=False)
     return fig
