@@ -150,19 +150,6 @@ input, textarea { caret-color: __VERDE__; }
 .acao-msg .ms { vertical-align: 0; color: __VERDE__; }
 .acao-msg.alerta, .acao-msg.alerta .ms { color: __AMBAR__; } .acao-msg.ok, .acao-msg.ok .ms { color: __VERDE_ESCURO__; }
 
-/* Linhas antigas (mantidas para compatibilidade) */
-.linha { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; background: #fff;
-         border: 1px solid __FIO__; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
-.linha.alta { border-color: #E9B4AE; background: __VERMELHO_FUNDO__; }
-.linha.media { border-color: __AMBAR_FIO__; background: __AMBAR_FUNDO__; }
-.linha .ms { color: __VERDE__; vertical-align: 0; margin-top: 2px; }
-.linha.alta .ms { color: __VERMELHO__; } .linha.media .ms { color: __AMBAR__; }
-.linha .tit { font-weight: 600; color: __TINTA__; }
-.linha .txt { color: __TINTA__; margin-top: 2px; line-height: 1.5; }
-.selo { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; line-height: 18px; font-weight: 600;
-        border: 1px solid __FIO__; color: __ROTULO__; background: #fff; margin-left: 6px; vertical-align: 1px; }
-.selo.alta { border-color: #E9B4AE; color: __VERMELHO__; } .selo.media { border-color: __AMBAR_FIO__; color: __AMBAR__; }
-
 /* ── Passos (importação) ──────────────────────────────────────────────── */
 .passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: __FIO__; border: 1px solid __FIO__;
           border-radius: 8px; overflow: hidden; margin: 4px 0 20px; }
