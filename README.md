@@ -4,6 +4,36 @@
 
 Agente de IA que responde perguntas financeiras do produtor rural em linguagem natural, cruzando os dados de lançamentos do CampoSync com uma base de conhecimento do agro (Embrapa, Conab, LCDPR).
 
+> ⚠️ **Os dados financeiros das fazendas são sintéticos** (gerados por `scripts/gerar_dados.py`), com estrutura de custos baseada nas planilhas de custo de produção da Conab. Os documentos da base de conhecimento são PDFs públicos reais.
+
+---
+
+## Problema e valor
+
+**Quem é o usuário.** O pequeno e médio produtor de grãos do RS (soja, milho, trigo): administra a fazenda sozinho ou com a família, sem controller nem contador dedicado à gestão do dia a dia.
+
+**A dor.**
+- Os gastos ficam espalhados em notas fiscais, boletos, mensagens de WhatsApp e no caderno. Quando os números estão num sistema, ele responde *quanto* foi gasto, mas não *por quê*.
+- No fim da safra o produtor percebe que a margem caiu e não sabe onde: foi o fertilizante, o diesel, o preço de venda? Descobrir isso exige montar planilhas e comparar safras à mão.
+- Erros simples passam despercebidos e custam caro: uma nota lançada duas vezes, uma reaplicação de defensivo que não foi planejada.
+- A informação técnica que ajudaria a decidir (custos de referência da Embrapa e da Conab, regras do LCDPR) existe, mas está em PDFs longos que ninguém tem tempo de ler.
+
+**A solução.** Um consultor financeiro que o produtor consulta em português comum, como faria com um agrônomo ou contador de confiança:
+- *"Por que essa safra custou mais?"* → o agente compara as safras, encontra que o **fertilizante subiu 33%** enquanto o resto acompanhou a inflação, e explica.
+- *"Tem algo estranho nos meus gastos?"* → detecta desvios em relação ao histórico da própria fazenda e **lançamentos duplicados** (no demo: um seguro de R$ 15.854,30 lançado duas vezes).
+- *"Como a Embrapa calcula o custo de produção?"* → busca nos documentos oficiais e **cita a fonte e a página**.
+- Além do chat: painel com gráficos da safra, recomendações proativas e importação de notas/planilhas.
+
+**Por que IA (e não só um relatório).** As perguntas do produtor são abertas e mudam a cada safra. O LLM entende a pergunta, decide quais consultas fazer (ferramentas MCP), combina os resultados e explica em linguagem simples. As contas, porém, **não são feitas pelo modelo**: todo número vem de uma ferramenta que consulta o banco, e o conhecimento técnico vem de trechos recuperados dos documentos (RAG). Isso reduz alucinação e torna cada resposta auditável: a interface mostra quais ferramentas foram usadas e quais fontes foram consultadas.
+
+**Valor gerado.**
+- **Tempo:** perguntas que exigiriam cruzar planilhas de várias safras são respondidas em segundos.
+- **Dinheiro:** anomalias e duplicidades são apontadas antes de o produtor fechar a safra ou pagar de novo.
+- **Decisão melhor:** o produtor chega na negociação com fornecedor ou na decisão de venda sabendo onde está o problema.
+- **Acesso:** traz para o pequeno produtor um tipo de análise que hoje só fazendas grandes, com equipe de gestão, conseguem ter.
+
+**Aplicação prática.** O projeto foi pensado como módulo do CampoSync: o servidor MCP expõe as consultas sobre a base real de lançamentos, e a mesma arquitetura aceita novas fontes (cotações em tempo real, lançamentos enviados por WhatsApp). Os próximos passos estão em [docs/ROADMAP.md](docs/ROADMAP.md).
+
 ---
 
 ## Arquitetura
@@ -102,11 +132,11 @@ python -m venv .venv
 # 2. Instalar dependências
 pip install -r requirements.txt
 
-# 3. Configurar chave da API OpenRouter (modelos gratuitos)
-# Windows PowerShell:
-$env:OPENROUTER_API_KEY = "sk-or-..."
-# Linux/Mac:
-# export OPENROUTER_API_KEY="sk-or-..."
+# 3. Configurar a chave da API OpenRouter (modelos gratuitos)
+copy .env.example .env        # Windows  (Linux/Mac: cp .env.example .env)
+# edite o .env e cole a sua chave em OPENROUTER_API_KEY
+# opcional: OPENROUTER_MODEL=<modelo> para tentar um modelo específico primeiro
+# (sem chave a interface abre normalmente; só o chat avisa que falta a chave)
 
 # 4. (Opcional) Baixar PDFs para o RAG
 python scripts/baixar_documentos.py
@@ -159,6 +189,50 @@ O servidor é independente da interface. Exemplo para o Claude Desktop
 
 ---
 
+## Testes e avaliação
+
+### Testes automatizados (sem LLM, sem internet)
+
+```bash
+pytest                 # 44 testes, ~20 s
+pytest -m "not lento"  # pula o teste que consulta o índice do RAG
+```
+
+Os testes rodam sobre uma **cópia temporária** do banco (variável `CAMPOSYNC_DB`), nunca sobre o banco versionado.
+
+| Arquivo | O que garante |
+|---|---|
+| `tests/test_ferramentas.py` | Cada ferramenta MCP retorna dados consistentes (margem = receita − despesa, somas por categoria) e **encontra todas as anomalias plantadas** (fertilizante, defensivos, diesel, duplicado) |
+| `tests/test_protocolo_mcp.py` | O servidor sobe via stdio, anuncia as 11 ferramentas com descrição e schema, e o resultado via protocolo é idêntico à chamada direta. Erros voltam como JSON para o LLM |
+| `tests/test_agente.py` | Laço do agente com um **LLM falso roteirizado**: executa ferramentas via MCP, devolve o resultado ao modelo, coleta fontes do RAG, respeita o limite de rodadas, troca de modelo em 429/erro do provedor, para com chave inválida e grava o log |
+| `tests/test_parser.py` | Importação de CSV/Excel com nomes de coluna variados, valores em formato brasileiro e gravação no banco |
+
+### Avaliação do agente (com o LLM real)
+
+```bash
+python scripts/avaliar_agente.py
+```
+
+Faz 8 perguntas de gabarito (anomalias plantadas, cálculos e perguntas ao RAG) e mede se o agente **escolheu a ferramenta certa** e se a **resposta contém os fatos esperados**. O relatório com todas as respostas fica em [docs/resultados/avaliacao_agente.md](docs/resultados/avaliacao_agente.md).
+
+**Última execução (22/11/2026, modelo `nvidia/nemotron-3-ultra-550b-a55b:free`):**
+
+| Métrica | Resultado |
+|---|---|
+| Seleção correta de ferramenta | **100%** (8/8) |
+| Fatos esperados presentes na resposta | **100%** |
+| Tempo mediano por pergunta | 17,7 s |
+
+Observações: na pergunta sobre a Embrapa o modelo fez 6 buscas no RAG antes de responder (10 trechos de 4 documentos citados), o que mostra o valor do limite de rodadas do agente. A avaliação tem uma execução por pergunta; com modelos gratuitos o resultado pode variar entre execuções e modelos.
+
+Um exemplo de log real dessas conversas está em [docs/resultados/log_exemplo.jsonl](docs/resultados/log_exemplo.jsonl).
+
+### Logs
+
+Cada pergunta respondida é registrada em `data/logs/AAAA-MM-DD.jsonl` (pergunta, modelo, ferramentas chamadas com argumentos e tempo, fontes do RAG e resposta). A pasta fica fora do git.
+
+---
+
 ## Perguntas de demo
 
 Abra a Fazenda Boa Vista e pergunte:
@@ -195,7 +269,11 @@ trabalho-ia-2/
 │   ├── rag.py               # Indexação e busca nos PDFs
 │   ├── parser_documentos.py # Importa lançamentos de PDF/CSV/Excel
 │   └── config.py            # Caminhos centralizados
+├── ui/                      # Interface: tema, dados e uma página por arquivo
+│   └── paginas/             # painel, consultor, importar, recomendacoes
+├── tests/                   # Testes automatizados (pytest)
 ├── scripts/
+│   ├── avaliar_agente.py    # Avaliação do agente com o LLM real
 │   ├── gerar_dados.py       # Gerador de dados sintéticos
 │   ├── baixar_documentos.py # Downloader de PDFs públicos
 │   └── rodar.ps1            # Sobe o app no Windows
@@ -203,10 +281,12 @@ trabalho-ia-2/
 │   ├── camposync_demo.db    # Banco SQLite (637 lançamentos)
 │   ├── csv/                 # Tabelas exportadas em CSV
 │   ├── documentos/          # PDFs da base de conhecimento (RAG)
-│   └── chroma_db/           # Índice vetorial (gerado automaticamente)
+│   ├── chroma_db/           # Índice vetorial (gerado automaticamente)
+│   └── logs/                # Log das conversas do agente (gerado automaticamente)
 ├── docs/
 │   ├── ROADMAP.md           # Plano e próximos passos
 │   ├── DADOS.md             # Documentação dos dados
+│   ├── resultados/          # Avaliação do agente, prints e logs de exemplo
 │   └── trabalho/            # Enunciado e recado do professor
 └── requirements.txt
 ```
