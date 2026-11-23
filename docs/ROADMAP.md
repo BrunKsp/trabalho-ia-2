@@ -19,7 +19,7 @@ Legenda: ✅ feito · 🔄 em andamento · ⬜ a fazer
 | Recomendações proativas (`recomendar_acoes`) | ✅ |
 | Repositório organizado (`camposync/`, `scripts/`, `data/`, `docs/`) | ✅ |
 | README alinhado ao código, com "Problema e valor" | ✅ |
-| Testes automatizados (44, pytest) | ✅ |
+| Testes automatizados (49, pytest) | ✅ |
 | Avaliação do agente com LLM real (`scripts/avaliar_agente.py`) | ✅ |
 | Commits de todos os integrantes | ✅ |
 | Prints da interface em `docs/resultados/` | ⬜ |

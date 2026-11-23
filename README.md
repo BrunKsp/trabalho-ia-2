@@ -194,7 +194,7 @@ O servidor é independente da interface. Exemplo para o Claude Desktop
 ### Testes automatizados (sem LLM, sem internet)
 
 ```bash
-pytest                 # 44 testes, ~20 s
+pytest                 # 49 testes, ~20 s
 pytest -m "not lento"  # pula o teste que consulta o índice do RAG
 ```
 
@@ -205,7 +205,7 @@ Os testes rodam sobre uma **cópia temporária** do banco (variável `CAMPOSYNC_
 | `tests/test_ferramentas.py` | Cada ferramenta MCP retorna dados consistentes (margem = receita − despesa, somas por categoria) e **encontra todas as anomalias plantadas** (fertilizante, defensivos, diesel, duplicado) |
 | `tests/test_protocolo_mcp.py` | O servidor sobe via stdio, anuncia as 11 ferramentas com descrição e schema, e o resultado via protocolo é idêntico à chamada direta. Erros voltam como JSON para o LLM |
 | `tests/test_agente.py` | Laço do agente com um **LLM falso roteirizado**: executa ferramentas via MCP, devolve o resultado ao modelo, coleta fontes do RAG, respeita o limite de rodadas, troca de modelo em 429/erro do provedor, para com chave inválida e grava o log |
-| `tests/test_parser.py` | Importação de CSV/Excel com nomes de coluna variados, valores em formato brasileiro e gravação no banco |
+| `tests/test_parser.py` | Importação de CSV/Excel com nomes de coluna variados, valores em formato brasileiro e gravação no banco; leitura de PDF pelo LLM usando a troca de modelos e mostrando o erro quando nenhum modelo responde |
 
 ### Avaliação do agente (com o LLM real)
 

@@ -102,7 +102,11 @@ def render(fazenda: dict):
         st.markdown(f"📎 **{arquivo.name}** · {arquivo.size / 1024:.0f} KB")
         if st.button("🔍 Extrair lançamentos", type="primary"):
             with st.spinner("Lendo o documento…"):
-                lancamentos = _extrair(arquivo)
+                try:
+                    lancamentos = _extrair(arquivo)
+                except Exception as e:  # noqa: BLE001 - ex.: modelos ocupados, chave ausente
+                    st.error(f"Não consegui ler o documento agora: {e}")
+                    st.stop()
             if not lancamentos:
                 st.warning("Não encontrei lançamentos nesse arquivo. Confira se há colunas `data` e `valor` (planilha) ou texto legível (PDF).")
             else:

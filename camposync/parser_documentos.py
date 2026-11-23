@@ -8,22 +8,8 @@ load_dotenv()
 from pathlib import Path
 import pandas as pd
 from pypdf import PdfReader
-from openai import OpenAI
 
 from .config import DB_PATH
-
-_client = None
-
-def _get_client():
-    global _client
-    if _client is None:
-        _client = OpenAI(
-            api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-            base_url="https://openrouter.ai/api/v1",
-        )
-    return _client
-
-MODEL_PARSER = "google/gemma-4-31b-it:free"
 
 CATEGORIAS_VALIDAS = [
     "Sementes", "Fertilizantes", "Defensivos", "Diesel e operacoes",
@@ -55,19 +41,24 @@ Retorne APENAS um array JSON válido. Se não houver lançamentos claros, retorn
 Documento:
 {texto[:4000]}"""
 
-    try:
-        resp = _get_client().chat.completions.create(
-            model=MODEL_PARSER,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=2000,
-        )
-        content = resp.choices[0].message.content or ""
-        match = re.search(r'\[.*?\]', content, re.DOTALL)
-        if not match:
-            return []
-        return json.loads(match.group())
-    except Exception:
+    # Mesmo mecanismo do agente: troca de modelo em 429/erro e começa pelo último
+    # que funcionou. Erros de modelo/chave sobem para a interface mostrar ao usuário
+    # (antes eram engolidos e apareciam como "nenhum lançamento encontrado").
+    from .agente import _create_with_fallback
+    resp = _create_with_fallback([{"role": "user", "content": prompt}], usar_ferramentas=False)
+    return _parse_json_lancamentos(resp.choices[0].message.content or "")
+
+
+def _parse_json_lancamentos(content: str) -> list[dict]:
+    """Extrai o array JSON da resposta do modelo (tolera ```json ... ``` e texto em volta)."""
+    match = re.search(r"\[.*\]", content, re.DOTALL)  # guloso: pega o array inteiro, mesmo com objetos
+    if not match:
         return []
+    try:
+        dados = json.loads(match.group())
+    except json.JSONDecodeError:
+        return []
+    return [d for d in dados if isinstance(d, dict) and "valor" in d]
 
 
 def extrair_lancamentos_csv(filepath: str) -> list[dict]:
