@@ -1,7 +1,7 @@
 """
 Baixa documentos publicos (Embrapa, Conab, MAPA) para a base de conhecimento do RAG.
-Rode na sua maquina:  pip install requests  &&  python baixar_documentos.py
-Os PDFs vao para a pasta ./documentos
+Rode na sua maquina:  pip install requests  &&  python scripts/baixar_documentos.py
+Os PDFs vao para a pasta data/documentos
 """
 import os, requests
 
@@ -28,9 +28,10 @@ DOCS = {
         "https://dialnet.unirioja.es/descarga/articulo/7095226.pdf",
 }
 
-os.makedirs("documentos", exist_ok=True)
+DESTINO = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "documentos")
+os.makedirs(DESTINO, exist_ok=True)
 for nome, url in DOCS.items():
-    destino = os.path.join("documentos", nome)
+    destino = os.path.join(DESTINO, nome)
     if os.path.exists(destino):
         print("ja existe:", nome); continue
     try:

@@ -10,7 +10,7 @@ import pandas as pd
 from pypdf import PdfReader
 from openai import OpenAI
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "camposync_demo.db")
+from .config import DB_PATH
 
 _client = None
 

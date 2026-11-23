@@ -5,3 +5,7 @@ chroma_db/
 .env
 *.egg-info/
 .DS_Store
+
+# dados gerados em runtime
+data/chroma_db/
+.claude/

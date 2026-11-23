@@ -6,8 +6,8 @@ import streamlit as st
 import json
 import tempfile, os
 from pathlib import Path
-from agente import perguntar, executar_ferramenta, TOOLS, SYSTEM
-from servidor_mcp import listar_fazendas, recomendar_acoes
+from camposync.agente import perguntar, executar_ferramenta, TOOLS, SYSTEM
+from camposync.servidor_mcp import listar_fazendas, recomendar_acoes
 
 st.set_page_config(page_title="Consultor da Safra", page_icon="🌾", layout="wide")
 
@@ -117,7 +117,7 @@ with tab_upload:
         st.info(f"Arquivo: **{arquivo.name}** ({ext})")
 
         if st.button("🔍 Extrair lançamentos", type="primary"):
-            from parser_documentos import (
+            from camposync.parser_documentos import (
                 extrair_lancamentos_pdf,
                 extrair_lancamentos_csv,
                 extrair_lancamentos_excel,
@@ -152,7 +152,7 @@ with tab_upload:
             col1, col2 = st.columns(2)
             with col1:
                 if st.button("✅ Confirmar importação", type="primary"):
-                    from parser_documentos import importar_lancamentos
+                    from camposync.parser_documentos import importar_lancamentos
                     n = importar_lancamentos(st.session_state.lancamentos_pendentes, fazenda_id)
                     st.session_state.lancamentos_pendentes = []
                     st.success(f"**{n} lançamentos importados** com sucesso para {fazenda_nome}!")

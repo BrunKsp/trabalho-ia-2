@@ -2,14 +2,14 @@
 Servidor FastMCP - Consultor da Safra
 Ferramentas que o agente usa para consultar os dados financeiros do produtor.
 
-Uso:  python servidor_mcp.py
+Uso:  python -m camposync.servidor_mcp
 """
 import sqlite3, os
 from datetime import date
 from typing import Optional
 from fastmcp import FastMCP
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "camposync_demo.db")
+from .config import DB_PATH
 
 mcp = FastMCP("consultor-safra")
 

@@ -15,11 +15,11 @@ Produtor (pergunta)
   app.py  ──── Streamlit (interface web)
       │
       ▼
-  agente.py ── Claude claude-sonnet-4-6 com tool use
+  camposync/agente.py ── LLM (OpenRouter) com tool use
       │
-      ├── servidor_mcp.py ── 8 ferramentas FastMCP → camposync_demo.db (SQLite)
+      ├── camposync/servidor_mcp.py ── 9 ferramentas FastMCP → data/camposync_demo.db (SQLite)
       │
-      └── rag.py ────────── ChromaDB + SentenceTransformers → documentos/ (PDFs)
+      └── camposync/rag.py ─ ChromaDB + embeddings ONNX → data/documentos/ (PDFs)
 ```
 
 **Ferramentas MCP disponíveis para o agente:**
@@ -34,6 +34,7 @@ Produtor (pergunta)
 | `historico_cotacoes` | Série de preços durante uma safra |
 | `detectar_anomalias` | Gastos acima de 20% da média histórica |
 | `buscar_lancamentos` | Lançamentos individuais com filtros |
+| `recomendar_acoes` | Recomendações proativas por fazenda |
 | `buscar_documentos` | RAG: busca em PDFs da Embrapa/Conab/LCDPR |
 
 ---
@@ -79,17 +80,17 @@ python -m venv .venv
 # 2. Instalar dependências
 pip install -r requirements.txt
 
-# 3. Configurar chave da API Anthropic
+# 3. Configurar chave da API OpenRouter (modelos gratuitos)
 # Windows PowerShell:
-$env:ANTHROPIC_API_KEY = "sk-ant-..."
+$env:OPENROUTER_API_KEY = "sk-or-..."
 # Linux/Mac:
-# export ANTHROPIC_API_KEY="sk-ant-..."
+# export OPENROUTER_API_KEY="sk-or-..."
 
 # 4. (Opcional) Baixar PDFs para o RAG
-python baixar_documentos.py
+python scripts/baixar_documentos.py
 
 # 5. (Opcional) Regenerar banco de dados
-python gerar_dados.py
+python scripts/gerar_dados.py
 ```
 
 ---
@@ -104,12 +105,12 @@ Abre em `http://localhost:8501`
 
 **Terminal (modo chat):**
 ```bash
-python agente.py
+python -m camposync.agente
 ```
 
 **Servidor MCP standalone:**
 ```bash
-python servidor_mcp.py
+python -m camposync.servidor_mcp
 ```
 
 ---
@@ -129,30 +130,39 @@ Abra a Fazenda Boa Vista e pergunte:
 
 ## Calibração dos dados (antes da entrega)
 
-Para ter dados mais precisos, substitua os valores aproximados em `gerar_dados.py`:
+Para ter dados mais precisos, substitua os valores aproximados em `scripts/gerar_dados.py`:
 
 1. **Custos por hectare** (`CUSTO_HA`): baixe as planilhas de custo de produção da Conab em gov.br/conab → Informações Agropecuárias → Custos de Produção
 2. **Preços por safra** (`PRECO`): baixe a série histórica do [CEPEA](https://www.cepea.esalq.usp.br/br/indicador/soja.aspx) (cadastro gratuito)
-3. Depois rode `python gerar_dados.py` para regenerar o banco
+3. Depois rode `python scripts/gerar_dados.py` para regenerar o banco
 
 ---
 
 ## Estrutura do projeto
 
 ```
-trabalho-ia/
-├── app.py               # Interface Streamlit
-├── agente.py            # Agente Claude com tool use
-├── servidor_mcp.py      # Ferramentas FastMCP (8 endpoints)
-├── rag.py               # Indexação e busca nos PDFs
-├── gerar_dados.py       # Gerador de dados sintéticos
-├── baixar_documentos.py # Downloader de PDFs públicos
-├── camposync_demo.db    # Banco SQLite (637 lançamentos)
-├── requirements.txt
-├── DADOS.md             # Documentação dos dados
-├── documentos/          # PDFs para o RAG (criado pelo baixar_documentos.py)
-├── chroma_db/           # Índice vetorial (criado automaticamente)
-└── *.csv                # Tabelas exportadas em CSV
+trabalho-ia-2/
+├── app.py                   # Interface Streamlit (ponto de entrada)
+├── camposync/               # Pacote principal
+│   ├── agente.py            # Agente LLM com tool use
+│   ├── servidor_mcp.py      # Ferramentas FastMCP (9 endpoints)
+│   ├── rag.py               # Indexação e busca nos PDFs
+│   ├── parser_documentos.py # Importa lançamentos de PDF/CSV/Excel
+│   └── config.py            # Caminhos centralizados
+├── scripts/
+│   ├── gerar_dados.py       # Gerador de dados sintéticos
+│   ├── baixar_documentos.py # Downloader de PDFs públicos
+│   └── rodar.ps1            # Sobe o app no Windows
+├── data/
+│   ├── camposync_demo.db    # Banco SQLite (637 lançamentos)
+│   ├── csv/                 # Tabelas exportadas em CSV
+│   ├── documentos/          # PDFs da base de conhecimento (RAG)
+│   └── chroma_db/           # Índice vetorial (gerado automaticamente)
+├── docs/
+│   ├── ROADMAP.md           # Plano e próximos passos
+│   ├── DADOS.md             # Documentação dos dados
+│   └── trabalho/            # Enunciado e recado do professor
+└── requirements.txt
 ```
 
 ---
@@ -161,7 +171,7 @@ trabalho-ia/
 
 | Componente | Tecnologia |
 |---|---|
-| LLM | Claude Sonnet 4.6 (Anthropic) |
+| LLM | Modelos gratuitos via OpenRouter (Gemma, Nemotron) com fallback |
 | Ferramentas | FastMCP |
 | Banco de dados | SQLite |
 | RAG — embeddings | ChromaDB DefaultEmbeddingFunction (ONNX MiniLM-L6-v2) |

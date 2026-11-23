@@ -1,8 +1,8 @@
 # Dados do projeto
 
-## 1. Base financeira sintética (`camposync_demo.db`)
+## 1. Base financeira sintética (`data/camposync_demo.db`)
 
-Gerada por `python gerar_dados.py` (semente fixa, sempre reproduz os mesmos dados).
+Gerada por `python scripts/gerar_dados.py` (semente fixa, sempre reproduz os mesmos dados).
 
 | Tabela | Conteúdo |
 |---|---|
@@ -24,9 +24,9 @@ Safras 2022/23 a 2025/26. A estrutura de custo por categoria segue o modelo das 
 - Conab: gov.br/conab → Informações Agropecuárias → Custos de Produção → Planilhas de custo de produção (séries históricas).
 - CEPEA/Esalq: cepea.org.br → Indicadores → baixar a série em Excel (cadastro gratuito).
 
-## 2. Base de conhecimento do RAG (`documentos/`)
+## 2. Base de conhecimento do RAG (`data/documentos/`)
 
-Baixe com `python baixar_documentos.py`. Acrescente manualmente:
+Baixe com `python scripts/baixar_documentos.py`. Acrescente manualmente:
 - Manual do LCDPR (site da Receita Federal, buscar "Manual LCDPR").
 - Cartilhas de gestão rural da Emater/RS e do Senar.
 - Planilhas de custo da Conab exportadas em PDF, se quiser que o agente cite os números oficiais.

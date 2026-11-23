@@ -1,14 +1,13 @@
 """
-Módulo RAG: indexa PDFs da pasta documentos/ e retorna trechos relevantes.
+Módulo RAG: indexa PDFs da pasta data/documentos/ e retorna trechos relevantes.
 
-Na primeira execução cria o índice em ./chroma_db/.
+Na primeira execução cria o índice em data/chroma_db/.
 Dependências: pip install chromadb pypdf sentence-transformers
 """
 import os, hashlib
 from pathlib import Path
 
-DOCS_DIR = Path(__file__).parent / "documentos"
-CHROMA_DIR = Path(__file__).parent / "chroma_db"
+from .config import DOCS_DIR, CHROMA_DIR
 
 _collection = None
 
@@ -74,7 +73,7 @@ def buscar_documentos(consulta: str, n_resultados: int = 4) -> list[dict]:
     try:
         col = _get_collection()
         if col.count() == 0:
-            return [{"texto": "Base de conhecimento vazia. Rode baixar_documentos.py primeiro.", "fonte": ""}]
+            return [{"texto": "Base de conhecimento vazia. Rode scripts/baixar_documentos.py primeiro.", "fonte": ""}]
         res = col.query(query_texts=[consulta], n_results=min(n_resultados, col.count()))
         return [
             {"texto": doc, "fonte": meta.get("fonte", ""), "pagina": meta.get("pagina", "")}

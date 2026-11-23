@@ -8,7 +8,7 @@ IMPORTANTE: os valores em CUSTO_HA sao APROXIMADOS. Antes da entrega, troque
 pelos valores das planilhas de custo de producao da Conab (gov.br/conab ->
 Custos de Producao -> Planilhas de custo de producao) e cite a fonte no README.
 
-Uso:  python gerar_dados.py            (gera camposync_demo.db + CSVs)
+Uso:  python scripts/gerar_dados.py     (gera data/camposync_demo.db + data/csv/*.csv)
 """
 import random, sqlite3, os
 from datetime import date, timedelta
@@ -174,7 +174,10 @@ def gerar():
 
 
 if __name__ == "__main__":
-    out = os.path.dirname(os.path.abspath(__file__))
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    out = os.path.join(raiz, "data")
+    csv_dir = os.path.join(out, "csv")
+    os.makedirs(csv_dir, exist_ok=True)
     fazendas, plantios, lanc, receitas, cot = gerar()
     db = os.path.join(out, "camposync_demo.db")
     if os.path.exists(db):
@@ -183,6 +186,6 @@ if __name__ == "__main__":
     for nome, df in [("fazendas", fazendas), ("plantios", plantios), ("lancamentos", lanc),
                      ("receitas", receitas), ("cotacoes", cot)]:
         df.to_sql(nome, con, index=False)
-        df.to_csv(os.path.join(out, f"{nome}.csv"), index=False)
+        df.to_csv(os.path.join(csv_dir, f"{nome}.csv"), index=False)
     con.close()
     print(f"OK: {len(lanc)} lancamentos, {len(receitas)} receitas, {len(cot)} cotacoes -> {db}")

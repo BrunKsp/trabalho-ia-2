@@ -3,12 +3,12 @@ Agente Consultor da Safra
 Combina as ferramentas MCP com uma base RAG (documentos do agro)
 para responder perguntas do produtor em linguagem natural.
 
-Uso:  python agente.py
+Uso:  python -m camposync.agente
 """
 import os, json, textwrap, time
 from dotenv import load_dotenv
 from openai import OpenAI, RateLimitError
-from rag import buscar_documentos
+from .rag import buscar_documentos
 
 load_dotenv()
 
@@ -26,7 +26,7 @@ FREE_MODELS = [
 ]
 MODEL_NAME = FREE_MODELS[0]
 
-from servidor_mcp import (
+from .servidor_mcp import (
     listar_fazendas,
     gastos_por_safra,
     comparar_safras,
