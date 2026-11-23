@@ -1,8 +1,20 @@
 """Estado compartilhado entre páginas e navegação."""
 import streamlit as st
 
-PAGINAS = ["📊  Painel", "💬  Consultor", "📂  Importar dados", "💡  Recomendações"]
+PAGINAS = ["Painel", "Consultor", "Importar dados", "Recomendações"]
 PAINEL, CONSULTOR, IMPORTAR, RECOMENDACOES = PAGINAS
+
+# Ícones Material Symbols de cada página (mesma família dos botões do Streamlit)
+ICONES = {
+    PAINEL: "dashboard",
+    CONSULTOR: "forum",
+    IMPORTAR: "upload_file",
+    RECOMENDACOES: "lightbulb",
+}
+
+
+def rotulo_menu(pagina: str) -> str:
+    return f":material/{ICONES[pagina]}: {pagina}"
 
 
 def ir_para(pagina: str):

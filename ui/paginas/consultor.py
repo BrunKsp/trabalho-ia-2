@@ -6,6 +6,9 @@ Fluxo de uma pergunta (máquina de estados simples em st.session_state):
   2. o agente responde → a pergunta vira "respondida" e a resposta é anexada;
      ou falha → a pergunta fica no chat como "erro", com mensagem na língua do
      produtor e o botão "Tentar de novo" (o detalhe técnico vai só para o log).
+
+Cada resposta termina no comprovante: uma faixa de campos (valor, data,
+categoria, fornecedor, origem) montada a partir do resultado das ferramentas.
 """
 import json
 import logging
@@ -19,27 +22,27 @@ from ui import dados, estado, tema
 
 log = logging.getLogger("camposync.consultor")
 
-AVATAR_USUARIO, AVATAR_AGENTE = "🧑‍🌾", "🌾"
+AVATAR_USUARIO, AVATAR_AGENTE = ":material/person:", ":material/agriculture:"
 
-# Nome da ferramenta MCP -> (ícone, o que ela fez, na língua do produtor)
+# Nome da ferramenta MCP -> (ícone Material, o que ela fez, na língua do produtor)
 FERRAMENTAS = {
-    "listar_fazendas": ("🏡", "Consultou o cadastro de fazendas"),
-    "gastos_por_safra": ("💸", "Somou os gastos da safra"),
-    "comparar_safras": ("⚖️", "Comparou duas safras"),
-    "resultado_safra": ("📈", "Calculou receita, despesa e margem"),
-    "cotacao_atual": ("🌾", "Buscou a cotação atual"),
-    "historico_cotacoes": ("📉", "Consultou o histórico de preços"),
-    "detectar_anomalias": ("🚨", "Procurou gastos fora do padrão"),
-    "buscar_lancamentos": ("🧾", "Consultou lançamentos da fazenda"),
-    "recomendar_acoes": ("💡", "Revisou o histórico para recomendar ações"),
-    "detectar_duplicados": ("👯", "Procurou lançamentos duplicados"),
-    "buscar_documentos": ("📚", "Pesquisou nos documentos da Embrapa e da Conab"),
+    "listar_fazendas": ("home_work", "Consultou o cadastro de fazendas"),
+    "gastos_por_safra": ("payments", "Somou os gastos da safra"),
+    "comparar_safras": ("compare_arrows", "Comparou duas safras"),
+    "resultado_safra": ("account_balance", "Calculou receita, despesa e margem"),
+    "cotacao_atual": ("sell", "Buscou a cotação atual"),
+    "historico_cotacoes": ("show_chart", "Consultou o histórico de preços"),
+    "detectar_anomalias": ("warning", "Procurou gastos fora do padrão"),
+    "buscar_lancamentos": ("receipt_long", "Consultou lançamentos da fazenda"),
+    "recomendar_acoes": ("lightbulb", "Revisou o histórico para recomendar ações"),
+    "detectar_duplicados": ("content_copy", "Procurou lançamentos duplicados"),
+    "buscar_documentos": ("menu_book", "Pesquisou nos documentos da Embrapa e da Conab"),
 }
 
 
 # ── Formatação na língua do produtor ─────────────────────────────────────────
 def _rotulo(nome: str):
-    return FERRAMENTAS.get(nome, ("🔧", "Fez uma consulta"))
+    return FERRAMENTAS.get(nome, ("search", "Fez uma consulta"))
 
 
 def _data_br(iso) -> str:
@@ -50,6 +53,10 @@ def _data_br(iso) -> str:
 
 def _pct(v) -> str:
     return f"{v:+.1f}%".replace(".", ",") if isinstance(v, (int, float)) else "—"
+
+
+def _preco(v) -> str:
+    return f"R$ {v:.2f}".replace(".", ",")
 
 
 def _contexto_args(args: dict) -> str:
@@ -67,11 +74,17 @@ def _contexto_args(args: dict) -> str:
     return " · ".join(partes)
 
 
+def _json(bruto):
+    try:
+        return json.loads(bruto)
+    except (TypeError, ValueError):
+        return None
+
+
 def _resumo_resultado(nome: str, bruto: str) -> str:
     """O número-chave que cada consulta trouxe, em R$ / sacas / datas. Vazio se não souber resumir."""
-    try:
-        r = json.loads(bruto)
-    except (TypeError, ValueError):
+    r = _json(bruto)
+    if r is None:
         return ""
     if isinstance(r, dict) and r.get("erro"):
         return "Não encontrou dados para essa consulta."
@@ -83,8 +96,7 @@ def _resumo_resultado(nome: str, bruto: str) -> str:
         if nome == "comparar_safras":
             cats = [c for c in r["por_categoria"] if c.get("variacao_pct") is not None]
             maior = max(cats, key=lambda c: c["variacao_pct"]) if cats else None
-            total = r["total"].get("variacao_pct")
-            txt = f"Custo total {_pct(total)}"
+            txt = f"Custo total {_pct(r['total'].get('variacao_pct'))}"
             if maior:
                 txt += f"; quem mais subiu: {dados.nome_categoria(maior['categoria']).lower()} ({_pct(maior['variacao_pct'])})"
             return txt + "."
@@ -92,11 +104,10 @@ def _resumo_resultado(nome: str, bruto: str) -> str:
             return (f"Receita {tema.brl(r['receita_bruta'])} − despesa {tema.brl(r['despesa_total'])} "
                     f"= margem {tema.brl(r['margem_bruta'])} ({_pct(r.get('margem_pct'))}).")
         if nome == "cotacao_atual":
-            preco = f"{r['preco_saca']:.2f}".replace(".", ",")
-            return f"{str(r['produto']).capitalize()}: R$ {preco} por saca em {_data_br(r['data'])}."
+            return f"{str(r['produto']).capitalize()}: {_preco(r['preco_saca'])} por saca em {_data_br(r['data'])}."
         if nome == "historico_cotacoes" and r:
             precos = [x["preco_saca"] for x in r]
-            return (f"{len(r)} semanas, de R$ {min(precos):.2f} a R$ {max(precos):.2f} por saca.").replace(".", ",", 2)
+            return f"{len(r)} semanas, de {_preco(min(precos))} a {_preco(max(precos))} por saca."
         if nome == "detectar_anomalias":
             if not r:
                 return "Nenhum gasto fora do padrão."
@@ -124,6 +135,87 @@ def _resumo_resultado(nome: str, bruto: str) -> str:
     return ""
 
 
+# ── Comprovante: os campos da nota que sustentam a resposta ──────────────────
+def _campos_da_ferramenta(nome: str, bruto: str) -> list[dict]:
+    """Campos (rótulo, valor, estado) para o comprovante. Vazio quando a consulta não tem número a mostrar."""
+    r = _json(bruto)
+    if r is None or (isinstance(r, dict) and r.get("erro")):
+        return []
+    try:
+        if nome == "detectar_duplicados" and r.get("exatos"):
+            d = r["exatos"][0]
+            return [
+                {"rotulo": "Valor repetido", "valor": tema.brl(d["valor"], 2), "estado": "foco"},
+                {"rotulo": "Data", "valor": _data_br(d["data"])},
+                {"rotulo": "Categoria", "valor": dados.nome_categoria(d["categoria"]), "texto": True},
+                {"rotulo": "Fornecedor", "valor": d["fornecedor"], "texto": True},
+                {"rotulo": "Origem", "valor": f"{d['ocorrencias']} lançamentos", "texto": True, "icone": "receipt_long"},
+            ]
+        if nome == "comparar_safras":
+            cats = [c for c in r["por_categoria"] if c.get("variacao_pct") is not None]
+            if not cats:
+                return []
+            m = max(cats, key=lambda c: c["variacao_pct"])
+            safras = [k for k in m if k not in ("categoria", "variacao_pct")]
+            return [
+                {"rotulo": "Categoria", "valor": dados.nome_categoria(m["categoria"]), "texto": True},
+                {"rotulo": f"Safra {safras[0]}", "valor": tema.brl(m[safras[0]])},
+                {"rotulo": f"Safra {safras[1]}", "valor": tema.brl(m[safras[1]]), "estado": "foco"},
+                {"rotulo": "Variação", "valor": _pct(m["variacao_pct"]), "estado": "alerta" if m["variacao_pct"] > 20 else None},
+                {"rotulo": "Origem", "valor": "Lançamentos · 2 safras", "texto": True, "icone": "receipt_long", "largo": True},
+            ]
+        if nome == "resultado_safra":
+            neg = r["margem_bruta"] < 0
+            return [
+                {"rotulo": "Receita bruta", "valor": tema.brl(r["receita_bruta"])},
+                {"rotulo": "Despesa total", "valor": tema.brl(r["despesa_total"])},
+                {"rotulo": "Margem bruta", "valor": tema.brl(r["margem_bruta"]), "estado": "foco ruim" if neg else "foco",
+                 "sub": _pct(r.get("margem_pct")) + " da receita", "sub_tom": "ruim" if neg else "bom"},
+                {"rotulo": "Produtividade", "valor": f"{r['produtividade_sc_ha']:.1f} sc/ha".replace(".", ",") if r.get("produtividade_sc_ha") else "—"},
+                {"rotulo": "Origem", "valor": f"Receitas e lançamentos · safra {r['safra']}", "texto": True, "icone": "receipt_long", "largo": True},
+            ]
+        if nome == "gastos_por_safra" and r.get("por_categoria"):
+            m = r["por_categoria"][0]
+            return [
+                {"rotulo": "Total gasto", "valor": tema.brl(r["total_gasto"]), "estado": "foco"},
+                {"rotulo": "Maior gasto", "valor": dados.nome_categoria(m["categoria"]), "texto": True},
+                {"rotulo": "Valor", "valor": tema.brl(m["total"])},
+                {"rotulo": "Origem", "valor": f"Lançamentos · safra {r['safra']}", "texto": True, "icone": "receipt_long", "largo": True},
+            ]
+        if nome == "cotacao_atual":
+            return [
+                {"rotulo": "Produto", "valor": str(r["produto"]).capitalize(), "texto": True},
+                {"rotulo": "Preço da saca", "valor": _preco(r["preco_saca"]), "estado": "foco"},
+                {"rotulo": "Data", "valor": _data_br(r["data"])},
+                {"rotulo": "Origem", "valor": f"Cotações · {r.get('praca', '')}", "texto": True, "icone": "show_chart"},
+            ]
+        if nome == "detectar_anomalias" and r:
+            a = r[0]
+            return [
+                {"rotulo": "Categoria", "valor": f"{dados.nome_categoria(a['categoria'])} · {a['cultura']}", "texto": True},
+                {"rotulo": f"Safra {a['safra']}", "valor": tema.brl(a["total"]), "estado": "foco"},
+                {"rotulo": "Média da fazenda", "valor": tema.brl(a["media_historica"])},
+                {"rotulo": "Desvio", "valor": _pct(a["desvio_pct"]), "estado": "alerta"},
+                {"rotulo": "Origem", "valor": "Histórico de lançamentos", "texto": True, "icone": "receipt_long", "largo": True},
+            ]
+    except (KeyError, IndexError, TypeError, ValueError):
+        return []
+    return []
+
+
+def _comprovante(meta: dict) -> list[dict]:
+    """O comprovante da resposta: os campos da consulta mais importante que trouxe números."""
+    prioridade = ["detectar_duplicados", "comparar_safras", "resultado_safra", "detectar_anomalias",
+                  "gastos_por_safra", "cotacao_atual"]
+    por_nome = {f["nome"]: f for f in meta.get("ferramentas", [])}
+    for nome in prioridade:
+        if nome in por_nome:
+            itens = _campos_da_ferramenta(nome, por_nome[nome].get("resultado", ""))
+            if itens:
+                return itens
+    return []
+
+
 def _trecho(texto: str, limite: int = 240) -> str:
     """Corta o trecho do documento no fim de uma palavra, não no meio dela."""
     t = " ".join(str(texto).split())
@@ -146,21 +238,22 @@ def _mensagem_erro(e: Exception) -> str:
 
 # ── Sugestões tiradas da própria fazenda ─────────────────────────────────────
 def _sugestoes(fazenda: dict) -> list[tuple[str, str]]:
+    """(ícone Material, pergunta). A primeira vem do maior alerta da fazenda."""
     fid = fazenda["id"]
     safras = dados.safras(fid)
     sug = []
     alertas = dados.anomalias(fid)
     if alertas:
         a = alertas[0]
-        sug.append(("🚨", f"Por que {dados.nome_categoria(a['categoria']).lower()} da safra {a['safra']} "
-                          f"({a['cultura']}) ficou {abs(a['desvio_pct']):.0f}% acima da média?"))
+        sug.append(("warning", f"Por que o gasto com {dados.nome_categoria(a['categoria']).lower()} da safra "
+                               f"{a['safra']} ({a['cultura']}) ficou {abs(a['desvio_pct']):.0f}% acima da média?"))
     elif len(safras) >= 2:
-        sug.append(("🔎", f"Por que a safra {safras[-1]} custou mais que a {safras[-2]}?"))
-    sug.append(("👯", "Tem algum lançamento duplicado?"))
+        sug.append(("compare_arrows", f"Por que a safra {safras[-1]} custou mais que a {safras[-2]}?"))
+    sug.append(("content_copy", "Tem algum lançamento duplicado?"))
     if safras:
-        sug.append(("📈", f"Qual foi a margem bruta da safra {safras[-1]}?"))
-    sug.append(("🌾", "Qual a cotação da soja hoje? Compensa vender agora?"))
-    sug.append(("📚", "O que é o LCDPR (livro caixa do produtor) e preciso declarar?"))
+        sug.append(("account_balance", f"Qual foi a margem bruta da safra {safras[-1]}?"))
+    sug.append(("sell", "Qual a cotação da soja hoje? Compensa vender agora?"))
+    sug.append(("menu_book", "O que é o LCDPR (livro caixa do produtor) e preciso declarar?"))
     return sug
 
 
@@ -226,56 +319,48 @@ def _acoes_duplicados(meta: dict, bloqueado: bool):
     for f in meta.get("ferramentas", []):
         if f["nome"] != "detectar_duplicados":
             continue
-        try:
-            exatos = json.loads(f["resultado"]).get("exatos", [])
-        except (TypeError, ValueError, AttributeError):
-            continue
+        r = _json(f.get("resultado"))
+        exatos = r.get("exatos", []) if isinstance(r, dict) else []
         for d in exatos:
-            ids = sorted(d["ids"])
-            for copia in ids[1:]:  # mantém o primeiro lançamento, oferece apagar as cópias
-                desc = (f"{dados.nome_categoria(d['categoria'])} · {d['fornecedor']} · {_data_br(d['data'])} · "
-                        f"<b>{tema.brl(d['valor'], 2)}</b>")
+            for copia in sorted(d["ids"])[1:]:  # mantém o primeiro lançamento, oferece apagar as cópias
                 st_atual = st.session_state.get(f"dup_{copia}")
-                with st.container(key=f"acao_dup_{copia}"):
+                valor = tema.brl(d["valor"], 2)
+                with st.container(key=f"acao_dup_{copia}", horizontal=True, vertical_alignment="center"):
                     if st_atual == "apagado":
-                        st.markdown(f'<div class="acao feito">✅ Cópia apagada. O custo da safra {tema.esc(d["safra"])} '
-                                    f'ficou {tema.brl(d["valor"], 2)} menor; o lançamento original continua.</div>',
-                                    unsafe_allow_html=True)
-                        st.button("Desfazer", key=f"desf_{copia}", on_click=_desfazer_apagar, args=(copia,), disabled=bloqueado)
+                        st.markdown(f'<span class="acao-msg ok">{tema.ms("check_circle")}Cópia apagada: '
+                                    f'{valor} a menos na safra {tema.esc(d["safra"])}.</span>', unsafe_allow_html=True)
+                        st.button("Desfazer", key=f"desf_{copia}", icon=":material/undo:",
+                                  on_click=_desfazer_apagar, args=(copia,), disabled=bloqueado)
                     elif st_atual == "sumiu":
-                        st.markdown('<div class="acao">Esse lançamento repetido já não existe mais no histórico.</div>',
+                        st.markdown(f'<span class="acao-msg">{tema.ms("info")}Essa cópia já não existe mais no histórico.</span>',
                                     unsafe_allow_html=True)
                     elif st_atual == "confirmar":
-                        st.markdown(f'<div class="acao"><b>Apagar a cópia repetida?</b><br>{desc}<br>'
-                                    f'O lançamento original fica; só a cópia sai do histórico.</div>', unsafe_allow_html=True)
-                        c1, c2 = st.columns(2)
-                        c1.button("Sim, apagar a cópia", key=f"sim_{copia}", type="primary", use_container_width=True,
+                        st.markdown(f'<span class="acao-msg alerta">{tema.ms("help")}Apagar a cópia de {valor}? '
+                                    "O original fica.</span>", unsafe_allow_html=True)
+                        st.button("Sim, apagar a cópia", key=f"sim_{copia}", type="primary", icon=":material/delete:",
                                   on_click=_apagar_copia, args=(copia,), disabled=bloqueado)
-                        c2.button("Cancelar", key=f"nao_{copia}", use_container_width=True,
-                                  on_click=_acao_dup, args=(copia, None))
+                        st.button("Cancelar", key=f"nao_{copia}", on_click=_acao_dup, args=(copia, None))
                     else:
-                        st.markdown(f'<div class="acao">{desc}<br>Lançado {d["ocorrencias"]} vezes.</div>',
-                                    unsafe_allow_html=True)
-                        st.button("Apagar a cópia repetida", key=f"apagar_{copia}", on_click=_acao_dup,
-                                  args=(copia, "confirmar"), disabled=bloqueado)
+                        st.button("Apagar a cópia repetida", key=f"apagar_{copia}", type="primary",
+                                  icon=":material/delete:", on_click=_acao_dup, args=(copia, "confirmar"),
+                                  disabled=bloqueado)
 
 
-# ── "De onde vêm esses números" ──────────────────────────────────────────────
+# ── "Como cheguei nessa resposta" ────────────────────────────────────────────
 def _mostrar_meta(meta: dict):
     ferr, fontes = meta.get("ferramentas", []), meta.get("fontes", [])
     if not ferr:
-        st.markdown('<div class="aviso-geral">⚠️ Resposta geral: não consultei os dados da sua fazenda '
-                    'nem os documentos técnicos.</div>', unsafe_allow_html=True)
+        tema.aviso("Resposta geral: não consultei os dados da sua fazenda nem os documentos técnicos.", "", "info")
         return
     n = len(ferr)
-    with st.expander(f"🔎 De onde vêm esses números · {n} consulta{'s' if n > 1 else ''}"):
+    with st.expander(f"Como cheguei nessa resposta · {n} consulta{'s' if n > 1 else ''}", icon=":material/receipt_long:"):
         passos, tecnico = "", []
         for f in ferr:
             ic, desc = _rotulo(f["nome"])
             ctx = _contexto_args(f["args"])
             res = _resumo_resultado(f["nome"], f.get("resultado", ""))
             passos += (
-                f'<div class="passo-ferr"><div class="ic">{ic}</div><div>'
+                f'<div class="passo-ferr">{tema.ms(ic)}<div>'
                 f'<div class="t">{tema.esc(desc)}{(" · " + tema.esc(ctx)) if ctx else ""}</div>'
                 + (f'<div class="r">{tema.esc(res)}</div>' if res else "")
                 + "</div></div>"
@@ -285,7 +370,7 @@ def _mostrar_meta(meta: dict):
         st.markdown(passos, unsafe_allow_html=True)
 
         if fontes:
-            st.markdown('<div class="sub-rotulo">Documentos consultados</div>', unsafe_allow_html=True)
+            st.markdown('<div class="lab" style="margin-top:12px">Documentos consultados</div>', unsafe_allow_html=True)
             vistos = set()
             for fo in fontes:
                 chave = (fo["fonte"], fo.get("pagina"))
@@ -294,7 +379,7 @@ def _mostrar_meta(meta: dict):
                 vistos.add(chave)
                 pag = f" · página {fo['pagina']}" if fo.get("pagina") not in ("", None) else ""
                 st.markdown(
-                    f'<div class="fonte"><div class="f">📄 {tema.esc(fo["fonte"])}{tema.esc(pag)}</div>'
+                    f'<div class="fonte"><div class="f">{tema.ms("description")}{tema.esc(fo["fonte"])}{tema.esc(pag)}</div>'
                     f'<div class="x">“{tema.esc(_trecho(fo["texto"]))}”</div></div>',
                     unsafe_allow_html=True,
                 )
@@ -314,14 +399,14 @@ def _responder(fazenda: dict, chat: list[dict], idx: int):
     _, proc = _chaves(fazenda["id"])
     with st.chat_message("assistant", avatar=AVATAR_AGENTE):
         status = st.status("Lendo sua pergunta… costuma levar de 10 a 30 segundos.", expanded=True)
-        status.write("📝 Entendendo o que você perguntou")
+        status.write(":material/edit_note: Entendendo o que você perguntou")
         n = {"consultas": 0}
         inicio = time.time()
 
         def ao_chamar(nome, args):
             ic, desc = _rotulo(nome)
             n["consultas"] += 1
-            status.write(f"{ic} {desc}")
+            status.write(f":material/{ic}: {desc}")
             status.update(label=f"Consultando seus dados… {n['consultas']} consulta{'s' if n['consultas'] > 1 else ''} até agora")
 
         try:
@@ -348,17 +433,19 @@ def render(fazenda: dict):
     chat = st.session_state.setdefault(chave, [])
     processando = bool(st.session_state.get(proc))
 
-    tema.cabecalho("Consultor da Safra")
-    culturas = fazenda["culturas"].replace(",", ", ")
-    st.markdown(
-        f'<div class="contexto-faz">📍 <b>{tema.esc(fazenda["nome"])}</b> · {tema.esc(fazenda["municipio"])} · '
-        f'{fazenda["area_ha"]} ha · {tema.esc(culturas)}</div>',
-        unsafe_allow_html=True,
-    )
+    topo, acao = st.columns([4, 1], vertical_alignment="bottom")
+    with topo:
+        safras = dados.safras(fid)
+        tema.cabecalho("Consultor", f"{fazenda['nome']} · {fazenda['municipio']}"
+                       + (f" · safra {safras[-1]}" if safras else ""))
+    with acao:
+        if chat:
+            st.button("Nova conversa", key=f"nova_{fid}", icon=":material/add_comment:", on_click=_nova_conversa,
+                      args=(fid,), disabled=processando, use_container_width=True)
 
     if not os.environ.get("OPENROUTER_API_KEY"):
-        st.warning("O consultor ainda não está conectado ao serviço de inteligência artificial, por isso não "
-                   "consegue responder. Avise quem configura o sistema.")
+        tema.aviso("O consultor ainda não está conectado ao serviço de inteligência artificial, por isso não "
+                   "consegue responder. Avise quem configura o sistema.", "", "link_off")
 
     # Pergunta vinda de outra página (ex.: "Investigar" no Painel)
     pendente_externa = st.session_state.pop("pergunta_pendente", None)
@@ -374,23 +461,23 @@ def render(fazenda: dict):
         _enfileirar(fid, fazenda["nome"], pergunta)
         st.rerun()
 
-    # Conversa vazia: sugestões tiradas desta fazenda
+    # Conversa vazia: perguntas tiradas desta fazenda
     if not chat:
-        anterior = st.session_state.get(f"{chave}_anterior")
-        if anterior:
-            c1, c2 = st.columns([3, 1], vertical_alignment="center")
+        if st.session_state.get(f"{chave}_anterior"):
+            c1, c2 = st.columns([4, 1], vertical_alignment="center")
             c1.caption("Conversa anterior apagada.")
-            c2.button("Desfazer", key="desfazer_nova", on_click=_desfazer_nova_conversa, args=(fid,),
-                      use_container_width=True)
+            c2.button("Desfazer", key="desfazer_nova", icon=":material/undo:", on_click=_desfazer_nova_conversa,
+                      args=(fid,), use_container_width=True)
         st.markdown(
-            '<div class="hero"><h2>Como posso ajudar na safra?</h2>'
+            '<div class="vazio"><h2>O que você quer saber sobre a safra?</h2>'
             '<p>Pergunte do seu jeito. Eu consulto os lançamentos da fazenda e os documentos da Embrapa e da Conab, '
             'e mostro de onde vem cada número.</p></div>',
             unsafe_allow_html=True,
         )
+        st.markdown('<div class="lab" style="margin-bottom:8px">Perguntas sobre esta fazenda</div>', unsafe_allow_html=True)
         with st.container(key="sugestoes"):
             for ic, texto in _sugestoes(fazenda):
-                st.button(f"{ic}  {texto}", key=f"sug_{texto}", use_container_width=True,
+                st.button(texto, key=f"sug_{texto}", icon=f":material/{ic}:", use_container_width=True,
                           on_click=estado.perguntar_ao_consultor, args=(texto,))
         return
 
@@ -399,28 +486,29 @@ def render(fazenda: dict):
     for i, m in enumerate(chat):
         if m["role"] == "user":
             with st.chat_message("user", avatar=AVATAR_USUARIO):
-                # .msg-usuario marca a bolha do produtor para o CSS (o avatar em emoji não tem test-id próprio)
-                st.markdown(f'<p class="msg-usuario">{tema.esc(m["texto"])}</p>', unsafe_allow_html=True)
+                # .msg-usuario marca a pergunta do produtor para o CSS (alinhada à direita, sem avatar)
+                st.markdown(f'<div class="msg-usuario"><div class="lab">Pergunta</div>'
+                            f'<p>{tema.esc(m["texto"])}</p></div>', unsafe_allow_html=True)
                 if m.get("estado") == "erro":
-                    st.markdown(f'<div class="erro-chat">{tema.esc(m.get("erro_msg", ""))}</div>',
-                                unsafe_allow_html=True)
+                    tema.aviso(m.get("erro_msg", ""), "erro", "error")
                     if i == len(chat) - 1:
-                        st.button("↻ Tentar de novo", key=f"retry_{fid}_{i}", on_click=_tentar_de_novo,
-                                  args=(fid, i), disabled=processando)
+                        st.button("Tentar de novo", key=f"retry_{fid}_{i}", icon=":material/refresh:",
+                                  on_click=_tentar_de_novo, args=(fid, i), disabled=processando)
             if m.get("estado") == "pendente":
                 pendente_idx = i
         else:
             with st.chat_message("assistant", avatar=AVATAR_AGENTE):
                 st.markdown(m["texto"])
-                if m.get("meta"):
-                    _acoes_duplicados(m["meta"], bloqueado=processando)
-                    _mostrar_meta(m["meta"])
+                meta = m.get("meta") or {}
+                itens = _comprovante(meta)
+                if itens:
+                    tema.mostrar_campos(itens)
+                if meta:
+                    _acoes_duplicados(meta, bloqueado=processando)
+                    _mostrar_meta(meta)
 
     if processando and pendente_idx is not None:
         _responder(fazenda, chat, pendente_idx)
     elif processando:  # nada pendente (ex.: execução interrompida): destrava o campo
         st.session_state[proc] = False
         st.rerun()
-
-    with st.container(key="rodape_chat"):
-        st.button("🗑️ Nova conversa", key=f"nova_{fid}", on_click=_nova_conversa, args=(fid,))

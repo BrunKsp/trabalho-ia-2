@@ -27,7 +27,7 @@ def _passos(ativo: int):
     html = '<div class="passos">'
     for i, nome in enumerate(nomes, 1):
         classe = "ativo" if i == ativo else ("feito" if i < ativo else "")
-        marca = "✓" if i < ativo else i
+        marca = tema.ms("check") if i < ativo else i
         html += f'<div class="passo {classe}"><b>{marca}</b>{nome}</div>'
     st.markdown(html + "</div>", unsafe_allow_html=True)
 
@@ -49,15 +49,16 @@ def _extrair(arquivo) -> list[dict]:
 
 def render(fazenda: dict):
     fid = fazenda["id"]
-    tema.cabecalho("Importar dados", f"Traga notas fiscais, boletos ou planilhas para o histórico da {fazenda['nome']}.")
+    tema.cabecalho("Importar dados", f"Notas fiscais, boletos ou planilhas para o histórico da {fazenda['nome']}", "upload_file")
 
     pendentes = st.session_state.get("lancamentos_pendentes")
     concluido = st.session_state.get("importacao_concluida")
     _passos(3 if concluido else (2 if pendentes else 1))
 
     if concluido:
-        st.success(f"**{concluido} lançamentos importados** para {fazenda['nome']}. Já aparecem no Painel e nas respostas do Consultor.")
-        if st.button("Importar outro arquivo", type="primary"):
+        tema.aviso(f"{concluido} lançamentos importados para {fazenda['nome']}. Já aparecem no Painel e nas respostas do Consultor.",
+                   "ok", "check_circle")
+        if st.button("Importar outro arquivo", type="primary", icon=":material/upload_file:"):
             st.session_state.pop("importacao_concluida")
             st.rerun()
         return
@@ -79,7 +80,7 @@ def render(fazenda: dict):
         st.caption(f"{len(editado)} lançamentos · total {tema.brl(total, 2)}")
 
         c1, c2, _ = st.columns([1.3, 1, 3])
-        if c1.button("✅ Confirmar importação", type="primary", use_container_width=True):
+        if c1.button("Confirmar importação", type="primary", icon=":material/check:", use_container_width=True):
             registros = editado.dropna(subset=["valor"]).to_dict("records")
             n = importar_lancamentos(registros, fid)
             dados.limpar_cache()
@@ -89,7 +90,7 @@ def render(fazenda: dict):
         if c2.button("Cancelar", use_container_width=True):
             st.session_state.pop("lancamentos_pendentes", None)
             st.rerun()
-        st.info("Atenção: a importação grava no banco da aplicação.", icon="ℹ️")
+        tema.aviso("A importação grava os lançamentos no histórico da fazenda.", "", "info")
         return
 
     # ── Passo 1: envio ──────────────────────────────────────────────────────
@@ -99,22 +100,25 @@ def render(fazenda: dict):
         help="PDF de nota fiscal ou boleto (lido por IA), ou planilha CSV/Excel com colunas data e valor.",
     )
     if arquivo:
-        st.markdown(f"📎 **{arquivo.name}** · {arquivo.size / 1024:.0f} KB")
-        if st.button("🔍 Extrair lançamentos", type="primary"):
+        st.markdown(f'<div class="pagina-ctx">{tema.ms("attach_file")}<b>{tema.esc(arquivo.name)}</b>&nbsp;· '
+                    f'{arquivo.size / 1024:.0f} KB</div>', unsafe_allow_html=True)
+        if st.button("Extrair lançamentos", type="primary", icon=":material/document_scanner:"):
             with st.spinner("Lendo o documento…"):
                 try:
                     lancamentos = _extrair(arquivo)
                 except Exception as e:  # noqa: BLE001 - ex.: modelos ocupados, chave ausente
-                    st.error(f"Não consegui ler o documento agora: {e}")
+                    tema.aviso(f"Não consegui ler o documento agora: {e}", "erro", "error")
                     st.stop()
             if not lancamentos:
-                st.warning("Não encontrei lançamentos nesse arquivo. Confira se há colunas `data` e `valor` (planilha) ou texto legível (PDF).")
+                tema.aviso("Não encontrei lançamentos nesse arquivo. Confira se a planilha tem colunas de data e valor, "
+                           "ou se o PDF tem texto legível.", "", "search_off")
             else:
                 st.session_state["lancamentos_pendentes"] = lancamentos
                 st.rerun()
 
-    st.download_button("⬇️ Baixar planilha modelo (CSV)", MODELO_CSV, file_name="modelo_lancamentos.csv", mime="text/csv")
-    with st.expander("Como funciona"):
+    st.download_button("Baixar planilha modelo (CSV)", MODELO_CSV, file_name="modelo_lancamentos.csv", mime="text/csv",
+                       icon=":material/download:")
+    with st.expander("Como funciona", icon=":material/help:"):
         st.markdown(
             "- **PDF** (nota fiscal, boleto): a IA lê o texto e extrai data, fornecedor, categoria e valor.\n"
             "- **CSV / Excel**: as colunas são reconhecidas pelo nome (`data`, `valor`, `categoria`, `fornecedor`, `cultura`, `safra`).\n"

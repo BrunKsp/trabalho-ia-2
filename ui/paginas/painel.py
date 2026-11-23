@@ -6,13 +6,18 @@ from ui import dados, estado, tema
 
 
 def _variacao(atual, anterior, mais_e_melhor=True):
-    """Texto e tom da variação percentual vs safra anterior."""
+    """(texto, tom, ícone) da variação percentual vs safra anterior."""
     if not anterior:
-        return "", "neutro"
+        return "", None, None
     pct = (atual - anterior) / abs(anterior) * 100
-    seta = "▲" if pct >= 0 else "▼"
     bom = (pct >= 0) == mais_e_melhor
-    return f"{seta} {abs(pct):.1f}% vs safra anterior", ("bom" if bom else "ruim")
+    icone = "arrow_upward" if pct >= 0 else "arrow_downward"
+    return f"{abs(pct):.1f}% vs safra anterior".replace(".", ","), ("bom" if bom else "ruim"), icone
+
+
+def _campo(rotulo, valor, atual, anterior, mais_e_melhor=True):
+    txt, tom, ic = _variacao(atual, anterior, mais_e_melhor)
+    return {"rotulo": rotulo, "valor": valor, "sub": txt or None, "sub_tom": tom, "sub_icone": ic}
 
 
 def render(fazenda: dict):
@@ -31,22 +36,21 @@ def render(fazenda: dict):
     idx = lista_safras.index(safra)
     ant = dados.resultado(fid, lista_safras[idx - 1], cultura) if idx > 0 else None
 
-    # ── Métricas ────────────────────────────────────────────────────────────
-    c1, c2, c3, c4 = st.columns(4)
-    with c1:
-        v, t = _variacao(res["receita_bruta"], ant and ant["receita_bruta"])
-        tema.kpi("Receita bruta", tema.brl(res["receita_bruta"]), v, t)
-    with c2:
-        v, t = _variacao(res["despesa_total"], ant and ant["despesa_total"], mais_e_melhor=False)
-        tema.kpi("Despesa total", tema.brl(res["despesa_total"]), v, t)
-    with c3:
-        pct = res["margem_pct"]
-        tema.kpi("Margem bruta", tema.brl(res["margem_bruta"]),
-                 f"{pct:.1f}% da receita" if pct is not None else "sem receita registrada", destaque=True)
-    with c4:
-        prod = res["produtividade_sc_ha"]
-        v, t = _variacao(prod or 0, ant and ant["produtividade_sc_ha"])
-        tema.kpi("Produtividade média", f"{prod:.1f} sc/ha" if prod else "—", v, t)
+    # ── Resultado da safra: uma faixa de campos da nota ─────────────────────
+    pct = res["margem_pct"]
+    prod = res["produtividade_sc_ha"]
+    negativa = res["margem_bruta"] < 0
+    tema.mostrar_campos([
+        _campo("Receita bruta", tema.brl(res["receita_bruta"]), res["receita_bruta"], ant and ant["receita_bruta"]),
+        _campo("Despesa total", tema.brl(res["despesa_total"]), res["despesa_total"], ant and ant["despesa_total"],
+               mais_e_melhor=False),
+        {"rotulo": "Margem bruta", "valor": tema.brl(res["margem_bruta"]),
+         "estado": "foco ruim" if negativa else "foco",
+         "sub": (f"{pct:.1f}% da receita".replace(".", ",") if pct is not None else "sem receita registrada"),
+         "sub_tom": "ruim" if negativa else "bom"},
+        _campo("Produtividade média", f"{prod:.1f} sc/ha".replace(".", ",") if prod else "—",
+               prod or 0, ant and ant["produtividade_sc_ha"]),
+    ], kpi=True)
 
     # ── Gráficos ────────────────────────────────────────────────────────────
     g1, g2 = st.columns(2)
@@ -54,7 +58,7 @@ def render(fazenda: dict):
         tema.secao("Para onde foi o dinheiro", f"Custos por categoria · safra {safra}")
         df = dados.custos_por_categoria(fid, safra, cultura)
         if df.empty:
-            st.info("Sem lançamentos para esta seleção.")
+            tema.aviso("Sem lançamentos para esta seleção.", "", "info")
         else:
             df = df.sort_values("total")
             fig = go.Figure(go.Bar(
@@ -63,7 +67,7 @@ def render(fazenda: dict):
                 textposition="outside", cliponaxis=False,
                 hovertemplate="%{y}: %{text}<extra></extra>",
             ))
-            fig.update_xaxes(visible=False, range=[0, df["total"].max() * 1.35])
+            fig.update_xaxes(visible=False, range=[0, df["total"].max() * 1.6])
             st.plotly_chart(tema.layout_grafico(fig, 360), use_container_width=True, config={"displayModeBar": False})
 
     with g2:
@@ -72,10 +76,10 @@ def render(fazenda: dict):
         fig = go.Figure()
         fig.add_bar(x=ev["safra"], y=ev["receita"], name="Receita", marker_color=tema.VERDE,
                     hovertemplate="Receita: R$ %{y:,.0f}<extra></extra>")
-        fig.add_bar(x=ev["safra"], y=ev["despesa"], name="Despesa", marker_color=tema.OURO,
+        fig.add_bar(x=ev["safra"], y=ev["despesa"], name="Despesa", marker_color="#8FA89A",
                     hovertemplate="Despesa: R$ %{y:,.0f}<extra></extra>")
         fig.add_scatter(x=ev["safra"], y=ev["margem"], name="Margem", mode="lines+markers",
-                        line=dict(color=tema.TERRA, width=3),
+                        line=dict(color=tema.TINTA, width=2.5),
                         hovertemplate="Margem: R$ %{y:,.0f}<extra></extra>")
         fig.update_layout(barmode="group")
         st.plotly_chart(tema.layout_grafico(fig, 360), use_container_width=True, config={"displayModeBar": False})
@@ -95,27 +99,37 @@ def render(fazenda: dict):
     ))
     fig.update_yaxes(range=[cot["preco_saca"].min() * 0.9, cot["preco_saca"].max() * 1.05])
     st.plotly_chart(tema.layout_grafico(fig, 280), use_container_width=True, config={"displayModeBar": False})
-    v, _ = _variacao(atual, anterior)
-    st.caption(f"Cotação mais recente ({cot['data'].iloc[-1]:%d/%m/%Y}): **R$ {atual:.2f}/saca** · {v.replace('vs safra anterior', 'em 4 semanas')}")
+    v, tom, _ = _variacao(atual, anterior)
+    tema.mostrar_campos([
+        {"rotulo": f"{produto.capitalize()} · preço da saca", "valor": f"R$ {atual:.2f}".replace(".", ","), "estado": "foco"},
+        {"rotulo": "Data", "valor": f"{cot['data'].iloc[-1]:%d/%m/%Y}"},
+        {"rotulo": "Em 4 semanas", "valor": ("+" if atual >= anterior else "−") + v.replace(" vs safra anterior", ""),
+         "estado": None if tom == "bom" else "ruim"},
+    ])
 
     # ── Alertas ─────────────────────────────────────────────────────────────
     tema.secao("Gastos fora do normal", "Categorias que fugiram mais de 20% da média histórica da fazenda")
     alertas = dados.anomalias(fid)[:4]
     if not alertas:
-        st.success("Nenhum gasto fora do padrão encontrado. 👏")
+        tema.aviso("Nenhum gasto fora do padrão encontrado.", "ok", "check_circle")
     for i, a in enumerate(alertas):
-        col_txt, col_btn = st.columns([5, 1.4])
         sinal = "+" if a["desvio_pct"] > 0 else ""
         cat = dados.nome_categoria(a["categoria"])
+        nivel = "alta" if abs(a["desvio_pct"]) >= 25 else "media"
+        with st.container(key=f"linha_alerta_{i}"):
+            col_txt, col_btn = st.columns([5, 1.2], vertical_alignment="top")
         with col_txt:
             st.markdown(
-                f'<div class="alerta {"alta" if abs(a["desvio_pct"]) >= 25 else "media"}">'
-                f'<div class="tit">{tema.esc(cat)} · {tema.esc(a["cultura"])} · safra {tema.esc(a["safra"])} '
-                f'<span class="selo {"alta" if a["desvio_pct"] > 0 else ""}">{sinal}{a["desvio_pct"]:.0f}%</span></div>'
-                f'<div class="txt">{tema.brl(a["total"])} gastos, contra média de {tema.brl(a["media_historica"])}.</div></div>',
+                f'<div class="item {nivel}">{tema.ms("warning")}<div>'
+                f'<div class="tit">{tema.esc(cat)} · {tema.esc(a["cultura"])} · safra {tema.esc(a["safra"])}</div></div></div>'
+                + tema.campos([
+                    {"rotulo": "Gasto", "valor": tema.brl(a["total"])},
+                    {"rotulo": "Média da fazenda", "valor": tema.brl(a["media_historica"])},
+                    {"rotulo": "Desvio", "valor": f"{sinal}{a['desvio_pct']:.0f}%", "estado": "alerta"},
+                ]),
                 unsafe_allow_html=True,
             )
         with col_btn:
             pergunta = f"Por que os gastos com {cat.lower()} em {a['cultura']} na safra {a['safra']} ficaram {abs(a['desvio_pct']):.0f}% {'acima' if a['desvio_pct'] > 0 else 'abaixo'} da média?"
-            st.button("🔎 Investigar", key=f"inv_{fid}_{i}", use_container_width=True,
+            st.button("Investigar", key=f"inv_{fid}_{i}", icon=":material/search:", type="tertiary",
                       on_click=estado.perguntar_ao_consultor, args=(pergunta,))
