@@ -22,6 +22,12 @@ from . import rag
 mcp = FastMCP("consultor-safra")
 
 
+def _brl(valor) -> str:
+    """R$ no padrão brasileiro, sem centavos: R$ 276.531 / −R$ 164.598."""
+    s = f"{abs(valor):,.0f}".replace(",", ".")
+    return f"−R$ {s}" if valor < 0 else f"R$ {s}"
+
+
 def _con():
     con = sqlite3.connect(DB_PATH)
     con.row_factory = sqlite3.Row
@@ -309,10 +315,15 @@ def recomendar_acoes(fazenda_id: int) -> list[dict]:
                 "categoria": cat,
                 "mensagem": (
                     f"Gastos com {cat} ({cultura}) na última safra estão {pct}% acima da média histórica "
-                    f"(R$ {round(ultimo):,} vs média R$ {round(media):,}). "
+                    f"({_brl(ultimo)} vs média {_brl(media)}). "
                     f"Avalie renegociar com fornecedores ou comparar preços antes do próximo plantio."
                 ),
                 "prioridade": "alta" if pct >= 25 else "media",
+                "campos": [
+                    {"rotulo": f"Última safra ({series[-1][0]})", "valor": _brl(ultimo)},
+                    {"rotulo": "Média histórica", "valor": _brl(media)},
+                    {"rotulo": "Acima da média", "valor": f"+{pct}%"},
+                ],
             })
 
     # Melhor/pior safra
@@ -327,20 +338,29 @@ def recomendar_acoes(fazenda_id: int) -> list[dict]:
             "tipo": "benchmark_interno",
             "mensagem": (
                 f"Sua melhor margem foi na safra {melhor[0]} com {melhor[1]}: "
-                f"R$ {melhor[2]:,}. Analise o que foi diferente (clima, preço de venda, controle de custo) "
+                f"{_brl(melhor[2])}. Analise o que foi diferente (clima, preço de venda, controle de custo) "
                 f"para tentar replicar nas próximas safras."
             ),
             "prioridade": "media",
+            "campos": [
+                {"rotulo": "Safra", "valor": f"{melhor[0]} · {melhor[1]}"},
+                {"rotulo": "Margem", "valor": _brl(melhor[2])},
+            ],
         })
         if pior[2] < melhor[2] * 0.6 and pior[0] != melhor[0]:
             recomendacoes.append({
                 "tipo": "alerta_margem",
                 "mensagem": (
-                    f"A safra {pior[0]} ({pior[1]}) teve margem de R$ {pior[2]:,}, "
+                    f"A safra {pior[0]} ({pior[1]}) teve margem de {_brl(pior[2])}, "
                     f"muito abaixo da melhor safra. Verifique se houve problema climático, "
                     f"queda de produtividade ou aumento atípico de custos nesse período."
                 ),
                 "prioridade": "alta",
+                "campos": [
+                    {"rotulo": "Safra", "valor": f"{pior[0]} · {pior[1]}"},
+                    {"rotulo": "Margem", "valor": _brl(pior[2])},
+                    {"rotulo": "Melhor safra", "valor": _brl(melhor[2])},
+                ],
             })
 
     # Sazonalidade: top mês por categoria
@@ -355,6 +375,7 @@ def recomendar_acoes(fazenda_id: int) -> list[dict]:
                     f"Planeje o fluxo de caixa com antecedência para esse período."
                 ),
                 "prioridade": "baixa",
+                "campos": [{"rotulo": "Mês de maior gasto", "valor": meses.get(mes, mes)}],
             })
             picos_vistos.add(cat)
 
