@@ -8,4 +8,5 @@ chroma_db/
 
 # dados gerados em runtime
 data/chroma_db/
+data/logs/
 .claude/

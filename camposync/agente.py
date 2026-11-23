@@ -6,16 +6,33 @@ para responder perguntas do produtor em linguagem natural.
 Uso:  python -m camposync.agente
 """
 import os, json, textwrap, time
+from datetime import datetime
 from dotenv import load_dotenv
-from openai import OpenAI, RateLimitError
+from openai import OpenAI, RateLimitError, AuthenticationError, APIConnectionError, APIStatusError
 from .cliente_mcp import get_cliente
+from .config import LOGS_DIR
 
 load_dotenv()
 
-client = OpenAI(
-    api_key=os.environ.get("OPENROUTER_API_KEY", ""),
-    base_url="https://openrouter.ai/api/v1",
-)
+# Limite de rodadas "modelo pede ferramenta → executa" por pergunta. Evita que um
+# modelo gratuito entre em ciclo de chamadas e trave a interface.
+MAX_RODADAS = 8
+
+_client: OpenAI | None = None
+
+
+def _get_client() -> OpenAI:
+    """Cria o cliente sob demanda: sem chave a interface abre normalmente e só o chat avisa."""
+    global _client
+    if _client is None:
+        chave = os.environ.get("OPENROUTER_API_KEY", "").strip()
+        if not chave:
+            raise RuntimeError(
+                "OPENROUTER_API_KEY não configurada. Crie um arquivo .env na raiz "
+                "(veja .env.example) com a sua chave do OpenRouter."
+            )
+        _client = OpenAI(api_key=chave, base_url="https://openrouter.ai/api/v1")
+    return _client
 
 # Modelos free com function calling — tentados em ordem
 FREE_MODELS = [
@@ -44,7 +61,7 @@ def ferramentas_openai() -> list[dict]:
                 "function": {
                     "name": t.name,
                     "description": (t.description or "").strip(),
-                    "parameters": t.inputSchema or {"type": "object", "properties": {}},
+                    "parameters": getattr(t, "input_schema", None) or t.inputSchema or {"type": "object", "properties": {}},
                 },
             }
             for t in get_cliente().listar_ferramentas()
@@ -62,23 +79,64 @@ SYSTEM = textwrap.dedent("""
 """).strip()
 
 
-def _create_with_fallback(messages: list):
-    """Tenta cada modelo free em sequência; faz retry com backoff em 429."""
-    for model in FREE_MODELS:
-        for attempt in range(3):
+_ultimo_ok: str | None = None   # modelo que respondeu por último: é tentado primeiro
+_bloqueado_ate: dict[str, float] = {}  # modelo -> instante até quando evitar (após 429)
+ESPERA_429_S = 90
+
+
+def _ordem_modelos() -> list[str]:
+    """Modelo preferido do .env (OPENROUTER_MODEL) → último que funcionou → demais gratuitos."""
+    preferido = os.environ.get("OPENROUTER_MODEL", "").strip()
+    ordem = [m for m in (preferido, _ultimo_ok) if m] + FREE_MODELS
+    return list(dict.fromkeys(ordem))  # remove repetidos mantendo a ordem
+
+
+def _create_with_fallback(messages: list, usar_ferramentas: bool = True):
+    """
+    Tenta os modelos em sequência, sem ficar esperando um modelo congestionado:
+    - 429 (limite de taxa): marca o modelo como bloqueado por 90 s e passa ao próximo na hora.
+    - Modelo indisponível / erro do provedor / rede: passa ao próximo.
+    - Chave inválida: para na hora (trocar de modelo não resolve).
+    Se todos estiverem bloqueados, espera um pouco e faz mais uma volta (até 3 voltas).
+    """
+    global _ultimo_ok
+    extra = {"tools": ferramentas_openai(), "tool_choice": "auto"} if usar_ferramentas else {}
+    erros: dict[str, str] = {}
+    for volta in range(3):
+        if volta:
+            print(f"  [espera] todos os modelos ocupados — nova tentativa em {5 * volta}s")
+            time.sleep(5 * volta)
+        for model in _ordem_modelos():
+            if volta == 0 and _bloqueado_ate.get(model, 0) > time.time():
+                continue  # na 1ª volta pula quem acabou de dar 429
             try:
-                return client.chat.completions.create(
-                    model=model,
-                    messages=messages,
-                    tools=ferramentas_openai(),
-                    tool_choice="auto",
-                )
+                resp = _get_client().chat.completions.create(model=model, messages=messages, **extra)
+                _ultimo_ok = model
+                return resp
             except RateLimitError:
-                wait = 5 * (attempt + 1)
-                print(f"  [429] {model} — aguardando {wait}s (tentativa {attempt + 1}/3)")
-                time.sleep(wait)
-        print(f"  [skip] {model} esgotado, tentando próximo...")
-    raise RuntimeError("Todos os modelos free atingiram o rate limit. Tente novamente em alguns minutos.")
+                _bloqueado_ate[model] = time.time() + ESPERA_429_S
+                erros[model] = "limite de taxa"
+                print(f"  [429] {model} ocupado — tentando o próximo")
+            except AuthenticationError as e:
+                raise RuntimeError("Chave do OpenRouter inválida ou expirada (OPENROUTER_API_KEY).") from e
+            except (APIStatusError, APIConnectionError) as e:
+                erros[model] = str(getattr(e, "status_code", "") or type(e).__name__)
+                print(f"  [erro] {model} — {erros[model]}; tentando o próximo")
+    raise RuntimeError(
+        "Nenhum modelo respondeu agora (" + "; ".join(f"{m}: {e}" for m, e in erros.items())
+        + "). Tente novamente em alguns minutos ou defina OPENROUTER_MODEL no .env."
+    )
+
+
+def _registrar_log(registro: dict):
+    """Grava cada pergunta respondida em data/logs/AAAA-MM-DD.jsonl (auditoria e exemplos de saída)."""
+    try:
+        LOGS_DIR.mkdir(parents=True, exist_ok=True)
+        arq = LOGS_DIR / f"{datetime.now():%Y-%m-%d}.jsonl"
+        with open(arq, "a", encoding="utf-8") as f:
+            f.write(json.dumps(registro, ensure_ascii=False, default=str) + "\n")
+    except OSError:
+        pass  # log nunca pode derrubar a resposta
 
 
 def executar_ferramenta(nome: str, args: dict) -> str:
@@ -107,27 +165,39 @@ def perguntar_detalhado(mensagens: list, ao_chamar_ferramenta=None) -> dict:
             messages.append({"role": msg["role"], "content": content})
 
     ferramentas, fontes, modelo = [], [], None
+    inicio_total = time.time()
 
-    while True:
+    def _finalizar(texto: str) -> dict:
+        r = {"resposta": texto or "(sem resposta)", "ferramentas": ferramentas, "fontes": fontes, "modelo": modelo}
+        _registrar_log({
+            "quando": datetime.now().isoformat(timespec="seconds"),
+            "pergunta": next((m["content"] for m in reversed(mensagens) if m.get("role") == "user"), ""),
+            "modelo": modelo,
+            "segundos": round(time.time() - inicio_total, 1),
+            "ferramentas": [{"nome": f["nome"], "args": f["args"], "segundos": f["segundos"]} for f in ferramentas],
+            "fontes": sorted({f"{f['fonte']} p.{f['pagina']}" for f in fontes}),
+            "resposta": r["resposta"],
+        })
+        return r
+
+    for _ in range(MAX_RODADAS):
         response = _create_with_fallback(messages)
         modelo = getattr(response, "model", None) or modelo
 
         msg = response.choices[0].message
 
         if not msg.tool_calls:
-            return {
-                "resposta": msg.content or "(sem resposta)",
-                "ferramentas": ferramentas,
-                "fontes": fontes,
-                "modelo": modelo,
-            }
+            return _finalizar(msg.content)
 
         # Adiciona a resposta do modelo com as tool_calls ao histórico
         messages.append(msg)
 
         # Executa cada ferramenta e adiciona os resultados
         for tc in msg.tool_calls:
-            args = json.loads(tc.function.arguments)
+            try:
+                args = json.loads(tc.function.arguments or "{}")
+            except json.JSONDecodeError:
+                args = {}
             print(f"  [ferramenta] {tc.function.name}({args})")
             if ao_chamar_ferramenta:
                 ao_chamar_ferramenta(tc.function.name, args)
@@ -151,6 +221,15 @@ def perguntar_detalhado(mensagens: list, ao_chamar_ferramenta=None) -> dict:
                 "tool_call_id": tc.id,
                 "content": result,
             })
+
+    # Estourou o limite de rodadas: pede uma resposta final com o que já foi coletado.
+    messages.append({"role": "user", "content": (
+        "Limite de consultas atingido. Responda agora com base nos dados já obtidos, "
+        "sem chamar mais ferramentas."
+    )})
+    response = _create_with_fallback(messages, usar_ferramentas=False)
+    modelo = getattr(response, "model", None) or modelo
+    return _finalizar(response.choices[0].message.content)
 
 
 def perguntar(mensagens: list) -> str:

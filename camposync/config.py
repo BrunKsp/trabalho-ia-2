@@ -9,3 +9,4 @@ DB_PATH = Path(os.environ.get("CAMPOSYNC_DB", DATA_DIR / "camposync_demo.db"))
 CSV_DIR = DATA_DIR / "csv"
 DOCS_DIR = DATA_DIR / "documentos"
 CHROMA_DIR = DATA_DIR / "chroma_db"
+LOGS_DIR = DATA_DIR / "logs"  # histórico das conversas do agente (jsonl, fora do git)

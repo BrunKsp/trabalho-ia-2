@@ -29,6 +29,7 @@ class ClienteMCP:
             args=["-m", "camposync.servidor_mcp"],
             cwd=str(ROOT),
             env=dict(os.environ),
+            keep_alive=False,  # ao fechar o cliente, encerra o subprocesso
         )
         self._client = Client(transporte)
         self._loop = asyncio.new_event_loop()
@@ -61,7 +62,10 @@ class ClienteMCP:
 
     def fechar(self):
         try:
-            self._rodar(self._client.__aexit__(None, None, None))
+            # timeout curto: encerrar o app/testes nunca pode ficar preso no subprocesso
+            asyncio.run_coroutine_threadsafe(
+                self._client.__aexit__(None, None, None), self._loop
+            ).result(10)
         except Exception:
             pass
         self._loop.call_soon_threadsafe(self._loop.stop)

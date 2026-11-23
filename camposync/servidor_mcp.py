@@ -445,3 +445,6 @@ if __name__ == "__main__":
     # as outras ferramentas (a 1ª indexação dos PDFs leva alguns minutos).
     threading.Thread(target=rag.aquecer, daemon=True, name="rag-aquecer").start()
     mcp.run(show_banner=False)
+    # O cliente fechou o stdin: encerra já. Sem isso, threads internas do
+    # ChromaDB/ONNX mantêm o processo vivo e quem o abriu fica esperando.
+    os._exit(0)
