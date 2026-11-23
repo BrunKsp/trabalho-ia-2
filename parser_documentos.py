@@ -3,6 +3,8 @@ Parser de documentos financeiros agrícolas.
 Suporta PDF, CSV e Excel. Usa LLM para extrair lançamentos de PDFs.
 """
 import sqlite3, os, json, re
+from dotenv import load_dotenv
+load_dotenv()
 from pathlib import Path
 import pandas as pd
 from pypdf import PdfReader

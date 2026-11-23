@@ -6,8 +6,11 @@ para responder perguntas do produtor em linguagem natural.
 Uso:  python agente.py
 """
 import os, json, textwrap, time
+from dotenv import load_dotenv
 from openai import OpenAI, RateLimitError
 from rag import buscar_documentos
+
+load_dotenv()
 
 client = OpenAI(
     api_key=os.environ.get("OPENROUTER_API_KEY", ""),
