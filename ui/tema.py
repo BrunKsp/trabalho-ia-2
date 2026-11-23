@@ -10,7 +10,7 @@ TERRA = "#8B5E3C"
 VERMELHO = "#B3412F"
 FUNDO = "#F7F5EF"
 TEXTO = "#1F2A24"
-MUDO = "#6B756E"
+MUDO = "#5B655F"  # 5,5:1 sobre FUNDO (legível ao sol); era #6B756E (4,4:1)
 BORDA = "#E4E0D3"
 
 # Paleta categórica para os gráficos (9 categorias de custo)
@@ -26,6 +26,17 @@ html, body, [class*="css"], .stMarkdown, button, input, textarea {
     font-family: 'Inter', system-ui, sans-serif;
 }
 h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; color: __VERDE_ESCURO__; letter-spacing: -0.01em; }
+/* O Streamlit aplica a própria fonte nos títulos com seletor mais forte */
+[data-testid="stHeadingWithActionElements"] :is(h1, h2, h3), .pagina-titulo, .hero h2 {
+    font-family: 'Fraunces', Georgia, serif !important; color: __VERDE_ESCURO__;
+}
+[data-testid="stHeaderActionElements"] { display: none; }
+
+/* Superfícies do navegador */
+::selection { background: __VERDE_CLARO__; color: __VERDE_ESCURO__; }
+input, textarea { caret-color: __VERDE__; }
+:focus-visible { outline: 2px solid __VERDE__; outline-offset: 2px; }
+[data-testid="stCaptionContainer"] { opacity: 1; color: __MUDO__; }
 
 /* Limpa elementos padrão do Streamlit */
 #MainMenu, footer, [data-testid="stDecoration"], [data-testid="stStatusWidget"] { visibility: hidden; height: 0; }
@@ -44,20 +55,26 @@ h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; color: __VERDE_ESCURO__; l
 .rotulo { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: __MUDO__; font-weight: 600; margin: 14px 0 6px; }
 
 /* Navegação (st.radio estilizado como menu) */
-[data-testid="stSidebar"] [role="radiogroup"] { gap: 4px; }
-[data-testid="stSidebar"] [role="radiogroup"] label {
-    padding: 9px 12px; border-radius: 10px; width: 100%; cursor: pointer; transition: background .15s;
+/* Estrutura atual: label[stRadioOption] > span(input oculto) + div > [div(bolinha), stMarkdownContainer] */
+[data-testid="stSidebar"] [data-testid="stRadioGroup"], [data-testid="stSidebar"] [role="radiogroup"] { gap: 4px; width: 100%; }
+[data-testid="stSidebar"] [data-testid="stElementContainer"]:has([data-testid="stRadio"]),
+[data-testid="stSidebar"] [data-testid="stRadio"], [data-testid="stSidebar"] [data-testid="stRadio"] > div,
+[data-testid="stSidebar"] [data-testid="stRadioGroup"] > div { width: 100% !important; }
+[data-testid="stSidebar"] [data-testid="stRadioOption"] {
+    display: flex; width: 100%; align-self: stretch; box-sizing: border-box; padding: 10px 12px; margin: 0;
+    border-radius: 10px; cursor: pointer; transition: background .15s;
 }
-[data-testid="stSidebar"] [role="radiogroup"] label:hover { background: __VERDE_CLARO__; }
-[data-testid="stSidebar"] [role="radiogroup"] label > div:first-child { display: none; }
-[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) { background: __VERDE_CLARO__; }
-[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p { color: __VERDE_ESCURO__; font-weight: 600; }
+[data-testid="stSidebar"] [data-testid="stRadioOption"] > div { width: 100%; }
+[data-testid="stSidebar"] [data-testid="stRadioOption"] > div > div:not([data-testid="stMarkdownContainer"]) { display: none; }
+[data-testid="stSidebar"] [data-testid="stRadioOption"]:hover { background: __VERDE_CLARO__; }
+[data-testid="stSidebar"] [data-testid="stRadioOption"]:has(input:checked) { background: __VERDE_CLARO__; }
+[data-testid="stSidebar"] [data-testid="stRadioOption"]:has(input:checked) p { color: __VERDE_ESCURO__; font-weight: 600; }
 
 .ficha { background: #fff; border: 1px solid __BORDA__; border-radius: 12px; padding: 12px 14px; font-size: .85rem; line-height: 1.7; }
 .ficha b { color: __VERDE_ESCURO__; }
 
 /* Cabeçalho de página */
-.pagina-titulo { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; color: __VERDE_ESCURO__; margin: 0; }
+.pagina-titulo { font-family: 'Fraunces', serif; font-size: 2rem !important; line-height: 1.15; font-weight: 700; color: __VERDE_ESCURO__; margin: 0; }
 .pagina-sub { color: __MUDO__; margin: 2px 0 18px; font-size: .98rem; }
 
 /* Cartões de métrica */
@@ -77,18 +94,18 @@ h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; color: __VERDE_ESCURO__; l
 .secao-sub { color: __MUDO__; font-size: .88rem; margin-bottom: 8px; }
 
 /* Alertas e recomendações */
-.alerta {
-    background: #fff; border: 1px solid __BORDA__; border-left: 5px solid __OURO__;
-    border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
-}
-.alerta.alta { border-left-color: __VERMELHO__; } .alerta.media { border-left-color: __OURO__; } .alerta.baixa { border-left-color: __VERDE__; }
+/* Prioridade pela borda inteira + fundo tingido (sem barra lateral); o .selo nomeia a prioridade */
+.alerta { background: #fff; border: 1px solid __BORDA__; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+.alerta.alta { background: #FDF5F3; border-color: #E9B8AE; }
+.alerta.media { background: #FDF8EE; border-color: #EBD3A2; }
+.alerta.baixa { background: #F4F9F5; border-color: #BFD8C7; }
 .alerta .tit { font-weight: 600; color: __TEXTO__; font-size: .95rem; }
 .alerta .txt { color: #3b463f; font-size: .9rem; margin-top: 4px; line-height: 1.5; }
 .selo {
     display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: .7rem; font-weight: 600;
     background: __VERDE_CLARO__; color: __VERDE_ESCURO__; margin-right: 6px;
 }
-.selo.alta { background: #F6DDD7; color: __VERMELHO__; } .selo.media { background: #F8EBCF; color: #8a5d0b; }
+.selo.alta { background: #F6DDD7; color: #9E3726; } .selo.media { background: #F8EBCF; color: #8a5d0b; }
 
 /* Passos (importação) */
 .passos { display: flex; gap: 10px; margin: 6px 0 18px; }
@@ -100,19 +117,52 @@ h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; color: __VERDE_ESCURO__; l
 .passo.feito { color: __VERDE_ESCURO__; }
 
 /* Chat */
-[data-testid="stChatMessage"] { background: transparent; border-radius: 14px; padding: .6rem .4rem; }
-[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) { background: __VERDE_CLARO__; }
-.passo-ferr { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-bottom: 1px dashed __BORDA__; font-size: .88rem; }
+[data-testid="stChatMessage"] { background: transparent; border-radius: 14px; padding: .6rem .5rem; }
+[data-testid="stChatMessage"]:has(.msg-usuario) { background: __VERDE_CLARO__; }
+.msg-usuario { color: __TEXTO__; margin: 0; }
+[data-testid="stChatMessage"] table { display: block; max-width: 100%; overflow-x: auto; font-variant-numeric: tabular-nums; }
+.contexto-faz {
+    display: inline-block; background: #fff; border: 1px solid __BORDA__; border-radius: 999px;
+    padding: 6px 14px; margin: 4px 0 14px; font-size: .9rem; color: __MUDO__;
+}
+.contexto-faz b { color: __VERDE_ESCURO__; }
+.passo-ferr { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px dashed __BORDA__; font-size: .95rem; }
 .passo-ferr:last-child { border-bottom: 0; }
-.passo-ferr .ic { font-size: 1.1rem; }
-.passo-ferr .t { font-weight: 600; color: __TEXTO__; } .passo-ferr .d { color: __MUDO__; font-size: .8rem; }
-.fonte { background: #fff; border: 1px solid __BORDA__; border-radius: 10px; padding: 8px 12px; margin: 6px 0; font-size: .84rem; }
-.fonte .f { font-weight: 600; color: __VERDE_ESCURO__; } .fonte .x { color: __MUDO__; margin-top: 3px; }
+.passo-ferr .ic { font-size: 1.1rem; line-height: 1.4; }
+.passo-ferr .t { font-weight: 600; color: __TEXTO__; }
+.passo-ferr .r { color: __TEXTO__; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.sub-rotulo { font-weight: 600; color: __VERDE_ESCURO__; margin: 12px 0 2px; font-size: .95rem; }
+.fonte { background: #fff; border: 1px solid __BORDA__; border-radius: 10px; padding: 10px 12px; margin: 6px 0; font-size: .9rem; }
+.fonte .f { font-weight: 600; color: __VERDE_ESCURO__; } .fonte .x { color: __MUDO__; margin-top: 3px; line-height: 1.5; }
+details.tecnico { margin-top: 10px; font-size: .85rem; color: __MUDO__; }
+details.tecnico summary { cursor: pointer; }
+details.tecnico div { font-family: ui-monospace, Consolas, monospace; font-size: .8rem; margin-top: 4px; overflow-wrap: anywhere; }
+.aviso-geral { background: #FDF8EE; border: 1px solid #EBD3A2; color: #6E4C09; border-radius: 10px; padding: 8px 12px; font-size: .9rem; margin-top: 6px; }
+.erro-chat { background: #FDF5F3; border: 1px solid #E9B8AE; color: #8A2F20; border-radius: 10px; padding: 8px 12px; font-size: .95rem; margin: 6px 0; }
+.acao { background: #fff; border: 1px solid __BORDA__; border-radius: 12px; padding: 10px 14px; margin: 8px 0 6px; font-size: .95rem; line-height: 1.5; }
+.acao.feito { background: #F4F9F5; border-color: #BFD8C7; color: __VERDE_ESCURO__; }
 
-/* Hero do chat vazio */
-.hero { text-align: center; padding: 28px 0 8px; }
-.hero .em { font-size: 2.6rem; }
-.hero h2 { margin: 6px 0 4px; } .hero p { color: __MUDO__; max-width: 560px; margin: 0 auto; }
+/* Conversa vazia */
+.hero { text-align: center; padding: 20px 0 12px; }
+.hero h2 { margin: 0 0 6px; } .hero p { color: __MUDO__; max-width: 34em; margin: 0 auto; line-height: 1.55; }
+
+/* Sugestões: uma coluna, texto inteiro (sem reticências), alvo de toque confortável */
+.st-key-sugestoes { max-width: 640px; margin: 0 auto; }
+.st-key-sugestoes button { min-height: 48px; justify-content: flex-start; text-align: left; padding: 10px 16px; }
+.st-key-sugestoes button > div, .st-key-sugestoes button > div > span { justify-content: flex-start; width: 100%; }
+.st-key-sugestoes button [data-testid="stMarkdownContainer"], .st-key-sugestoes button .stMarkdownEllipsis { overflow: visible; }
+.st-key-sugestoes button p { white-space: normal; text-align: left; line-height: 1.4; }
+.st-key-sugestoes button [data-testid="stMarkdownContainer"] { width: 100%; }
+.st-key-rodape_chat { margin-top: 6px; }
+
+/* Celular */
+@media (max-width: 640px) {
+    [data-testid="stMainBlockContainer"], .block-container { padding-top: 4rem !important; padding-left: 1rem !important; padding-right: 1rem !important; }
+    .pagina-titulo { font-size: 1.6rem !important; }
+    .hero { padding-top: 8px; }
+    .hero h2 { font-size: 1.45rem; }
+    .contexto-faz { border-radius: 12px; }
+}
 
 /* Botões */
 .stButton > button, .stDownloadButton > button {
