@@ -4,7 +4,9 @@ import pandas as pd
 import streamlit as st
 
 from camposync.config import DB_PATH
-from camposync import servidor_mcp as mcp
+# Dados "de negócio" (resultado, anomalias, recomendações) vêm do servidor MCP,
+# o mesmo que o agente usa; gráficos usam SQL direto só por desempenho.
+from camposync.cliente_mcp import chamar
 
 # O banco guarda categorias sem acento; aqui só embelezamos para exibir.
 NOMES_CATEGORIA = {
@@ -33,7 +35,7 @@ def limpar_cache():
 
 @st.cache_data(show_spinner=False)
 def fazendas() -> list[dict]:
-    return mcp.listar_fazendas()
+    return chamar("listar_fazendas")
 
 
 @st.cache_data(show_spinner=False)
@@ -50,7 +52,7 @@ def culturas(fazenda_id: int) -> list[str]:
 
 @st.cache_data(show_spinner=False)
 def resultado(fazenda_id: int, safra: str, cultura: str | None) -> dict:
-    return mcp.resultado_safra(fazenda_id, safra, cultura)
+    return chamar("resultado_safra", {"fazenda_id": fazenda_id, "safra": safra, "cultura": cultura})
 
 
 @st.cache_data(show_spinner=False)
@@ -86,12 +88,12 @@ def cotacoes(produto: str) -> pd.DataFrame:
 
 @st.cache_data(show_spinner=False)
 def anomalias(fazenda_id: int) -> list[dict]:
-    return mcp.detectar_anomalias(fazenda_id)
+    return chamar("detectar_anomalias", {"fazenda_id": fazenda_id})
 
 
 @st.cache_data(show_spinner=False)
 def recomendacoes(fazenda_id: int) -> list[dict]:
-    return mcp.recomendar_acoes(fazenda_id)
+    return chamar("recomendar_acoes", {"fazenda_id": fazenda_id})
 
 
 @st.cache_data(show_spinner=False)

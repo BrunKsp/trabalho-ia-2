@@ -8,7 +8,7 @@ Uso:  python -m camposync.agente
 import os, json, textwrap, time
 from dotenv import load_dotenv
 from openai import OpenAI, RateLimitError
-from .rag import buscar_documentos
+from .cliente_mcp import get_cliente
 
 load_dotenv()
 
@@ -26,172 +26,31 @@ FREE_MODELS = [
 ]
 MODEL_NAME = FREE_MODELS[0]
 
-from .servidor_mcp import (
-    listar_fazendas,
-    gastos_por_safra,
-    comparar_safras,
-    resultado_safra,
-    cotacao_atual,
-    historico_cotacoes,
-    detectar_anomalias,
-    buscar_lancamentos,
-    recomendar_acoes,
-)
+# ── Ferramentas: descobertas via protocolo MCP ──────────────────────────────
+# O agente NÃO importa as funções do servidor. Ele sobe camposync/servidor_mcp.py
+# como subprocesso (stdio), pergunta quais ferramentas existem (list_tools) e as
+# executa remotamente (call_tool). Nome, descrição e JSON Schema dos parâmetros
+# vêm do próprio servidor — adicionar uma ferramenta lá basta para o agente usá-la.
+_tools_cache: list | None = None
 
-TOOLS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "listar_fazendas",
-            "description": "Retorna todas as fazendas cadastradas com área e culturas.",
-            "parameters": {"type": "object", "properties": {}, "required": []},
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "gastos_por_safra",
-            "description": "Retorna gasto total por categoria em uma safra de uma fazenda.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "fazenda_id": {"type": "integer", "description": "ID da fazenda"},
-                    "safra": {"type": "string", "description": "ex: '2024/25'"},
-                    "cultura": {"type": "string", "description": "'soja', 'milho' ou 'trigo' (opcional)"},
-                },
-                "required": ["fazenda_id", "safra"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "comparar_safras",
-            "description": "Compara gastos entre duas safras mostrando variação por categoria.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "fazenda_id": {"type": "integer"},
-                    "safra_a": {"type": "string"},
-                    "safra_b": {"type": "string"},
-                    "cultura": {"type": "string"},
-                },
-                "required": ["fazenda_id", "safra_a", "safra_b"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "resultado_safra",
-            "description": "Calcula receita bruta, despesa total e margem de uma safra.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "fazenda_id": {"type": "integer"},
-                    "safra": {"type": "string"},
-                    "cultura": {"type": "string"},
-                },
-                "required": ["fazenda_id", "safra"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "cotacao_atual",
-            "description": "Retorna cotação mais recente de 'soja', 'milho' ou 'trigo'.",
-            "parameters": {
-                "type": "object",
-                "properties": {"produto": {"type": "string"}},
-                "required": ["produto"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "historico_cotacoes",
-            "description": "Retorna cotações semanais de um produto durante uma safra.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "produto": {"type": "string"},
-                    "safra": {"type": "string"},
-                },
-                "required": ["produto", "safra"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "detectar_anomalias",
-            "description": "Detecta gastos anômalos (>20% acima da média histórica) em uma fazenda.",
-            "parameters": {
-                "type": "object",
-                "properties": {"fazenda_id": {"type": "integer"}},
-                "required": ["fazenda_id"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "buscar_lancamentos",
-            "description": "Busca lançamentos individuais com filtro por fazenda, safra e/ou categoria.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "fazenda_id": {"type": "integer"},
-                    "safra": {"type": "string"},
-                    "categoria": {"type": "string"},
-                    "limite": {"type": "integer"},
-                },
-                "required": ["fazenda_id"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "buscar_documentos",
-            "description": "Busca trechos relevantes na base de conhecimento do agro (Embrapa, Conab, LCDPR).",
-            "parameters": {
-                "type": "object",
-                "properties": {"consulta": {"type": "string"}},
-                "required": ["consulta"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "recomendar_acoes",
-            "description": "Analisa o histórico financeiro da fazenda e gera recomendações práticas baseadas em padrões de custo, margens e sazonalidade das safras anteriores.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "fazenda_id": {"type": "integer", "description": "ID da fazenda"},
-                },
-                "required": ["fazenda_id"],
-            },
-        },
-    },
-]
 
-TOOL_FN = {
-    "listar_fazendas": lambda args: listar_fazendas(),
-    "gastos_por_safra": lambda args: gastos_por_safra(**args),
-    "comparar_safras": lambda args: comparar_safras(**args),
-    "resultado_safra": lambda args: resultado_safra(**args),
-    "cotacao_atual": lambda args: cotacao_atual(**args),
-    "historico_cotacoes": lambda args: historico_cotacoes(**args),
-    "detectar_anomalias": lambda args: detectar_anomalias(**args),
-    "buscar_lancamentos": lambda args: buscar_lancamentos(**args),
-    "buscar_documentos": lambda args: buscar_documentos(**args),
-    "recomendar_acoes": lambda args: recomendar_acoes(**args),
-}
+def ferramentas_openai() -> list[dict]:
+    """Converte as ferramentas anunciadas pelo servidor MCP para o formato de tools da API OpenAI."""
+    global _tools_cache
+    if _tools_cache is None:
+        _tools_cache = [
+            {
+                "type": "function",
+                "function": {
+                    "name": t.name,
+                    "description": (t.description or "").strip(),
+                    "parameters": t.inputSchema or {"type": "object", "properties": {}},
+                },
+            }
+            for t in get_cliente().listar_ferramentas()
+        ]
+    return _tools_cache
+
 
 SYSTEM = textwrap.dedent("""
     Você é o Consultor da Safra, um assistente financeiro especializado em agricultura familiar do RS.
@@ -211,7 +70,7 @@ def _create_with_fallback(messages: list):
                 return client.chat.completions.create(
                     model=model,
                     messages=messages,
-                    tools=TOOLS,
+                    tools=ferramentas_openai(),
                     tool_choice="auto",
                 )
             except RateLimitError:
@@ -223,14 +82,12 @@ def _create_with_fallback(messages: list):
 
 
 def executar_ferramenta(nome: str, args: dict) -> str:
-    fn = TOOL_FN.get(nome)
-    if not fn:
-        return json.dumps({"erro": f"ferramenta '{nome}' não encontrada"})
+    """Executa a ferramenta no servidor MCP e devolve o resultado em JSON (para o LLM)."""
     try:
-        resultado = fn(args)
+        resultado = get_cliente().chamar(nome, args)
         return json.dumps(resultado, ensure_ascii=False, default=str)
     except Exception as e:
-        return json.dumps({"erro": str(e)})
+        return json.dumps({"erro": str(e)}, ensure_ascii=False)
 
 
 def perguntar_detalhado(mensagens: list, ao_chamar_ferramenta=None) -> dict:

@@ -17,10 +17,31 @@ Produtor (pergunta)
       ▼
   camposync/agente.py ── LLM (OpenRouter) com tool use
       │
-      ├── camposync/servidor_mcp.py ── 9 ferramentas FastMCP → data/camposync_demo.db (SQLite)
+      ▼
+  camposync/cliente_mcp.py ── fastmcp.Client (list_tools / call_tool)
+      ║
+      ║  protocolo MCP (JSON-RPC sobre stdio) — servidor roda em SUBPROCESSO
+      ║
+  camposync/servidor_mcp.py ── 11 ferramentas FastMCP
       │
-      └── camposync/rag.py ─ ChromaDB + embeddings ONNX → data/documentos/ (PDFs)
+      ├── data/camposync_demo.db (SQLite) ── lançamentos, receitas, cotações
+      └── camposync/rag.py ── ChromaDB + embeddings ONNX → data/documentos/ (PDFs)
 ```
+
+**Como o MCP é usado de verdade:** o agente não importa as funções do servidor.
+Ao iniciar, o `cliente_mcp.py` sobe `python -m camposync.servidor_mcp` como
+subprocesso, pede a lista de ferramentas (`list_tools`) — nome, descrição e
+JSON Schema dos parâmetros vêm do próprio servidor — e converte para o formato
+de *tools* do LLM. Cada chamada do modelo vira um `call_tool` no protocolo MCP.
+Consequências práticas:
+
+- **Uma única fonte da verdade:** para dar uma nova habilidade ao agente basta
+  criar uma função com `@mcp.tool()` no servidor; nada muda no agente.
+- **Reutilizável:** o mesmo servidor funciona em qualquer host MCP (Claude
+  Desktop, Cursor, VS Code) — veja "Usar o servidor em outro cliente MCP".
+- A interface (painel, recomendações) também consulta o servidor via MCP.
+- O índice do RAG é construído em segundo plano quando o servidor sobe, então
+  as demais ferramentas respondem imediatamente.
 
 **Ferramentas MCP disponíveis para o agente:**
 
@@ -35,6 +56,7 @@ Produtor (pergunta)
 | `detectar_anomalias` | Gastos acima de 20% da média histórica |
 | `buscar_lancamentos` | Lançamentos individuais com filtros |
 | `recomendar_acoes` | Recomendações proativas por fazenda |
+| `detectar_duplicados` | Lançamentos em duplicidade (exatos e suspeitos em até 7 dias) e o valor pago a mais |
 | `buscar_documentos` | RAG: busca em PDFs da Embrapa/Conab/LCDPR |
 
 ---
@@ -108,9 +130,31 @@ Abre em `http://localhost:8501`
 python -m camposync.agente
 ```
 
-**Servidor MCP standalone:**
+**Servidor MCP standalone (stdio):**
 ```bash
 python -m camposync.servidor_mcp
+```
+
+**Listar as ferramentas via protocolo MCP (diagnóstico):**
+```bash
+python -m camposync.cliente_mcp
+```
+
+### Usar o servidor em outro cliente MCP
+
+O servidor é independente da interface. Exemplo para o Claude Desktop
+(`claude_desktop_config.json`) — ajuste os caminhos para a sua máquina:
+
+```json
+{
+  "mcpServers": {
+    "consultor-safra": {
+      "command": "C:\\caminho\\trabalho-ia-2\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "camposync.servidor_mcp"],
+      "env": { "PYTHONPATH": "C:\\caminho\\trabalho-ia-2" }
+    }
+  }
+}
 ```
 
 ---
@@ -123,8 +167,9 @@ Abra a Fazenda Boa Vista e pergunte:
 2. *"Por que essa safra custou mais do que a 2024/25?"* → agente deve encontrar o fertilizante caro
 3. *"Qual a margem bruta da safra 2023/24?"*
 4. *"Tem algum gasto fora do normal nas minhas fazendas?"*
-5. *"Qual a cotação da soja hoje? Compensa vender agora?"*
-6. *"O que é o LCDPR e preciso declarar?"* → usa o RAG
+5. *"Tem algum lançamento duplicado?"* → encontra o seguro de R$ 15.854,30 lançado duas vezes em 05/10/2023
+6. *"Qual a cotação da soja hoje? Compensa vender agora?"*
+7. *"O que é o LCDPR e preciso declarar?"* → usa o RAG
 
 ---
 
@@ -145,7 +190,8 @@ trabalho-ia-2/
 ├── app.py                   # Interface Streamlit (ponto de entrada)
 ├── camposync/               # Pacote principal
 │   ├── agente.py            # Agente LLM com tool use
-│   ├── servidor_mcp.py      # Ferramentas FastMCP (9 endpoints)
+│   ├── servidor_mcp.py      # Servidor FastMCP (11 ferramentas, incl. RAG)
+│   ├── cliente_mcp.py       # Cliente MCP: sobe o servidor via stdio e chama as ferramentas
 │   ├── rag.py               # Indexação e busca nos PDFs
 │   ├── parser_documentos.py # Importa lançamentos de PDF/CSV/Excel
 │   └── config.py            # Caminhos centralizados

@@ -4,12 +4,13 @@ Módulo RAG: indexa PDFs da pasta data/documentos/ e retorna trechos relevantes.
 Na primeira execução cria o índice em data/chroma_db/.
 Dependências: pip install chromadb pypdf sentence-transformers
 """
-import os, hashlib
+import os, sys, hashlib, threading
 from pathlib import Path
 
 from .config import DOCS_DIR, CHROMA_DIR
 
 _collection = None
+_lock = threading.Lock()  # a indexação pode ser disparada pelo aquecimento e por uma busca ao mesmo tempo
 
 
 def _get_collection():
@@ -17,43 +18,61 @@ def _get_collection():
     if _collection is not None:
         return _collection
 
-    import chromadb
-    from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
+    with _lock:
+        if _collection is not None:
+            return _collection
 
-    ef = DefaultEmbeddingFunction()
-    client = chromadb.PersistentClient(path=str(CHROMA_DIR))
-    _collection = client.get_or_create_collection("safra_docs", embedding_function=ef)
+        import chromadb
+        from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
 
-    # Indexa PDFs ainda não indexados
-    if DOCS_DIR.exists():
-        _indexar_novos(_collection)
+        ef = DefaultEmbeddingFunction()
+        client = chromadb.PersistentClient(path=str(CHROMA_DIR))
+        col = client.get_or_create_collection("safra_docs", embedding_function=ef)
 
-    return _collection
+        # Indexa PDFs ainda não indexados
+        if DOCS_DIR.exists():
+            _indexar_novos(col)
+
+        _collection = col  # só publica depois de indexado
+        return _collection
 
 
-def _indexar_novos(col):
+def aquecer():
+    """Cria/atualiza o índice antecipadamente (o servidor MCP chama isto em segundo plano ao subir)."""
+    try:
+        n = _get_collection().count()
+        print(f"[RAG] índice pronto: {n} trechos", file=sys.stderr)
+    except Exception as e:
+        print(f"[RAG] falha ao aquecer o índice: {e}", file=sys.stderr)
+
+
+def _indexar_novos(col, lote: int = 256):
     from pypdf import PdfReader
 
     ids_existentes = set(col.get(include=[])["ids"])
-    for pdf in DOCS_DIR.glob("*.pdf"):
+    for pdf in sorted(DOCS_DIR.glob("*.pdf")):
         try:
+            ids, docs, metas = [], [], []
             reader = PdfReader(str(pdf))
             for i, page in enumerate(reader.pages):
                 texto = page.extract_text() or ""
                 if len(texto.strip()) < 50:
                     continue
                 # Divide em chunks de ~500 chars com overlap de 100
-                chunks = _chunkar(texto, 500, 100)
-                for j, chunk in enumerate(chunks):
+                for j, chunk in enumerate(_chunkar(texto, 500, 100)):
                     doc_id = hashlib.md5(f"{pdf.name}_{i}_{j}".encode()).hexdigest()
                     if doc_id not in ids_existentes:
-                        col.add(
-                            ids=[doc_id],
-                            documents=[chunk],
-                            metadatas=[{"fonte": pdf.name, "pagina": i + 1}],
-                        )
+                        ids.append(doc_id)
+                        docs.append(chunk)
+                        metas.append({"fonte": pdf.name, "pagina": i + 1})
+            # Inserção em lotes: gerar embeddings em lote é muito mais rápido que um por um
+            for k in range(0, len(ids), lote):
+                col.add(ids=ids[k:k + lote], documents=docs[k:k + lote], metadatas=metas[k:k + lote])
+            if ids:
+                print(f"[RAG] {pdf.name}: {len(ids)} trechos indexados", file=sys.stderr)
         except Exception as e:
-            print(f"[RAG] erro ao indexar {pdf.name}: {e}")
+            # stderr: no transporte stdio do MCP o stdout é reservado ao protocolo
+            print(f"[RAG] erro ao indexar {pdf.name}: {e}", file=sys.stderr)
 
 
 def _chunkar(texto: str, tam: int, overlap: int) -> list[str]:

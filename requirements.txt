@@ -1,5 +1,5 @@
 openai>=1.0.0
-fastmcp>=0.4.0
+fastmcp>=4.0  # testado com 4.2.4 (Client.call_tool -> .data, show_banner)
 streamlit>=1.40.0
 chromadb>=0.5.0
 pypdf>=4.0.0
