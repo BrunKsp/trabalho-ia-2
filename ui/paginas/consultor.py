@@ -18,6 +18,7 @@ FERRAMENTAS = {
     "detectar_anomalias": ("🚨", "Procurou gastos fora do padrão"),
     "buscar_lancamentos": ("🧾", "Consultou lançamentos individuais"),
     "recomendar_acoes": ("💡", "Gerou recomendações"),
+    "detectar_duplicados": ("👯", "Procurou lançamentos duplicados"),
     "buscar_documentos": ("📚", "Pesquisou na base de conhecimento (RAG)"),
 }
 
@@ -26,6 +27,7 @@ SUGESTOES = [
     ("🔎", "Por que minha safra 2025/26 custou mais que a anterior?"),
     ("📈", "Qual a margem bruta da safra 2023/24?"),
     ("🚨", "Tem algum gasto fora do normal nas minhas fazendas?"),
+    ("👯", "Tem algum lançamento duplicado?"),
     ("🌾", "Qual a cotação da soja hoje? Compensa vender agora?"),
     ("📚", "O que é o LCDPR e preciso declarar?"),
 ]

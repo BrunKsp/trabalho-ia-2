@@ -2,14 +2,22 @@
 Servidor FastMCP - Consultor da Safra
 Ferramentas que o agente usa para consultar os dados financeiros do produtor.
 
-Uso:  python -m camposync.servidor_mcp
+É a ÚNICA fonte das ferramentas: o agente (camposync/agente.py) não importa
+estas funções — ele sobe este servidor como subprocesso, descobre as
+ferramentas via protocolo MCP (list_tools) e as executa via call_tool.
+
+Uso:  python -m camposync.servidor_mcp     (transporte stdio)
+
+Importante: no transporte stdio o stdout é o canal do protocolo — nada
+neste processo pode usar print() para stdout (use stderr).
 """
 import sqlite3, os
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 from fastmcp import FastMCP
 
 from .config import DB_PATH
+from . import rag
 
 mcp = FastMCP("consultor-safra")
 
@@ -354,5 +362,86 @@ def recomendar_acoes(fazenda_id: int) -> list[dict]:
     return sorted(recomendacoes, key=lambda x: ordem[x["prioridade"]])
 
 
+# ── 10. Detectar lançamentos duplicados ──────────────────────────────────────
+@mcp.tool()
+def detectar_duplicados(fazenda_id: Optional[int] = None, janela_dias: int = 7) -> dict:
+    """
+    Procura lançamentos registrados em duplicidade (ex: a mesma nota lançada
+    duas vezes ou um upload importado de novo).
+    - 'exatos': mesma fazenda, data, cultura, categoria, fornecedor e valor.
+    - 'suspeitos': mesmo fornecedor, categoria e valor em datas diferentes,
+      com até `janela_dias` dias de distância (provável digitação dupla).
+    fazenda_id: opcional; se omitido, verifica todas as fazendas.
+    """
+    filtro = " WHERE fazenda_id = ?" if fazenda_id is not None else ""
+    params = [fazenda_id] if fazenda_id is not None else []
+
+    with _con() as con:
+        exatos = con.execute(f"""
+            SELECT fazenda_id, safra, cultura, data, categoria, fornecedor, valor,
+                   COUNT(*) AS ocorrencias, GROUP_CONCAT(id) AS ids
+            FROM lancamentos{filtro}
+            GROUP BY fazenda_id, safra, cultura, data, categoria, fornecedor, valor
+            HAVING COUNT(*) > 1
+            ORDER BY valor DESC
+        """, params).fetchall()
+
+        pares = con.execute(f"""
+            SELECT a.id AS id_a, b.id AS id_b, a.fazenda_id, a.categoria, a.fornecedor,
+                   a.valor, a.data AS data_a, b.data AS data_b
+            FROM lancamentos a
+            JOIN lancamentos b
+              ON a.fazenda_id = b.fazenda_id AND a.fornecedor = b.fornecedor
+             AND a.categoria = b.categoria AND a.valor = b.valor
+             AND a.data < b.data
+             AND julianday(b.data) - julianday(a.data) <= ?
+            {"WHERE a.fazenda_id = ?" if fazenda_id is not None else ""}
+            ORDER BY a.valor DESC
+        """, [janela_dias] + params).fetchall()
+
+    exatos_fmt = []
+    for r in exatos:
+        ocorr = r["ocorrencias"]
+        exatos_fmt.append({
+            "fazenda_id": r["fazenda_id"], "safra": r["safra"], "cultura": r["cultura"],
+            "data": r["data"], "categoria": r["categoria"], "fornecedor": r["fornecedor"],
+            "valor": round(r["valor"], 2), "ocorrencias": ocorr,
+            "ids": [int(i) for i in r["ids"].split(",")],
+            "valor_em_excesso": round(r["valor"] * (ocorr - 1), 2),
+        })
+
+    suspeitos_fmt = [{
+        "fazenda_id": r["fazenda_id"], "categoria": r["categoria"], "fornecedor": r["fornecedor"],
+        "valor": round(r["valor"], 2), "ids": [r["id_a"], r["id_b"]],
+        "datas": [r["data_a"], r["data_b"]],
+        "dias_entre": (datetime.fromisoformat(r["data_b"][:10]) - datetime.fromisoformat(r["data_a"][:10])).days,
+    } for r in pares]
+
+    return {
+        "fazenda_id": fazenda_id if fazenda_id is not None else "todas",
+        "total_exatos": len(exatos_fmt),
+        "valor_total_em_excesso": round(sum(d["valor_em_excesso"] for d in exatos_fmt), 2),
+        "exatos": exatos_fmt,
+        "total_suspeitos": len(suspeitos_fmt),
+        "suspeitos": suspeitos_fmt,
+    }
+
+
+# ── 11. Base de conhecimento (RAG) ───────────────────────────────────────────
+@mcp.tool()
+def buscar_documentos(consulta: str, n_resultados: int = 4) -> list[dict]:
+    """
+    Busca trechos relevantes na base de conhecimento do agro (PDFs da Embrapa,
+    Conab, artigos sobre custos de soja/milho no RS, LCDPR). Use para perguntas
+    conceituais, técnicas ou de referência de mercado — não para dados da fazenda.
+    Retorna o texto de cada trecho com o documento de origem e a página.
+    """
+    return rag.buscar_documentos(consulta, n_resultados)
+
+
 if __name__ == "__main__":
-    mcp.run()
+    import threading
+    # Constrói o índice do RAG em segundo plano enquanto o servidor já atende
+    # as outras ferramentas (a 1ª indexação dos PDFs leva alguns minutos).
+    threading.Thread(target=rag.aquecer, daemon=True, name="rag-aquecer").start()
+    mcp.run(show_banner=False)
